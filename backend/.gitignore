@@ -1,0 +1,5 @@
+# Ignoring the node_modules folder when commiting or pushing to a remote repo
+node_modules/
+
+# Ignoring the package-lock.json
+package-lock.json
