@@ -5,10 +5,12 @@ const { routerSignUp } = require('./routes/signup');
 require('dotenv').config();
 const session = require('express-session');
 const { routerLoginOut } = require('./routes/logout');
+const cors = require('cors'); // Importing the cors package
 
 const app = express(); // Initializing the express app
 const port = process.env.SPORT; // Loading the server port specified in env file
 
+app.use(cors()); // Configuring CORS to allow cross-origin requests
 app.use(bodyParser.json()); // Config Bodyparser middleware
 app.use(session({ // Config cookie session middleware
     secret: process.env.SECRET,
@@ -29,5 +31,5 @@ app.use('/logout', routerLoginOut);
 
 // Starting the server
 app.listen(port, () => {
-    console.log("Server running");
+    console.log("Server running on port " + port);
 })

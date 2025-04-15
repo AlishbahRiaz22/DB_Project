@@ -17,6 +17,7 @@ routerLoginIn.post('/', [check('email').isEmail().normalizeEmail(),
     const errors = validationResult(req);
     // If there are errors reported by the validation middleware, we return status 400
     if (!errors.isEmpty()) { 
+        console.log(errors);
         return res.status(400).json({ errors: errors.array() });
       }
     

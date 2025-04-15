@@ -697,6 +697,14 @@ footer::before {
               <input type="text" id="location" name="location" placeholder="03xx-xxxxxxx" required>
             </div>
           </div>
+
+          <div class="form-group">
+            <label for="Qalam id">Qalam Id</label>
+            <div class="input-group">
+              <span class="input-icon">🪪</span>
+              <input type="text" id="cms" min="6" max="6" name="cms" placeholder="xxxxxxx" required>
+            </div>
+          </div>
           
           <div class="form-group">
             <label for="password">Password</label>
@@ -854,7 +862,7 @@ footer::before {
     // Form validation
     const signupForm = document.querySelector('.signup-form');
     
-    signupForm.addEventListener('submit', function(event) {
+    signupForm.addEventListener('submit', async function(event) {
       // Check if passwords match
       if (passwordInput.value !== confirmPasswordInput.value) {
         event.preventDefault();
@@ -873,9 +881,41 @@ footer::before {
       }
       
       // Form is valid, would normally submit here
-      // For demo purposes, prevent actual form submission
+      // Taking the values from the form inputs
+      const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
+      const cmsInput = document.getElementById('cms');
+      const fullnameInput = document.getElementById('fullname');
+      const locationInput = document.getElementById('location');
+
       event.preventDefault();
-      alert("Account created successfully! You can now log in.");
+
+      // Send the data to the server
+      const response = await fetch("http://127.0.0.1:8808/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          "username": usernameInput.value,
+          "email": emailInput.value,
+          "cms_id": cmsInput.value,
+          "name": fullnameInput.value,
+          "phone": locationInput.value,
+          "password": passwordInput.value
+        })
+      });
+
+      // Check the response status
+      if (response.status !== 200) {
+        console.log(response);
+        alert("Error: " + response.statusText);
+        return;
+      }
+      else {
+        alert("Account created successfully! You can now log in.");
+        window.location.href = "login.html"; // Redirecting to login page
+      }
     });
     
     // Mobile menu functionality
