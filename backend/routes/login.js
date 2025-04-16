@@ -17,7 +17,6 @@ routerLoginIn.post('/', [check('email').isEmail().normalizeEmail(),
     const errors = validationResult(req);
     // If there are errors reported by the validation middleware, we return status 400
     if (!errors.isEmpty()) { 
-        console.log(errors);
         return res.status(400).json({ errors: errors.array() });
       }
     
@@ -36,12 +35,18 @@ routerLoginIn.post('/', [check('email').isEmail().normalizeEmail(),
             res.status(404).send("No user found");
             return;
         }
-        console.log(result[0]);
         // If the query returns a row, we validate it against the password in the req
         if (await bcrypt.compare(password, result[0].password)) {
             // Setting the session information
-            req.session.user = { "cms_id": result[0].cms_id, "username": result[0].username };
-            res.status(200).send("Login successful");
+            req.session.user = {cms_id: result[0].cms_id, full_name: result[0].full_name, username: result[0].username, phone: result[0].phone}; // Storing the email in the session
+            req.session.save(err => { // Explicitly save the session
+                if (err) {
+                    console.error("Session save error:", err);
+                    res.status(500).send("Internal Server Error");
+                    return;
+                }
+                res.status(200).send("Login successful");
+            });
             return;
         } else { // If the password doesnt match
             res.status(404).send("Wrong Password");
@@ -49,5 +54,10 @@ routerLoginIn.post('/', [check('email').isEmail().normalizeEmail(),
         }   
     })
 })
+
+routerLoginIn.get('/', (req, res) => {
+    console.log(req.session.user);
+    res.status(200).send(req.session); // Send a response indicating the session is active
+});
 
 exports.routerLoginIn = routerLoginIn;
