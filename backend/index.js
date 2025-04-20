@@ -32,6 +32,7 @@ app.use(bodyParser.json()); // Config Bodyparser middleware
 app.use('/login', routerLoginIn); // Config different routes
 app.use('/signup', routerSignUp); 
 app.use('/logout', routerLoginOut);
+app.use('/browse', require('./routes/browse').routerBrowse); // Config browse route
 
 // Starting the server
 app.listen(port, () => {
