@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 # Creating the tradeable items table that stores the items that are up for trade
 CREATE TABLE IF NOT EXISTS `tradeable_items` (
+  `item_name` varchar(255) NOT NULL, # Name of the item that is up for trade
   `item_id` integer PRIMARY KEY AUTO_INCREMENT, # primary key to identify each item
   `owner_id` integer NOT NULL, # Reference to the user who wants to trade this item
   `image_url` varchar(255) UNIQUE, 
@@ -33,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 # Creating the table that stores the items that can be borrowed 
 CREATE TABLE IF NOT EXISTS `borrowable_items` (
+  `item_name` varchar(255) NOT NULL, # Name of the item that can be borrowed
   `item_id` integer PRIMARY KEY AUTO_INCREMENT, # primary key to uniquely identify each item and to be used to reference the item
   `owner_id` integer NOT NULL, # Reference to the user who wants to lend this item
   `image_url` varchar(255) UNIQUE,

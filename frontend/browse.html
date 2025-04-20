@@ -95,6 +95,10 @@
     .page-btn:hover:not(.active) {
       background-color: var(--light-apricot);
     }
+
+    .item-token {
+      margin-left: 60%;
+    }
   </style>
 </head>
 <body>
@@ -129,8 +133,8 @@
         <div class="filters-grid">
           <div class="filter-group">
             <h4>Category</h4>
-            <select>
-              <option value="">All Categories</option>
+            <select id="category-filter">
+              <option value="All-Categories">All Categories</option>
               <option value="clothing">Clothing</option>
               <option value="books">Books</option>
               <option value="home-goods">Home Goods</option>
@@ -140,7 +144,7 @@
           
           <div class="filter-group">
             <h4>Status</h4>
-            <select>
+            <select id="status-filter">
               <option value="Available">Available</option>
               <option value="Traded">Traded</option>
               <option value="Borrowed">Borrowed</option>
@@ -150,7 +154,7 @@
           
           <div class="filter-group">
             <h4>Item type</h4>
-            <select>
+            <select id="item-type-filter">
               <option value="Borrowable">Borrowable</option>
               <option value="Tradable">Tradable</option>
              
@@ -164,90 +168,12 @@
         </div>
       </div>
       
-      <div class="items-grid">
-        <div class="item-card">
-          <div class="item-img" style="background-image: url('/api/placeholder/280/180')">
-            <div class="item-owner">By GreenThinker</div>
-          </div>
-          <div class="item-details">
-            <h3>Bamboo Cutlery Set</h3>
-            <div class="item-meta">
-              <span>Home Goods</span>
-              <span>1 day ago</span>
-            </div>
-            <button class="item-btn">View Details</button>
-          </div>
-        </div>
-        
-        <div class="item-card">
-          <div class="item-img" style="background-image: url('/api/placeholder/280/180')">
-            <div class="item-owner">By MusicLover</div>
-          </div>
-          <div class="item-details">
-            <h3>Vinyl Record Collection</h3>
-            <div class="item-meta">
-              <span>Entertainment</span>
-              <span>3 days ago</span>
-            </div>
-            <button class="item-btn">View Details</button>
-          </div>
-        </div>
-        
-        <div class="item-card">
-          <div class="item-img" style="background-image: url('/api/placeholder/280/180')">
-            <div class="item-owner">By FitnessFan</div>
-          </div>
-          <div class="item-details">
-            <h3>Yoga Mat Bundle</h3>
-            <div class="item-meta">
-              <span>Sports</span>
-              <span>5 days ago</span>
-            </div>
-            <button class="item-btn">View Details</button>
-          </div>
-        </div>
-        
-        <div class="item-card">
-          <div class="item-img" style="background-image: url('/api/placeholder/280/180')">
-            <div class="item-owner">By TechGeek</div>
-          </div>
-          <div class="item-details">
-            <h3>Wireless Headphones</h3>
-            <div class="item-meta">
-              <span>Electronics</span>
-              <span>1 week ago</span>
-            </div>
-            <button class="item-btn">View Details</button>
-          </div>
-        </div>
-        
-        <div class="item-card">
-          <div class="item-img" style="background-image: url('/api/placeholder/280/180')">
-            <div class="item-owner">By CraftLover</div>
-          </div>
-          <div class="item-details">
-            <h3>Hand-knitted Sweater</h3>
-            <div class="item-meta">
-              <span>Clothing</span>
-              <span>2 days ago</span>
-            </div>
-            <button class="item-btn">View Details</button>
-          </div>
-        </div>
-        
-        <div class="item-card">
-          <div class="item-img" style="background-image: url('/api/placeholder/280/180')">
-            <div class="item-owner">By BookWorm</div>
-          </div>
-          <div class="item-details">
-            <h3>Fantasy Novel Series</h3>
-            <div class="item-meta">
-              <span>Books</span>
-              <span>4 days ago</span>
-            </div>
-            <button class="item-btn">View Details</button>
-          </div>
-        </div>
+      <h1 id="borrow-h1" style="text-align: center; margin: 40px; text-decoration: underline;">Borrowable Items</h1>
+      <div class="items-grid borrowable-items">
+      </div>
+
+      <h1 id="trade-h1" style="text-align: center; margin: 40px; text-decoration: underline;">Tradable Items</h1>
+      <div class="items-grid tradable-items">
       </div>
       
       <div class="pagination">
@@ -293,6 +219,6 @@
     </div>
   </footer>
   
-  <script src="js/script.js"></script>
+  <script src="browse.js"></script>
 </body>
 </html>

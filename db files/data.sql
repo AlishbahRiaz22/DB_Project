@@ -15,16 +15,16 @@ INSERT INTO `category` (`category_name`, `description`) VALUES
 ('Furniture', 'Home and office furniture');
 
 -- Inserting data into the tradeable_items table
-INSERT INTO `tradeable_items` (`owner_id`, `image_url`, `status`, `item_description`, `token_val`) VALUES
-(1, 'http://example.com/image1.jpg', TRUE, 'Smartphone in good condition', 100),
-(2, 'http://example.com/image2.jpg', TRUE, 'A collection of science fiction novels', 50),
-(3, 'http://example.com/image3.jpg', TRUE, 'Winter jacket, size M', 75);
+INSERT INTO `tradeable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`, `token_val`) VALUES
+('Iphone', 1, 'http://example.com/image1.jpg', TRUE, 'Smartphone in good condition', 100),
+('Harry Potter Series', 2, 'http://example.com/image2.jpg', TRUE, 'A collection of science fiction novels', 50),
+('Denim Jacket', 3, 'http://example.com/image3.jpg', TRUE, 'Winter jacket, size M', 75);
 
 -- Inserting data into the borrowable_items table
-INSERT INTO `borrowable_items` (`owner_id`, `image_url`, `status`, `item_description`) VALUES
-(1, 'http://example.com/image4.jpg', TRUE, 'Camping tent for 4 people'),
-(2, 'http://example.com/image5.jpg', TRUE, 'Electric guitar with accessories'),
-(3, 'http://example.com/image6.jpg', TRUE, 'Office chair, ergonomic design');
+INSERT INTO `borrowable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`) VALUES
+('Portable Tent', 1, 'http://example.com/image4.jpg', TRUE, 'Camping tent for 4 people'),
+('Guitar', 2, 'http://example.com/image5.jpg', TRUE, 'Electric guitar with accessories'),
+('Office Chair', 3, 'http://example.com/image6.jpg', TRUE, 'Office chair, ergonomic design');
 
 -- Inserting data into the trades table
 INSERT INTO `trades` (`offered_item`, `requester_id`, `owner_id`, `requested_id`) VALUES
