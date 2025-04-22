@@ -38,7 +38,7 @@ routerLoginIn.post('/', [check('email').isEmail().normalizeEmail(),
         // If the query returns a row, we validate it against the password in the req
         if (await bcrypt.compare(password, result[0].password)) {
             // Setting the session information
-            req.session.user = {cms_id: result[0].cms_id, full_name: result[0].full_name, username: result[0].username, phone: result[0].phone}; // Storing the email in the session
+            req.session.user = {cms_id: result[0].cms_id, full_name: result[0].full_name, username: result[0].username, phone: result[0].phone, tokens: result[0].tokens}; // Storing the email in the session
             req.session.save(err => { // Explicitly save the session
                 if (err) {
                     console.error("Session save error:", err);

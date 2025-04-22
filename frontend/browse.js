@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
                   <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
-                <button class="item-btn">View Details</button>
+                <button class="item-btn b-btn">View Details</button>
               </div>
             `;
             // Appending the item element to the borrowable items container
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                    <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
                    <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
-                <button class="item-btn">View Details</button>
+                <button class="item-btn t-btn">View Details</button>
             </div>
             `;
             tradableItemsContainer.appendChild(itemElement);
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
                   <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
-                <button class="item-btn">View Details</button>
+                <button class="item-btn b-btn">View Details</button>
               </div>
             `;
             borrowableItemsContainer.appendChild(itemElement);
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                    <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
                    <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
-                <button class="item-btn">View Details</button>
+                <button class="item-btn t-btn">View Details</button>
             </div>
             `;
             tradableItemsContainer.appendChild(itemElement);
@@ -120,6 +120,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         tradeHeading.style.display = 'none';
         borrowHeading.style.display = 'none';
     }
+
+    const borrowBtn = document.querySelectorAll('.b-btn');
+    const tradeBtn = document.querySelectorAll('.t-btn');
+
+    // Adding event listeners to the borrowable item buttons to redirect to the item details page with the item ID
+    borrowBtn.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            const itemId = borrowableItems[index].item_id; // Getting the item ID from the borrowable items array
+            window.location.href = `./item-details.html?item_id=${itemId + 'b'}`; // Redirecting to the item details page with the item ID as a query parameter
+        })
+    });
+
+    // Adding event listeners to the tradable item buttons to redirect to the item details page with the item ID
+    tradeBtn.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            const itemId = tradableItems[index].item_id; // Getting the item ID from the tradable items array
+            window.location.href = `./item-details.html?item_id=${itemId + 't'}`; // Redirecting to the item details page with the item ID as a query parameter
+        })
+    });
+
 
     // Getting the clear and apply buttons for filtering
     const clearBtn = document.getElementsByClassName('clear-btn')[0];
@@ -141,11 +161,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const selectedStatus = statusFilter.value;
         const selectedCategory = categoryFilter.value;
         const selectedItemType = itemTypeFilter.value;
-
-        // For debugging purposes, logging the selected values to the console
-        console.log('Selected Status:', selectedStatus);
-        console.log('Selected Category:', selectedCategory);
-        console.log('Selected Item Type:', selectedItemType);
 
         // First, Filtering the items based on the selected item type
         // If the selected item type is 'Borrowable', hide the tradable items and show the borrowable items

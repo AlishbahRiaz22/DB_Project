@@ -33,6 +33,7 @@ app.use('/login', routerLoginIn); // Config different routes
 app.use('/signup', routerSignUp); 
 app.use('/logout', routerLoginOut);
 app.use('/browse', require('./routes/browse').routerBrowse); // Config browse route
+app.use('/feedback', require('./routes/feedback').routerFeedback); // Config feedback route
 
 // Starting the server
 app.listen(port, () => {

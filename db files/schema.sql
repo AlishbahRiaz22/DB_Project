@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) UNIQUE NOT NULL, # Users username for to be displayed to other users
   `password` varchar(255) UNIQUE NOT NULL, 
   `email` varchar(255) UNIQUE NOT NULL,
-  `phone` varchar(255) UNIQUE NOT NULL 
+  `phone` varchar(255) UNIQUE NOT NULL,
+  `tokens` integer default 0
 );
 
 # Creating the tradeable items table that stores the items that are up for trade

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Virtual Trade Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .product-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .product-gallery {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f5f5f5;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .thumbnail:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .product-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            margin: 1.5rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .owner-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #666;
+        }
+        
+        .product-description {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+        
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .request-trade {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .request-trade:hover {
+            background-color: #3e8e41;
+        }
+        
+        .contact-owner {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .contact-owner:hover {
+            background-color: #0b7dda;
+        }
+        
+        .save-item {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .save-item:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .related-items {
+            padding: 2rem 0;
+        }
+        
+        .related-title {
+            margin-bottom: 2rem;
+        }
+        
+        .report-item {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .report-link {
+            color: #999;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        
+        .report-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Feedback Section Styling */
+
+        .feedback-section {
+            padding: 2rem 0;
+        }
+
+        .feedback {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .feedback-card {
+            width: 80%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .user-avatar i {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .user-details h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
+        }
+        
+        .user-details small {
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        .rating {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+        
+        .feedback-body {
+            margin-top: 1rem;
+        }
+        
+        .feedback-body p {
+            color: #444;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .feedback-date {
+            margin-top: 1.2rem;
+            text-align: right;
+            color: #999;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feedback-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">VirtualTrade</a></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="category.html">Categories</a>
+                <a href="how-it-works.html">How it Works</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="login-btn" onclick="location.href='login.html'">Login</button>
+                <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail">
+        <div class="product-container">
+            <!-- Product Gallery -->
+            <div class="product-gallery animate-on-scroll">
+                <div class="main-image" style="background-image: url('/api/placeholder/800/600');"></div>
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-info animate-on-scroll">
+            </div>
+        </div>
+    </section>
+
+    <section class="feedback-section">
+        <div class="section-title related-title feedback-title">
+            <h2>Feedback</h2>
+            <p class="hide1">What people are saying about this item</p>
+        </div>
+        <div class="feedback"></div>
+    </section>
+
+    <!-- Related Items Section -->
+    <section class="related-items">
+        <div class="section-title related-title">
+            <h2>Similar Items</h2>
+            <p class="hide">You might also be interested in these items</p>
+        </div>
+        <div class="item-grid">
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>VirtualTrade</h3>
+                <p>Trading platform for a sustainable future. Connect, exchange, and give items a second life.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="browse.html">Browse Items</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="category-electronics.html">Electronics</a></li>
+                    <li><a href="category-clothing.html">Clothing</a></li>
+                    <li><a href="category-books.html">Books</a></li>
+                    <li><a href="category-furniture.html">Furniture</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 VirtualTrade. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="item-details.js"></script>
+</body>
+</html>
