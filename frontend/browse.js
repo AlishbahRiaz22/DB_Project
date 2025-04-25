@@ -1,6 +1,63 @@
+async function userLoggedIn () {
+    const response = await fetch('http://127.0.0.1:8808/login', {
+        method: "GET",
+        credentials: 'include'
+    })
+
+    if (response.status === 200) {
+        const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+        const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+
+        // Updating the login button to act as a link to the user's profile
+        loginBtn.textContent = "";
+        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+        loginBtn.style.backgroundSize = "cover";
+        loginBtn.style.width = "40px";
+        loginBtn.style.height = "40px";
+        loginBtn.style.borderRadius = "50%";
+        loginBtn.style.border = "none";
+        loginBtn.style.cursor = "pointer";
+        loginBtn.style.marginRight = "10px";
+        loginBtn.style.padding = "0px";
+        loginBtn.style.backgroundColor = "transparent";
+        loginBtn.href = "#";
+        loginBtn.addEventListener('click', function() {
+            window.location.href = "profile.html";
+        })
+
+        // Updating the signup button to act as a logout button
+        signupBtn.textContent = "Logout";
+        signupBtn.href = "#";
+        signupBtn.addEventListener('click', async function() {
+            const response = await fetch('http://127.0.0.1:8808/logout', {
+                method: "POST",
+                credentials: 'include'
+            })
+            if(response.status === 200) {
+                // If user successfully logged out, redirect to index.html
+                // To undo the changes made to the login button, we set it back to its original state by redirection
+                window.location.href = "index.html";
+            }
+            else {
+                alert("Error logging out. Please try again.");
+            }
+        })
+    }
+}
 // This script fetches borrowable and tradeable items from the server and displays them on the page
 // It also handles filtering of items based on their status and type (borrowable or tradable) and category
 document.addEventListener('DOMContentLoaded', async () => {
+    const links = document.querySelectorAll('.cat-links');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor click behavior
+                const value = this.textContent.trim(); // Get the text content of the clicked link
+                const url = `browse.html?category=${value}`; // Construct the URL with the category value
+                window.location.href = url; // Redirect to the new URL
+            });
+        });
+    userLoggedIn(); // Check if the user is logged in when the page loads
+
     // Fetching borrowable and tradable items from the server
     const response = await fetch('http://127.0.0.1:8808/browse/', {
         method: 'GET',
@@ -68,8 +125,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // If only borrowable items are available, display them in the borrowable section
     else if (borrowableItems.length !== 0) {
-
-        tradableItemsContainer.innerHTML = `<h3>No items available</h3>`;
+        tradableItemsContainer.style.display = 'flex';
+        tradableItemsContainer.style.justifyContent = 'center';
+        tradableItemsContainer.style.marginTop = '-20px';
+        tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
 
         borrowableItems.forEach(item => {
             const itemElement = document.createElement('div');
@@ -92,7 +151,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // If only tradable items are available, display them in the tradable section
     else if (tradableItems.length !== 0) {
-        borrowableItemsContainer.innerHTML = `<h3>No items available</h3>`;
+        borrowableItemsContainer.style.display = 'flex';
+        borrowableItemsContainer.style.justifyContent = 'center';
+        borrowableItemsContainer.style.marginTop = '-20px';
+        borrowableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+        
 
         tradableItems.forEach(item => {
             const itemElement = document.createElement('div');
@@ -116,9 +179,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // If neither borrowable nor tradable items are available, display a message indicating no items are available
     else {
-        borrowableItemsContainer.innerHTML = `<h3>No items available</h3>`;
-        tradeHeading.style.display = 'none';
-        borrowHeading.style.display = 'none';
+        borrowableItemsContainer.style.display = 'flex';
+        borrowableItemsContainer.style.justifyContent = 'center';
+        borrowableItemsContainer.style.marginTop = '-20px';
+        borrowableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+        tradableItemsContainer.style.display = 'flex';
+        tradableItemsContainer.style.justifyContent = 'center';
+        tradableItemsContainer.style.marginTop = '-20px';
+        tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
     }
 
     const borrowBtn = document.querySelectorAll('.b-btn');
@@ -290,4 +358,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         } 
         }
     })
+
+    const params = new URLSearchParams(window.location.search); // Getting the query parameters from the URL
+    const category = params.get('category'); // Getting the category from the query parameters
+
+    if (category !== null && category !== undefined) {
+        // If a category is selected, set the category filter to the selected category
+        const items = tradableItemsContainer.getElementsByClassName('item-card');
+        const items2 = borrowableItemsContainer.getElementsByClassName('item-card');
+
+        let visibleTradableItems = false;
+        let visibleBorrowableItems = false;
+
+        // Looping through the borrowable items and checking their category
+        for (let i = 0; i < items2.length; i++) {
+            const itemCategory = items2[i].querySelector('.item-meta span:nth-child(1)').textContent.toLowerCase();
+            // If the item category does not match the selected category, hide the item
+            if (!itemCategory.includes(category.toLowerCase())) {
+                items2[i].style.display = 'none';
+            } else { // If the item category matches, show the item
+                items2[i].style.display = 'block';
+                visibleBorrowableItems = true; // Set flag to true if any borrowable item is visible
+            }
+        }
+    
+        // Looping through the tradable items and checking their category
+        for (let i = 0; i < items.length; i++) {
+            const itemCategory = items[i].querySelector('.item-meta span:nth-child(1)').textContent.toLowerCase();
+            // If the item category does not match the selected category, hide the item
+            if (!itemCategory.includes(category.toLowerCase())) {
+                items[i].style.display = 'none';
+            } else { // If the item category matches, show the item
+                items[i].style.display = 'block';
+                visibleTradableItems = true; // Set flag to true if any tradable item is visible
+            }
+        }
+        
+        // Find matching option (case-insensitive)
+        const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+        const matchingOption = Array.from(categoryFilter.options).find(option => 
+            option.value.toLowerCase() === capitalizedCategory.toLowerCase()
+        );
+        
+        if (matchingOption) {
+            categoryFilter.value = matchingOption.value;
+        } else {
+            console.log("No matching option found for:", capitalizedCategory);
+        }
+
+        // If no borrowable items are visible, hide the borrowable items container and heading
+        if (!visibleBorrowableItems) {
+            borrowableItemsContainer.style.display = 'flex';
+            borrowableItemsContainer.style.justifyContent = 'center';
+            borrowableItemsContainer.style.marginTop = '-20px';
+            borrowableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+        } 
+        if (!visibleTradableItems) {
+            tradableItemsContainer.style.display = 'flex';
+            tradableItemsContainer.style.justifyContent = 'center';
+            tradableItemsContainer.style.marginTop = '-20px';
+            tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+        }
+    }
 })

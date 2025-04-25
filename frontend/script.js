@@ -1,5 +1,15 @@
 // Mobile Menu Toggle Functionality
 document.addEventListener('DOMContentLoaded', async function() {
+    const links = document.querySelectorAll('.cat-links');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor click behavior
+                const value = this.textContent.trim(); // Get the text content of the clicked link
+                const url = `browse.html?category=${value}`; // Construct the URL with the category value
+                window.location.href = url; // Redirect to the new URL
+            });
+        });
+        
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
 
@@ -12,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     })
  
     // and update the login/signup buttons accordingly
-    if (response.user === undefined) {
+    if (response.status === 401) {
         // If the user is not logged in, we do nothing
     } else {
         // If the user is logged in, we update the buttons

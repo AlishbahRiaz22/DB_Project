@@ -4,6 +4,53 @@ function changeMainImage(thumbnail) {
     mainImage.style.backgroundImage = thumbnail.style.backgroundImage;
 }
 
+async function userLoggedIn () {
+    const response = await fetch('http://127.0.0.1:8808/login', {
+        method: "GET",
+        credentials: 'include'
+    })
+
+    if (response.status === 200) {
+        const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+        const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+
+        // Updating the login button to act as a link to the user's profile
+        loginBtn.textContent = "";
+        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+        loginBtn.style.backgroundSize = "cover";
+        loginBtn.style.width = "40px";
+        loginBtn.style.height = "40px";
+        loginBtn.style.borderRadius = "50%";
+        loginBtn.style.border = "none";
+        loginBtn.style.cursor = "pointer";
+        loginBtn.style.marginRight = "10px";
+        loginBtn.style.padding = "0px";
+        loginBtn.style.backgroundColor = "transparent";
+        loginBtn.href = "#";
+        loginBtn.addEventListener('click', function() {
+            window.location.href = "profile.html";
+        })
+
+        // Updating the signup button to act as a logout button
+        signupBtn.textContent = "Logout";
+        signupBtn.href = "#";
+        signupBtn.addEventListener('click', async function() {
+            const response = await fetch('http://127.0.0.1:8808/logout', {
+                method: "POST",
+                credentials: 'include'
+            })
+            if(response.status === 200) {
+                // If user successfully logged out, redirect to index.html
+                // To undo the changes made to the login button, we set it back to its original state by redirection
+                window.location.href = "index.html";
+            }
+            else {
+                alert("Error logging out. Please try again.");
+            }
+        })
+    }
+}
+
 // Function to generate star rating HTML
 function generateStars(rating) {
     // Default to 0 if rating is undefined or null
@@ -32,6 +79,17 @@ function generateStars(rating) {
 
 // Animation on scroll
 document.addEventListener('DOMContentLoaded', async () => {
+    const links = document.querySelectorAll('.cat-links');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor click behavior
+                const value = this.textContent.trim(); // Get the text content of the clicked link
+                const url = `browse.html?category=${value}`; // Construct the URL with the category value
+                window.location.href = url; // Redirect to the new URL
+            });
+        });
+        
+    userLoggedIn(); // Check if user is logged in
     // Extracting the params from the url
     const urlParams = new URLSearchParams(window.location.search);
     const itemId = urlParams.get('item_id');
@@ -149,7 +207,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     }
 
-
     // For the details of the item
     // If the item is borrowable
     if (data.type === 'borrow') {
@@ -265,7 +322,103 @@ document.addEventListener('DOMContentLoaded', async () => {
             feedback.style.display = 'none'; // Hide the feedback section
         }
 
-                // EventListener to be implemented
+                if(data.itemDetails[0].status === 0) {
+                    alert("Item is not available for borrowing");
+
+                }
+                else {
+                    const modal = document.getElementById('borrowModal');
+                    const openModalBtn = document.querySelector('.request-trade');
+                    const closeModalBtn = document.querySelector('.close-modal');
+                    const cancelBtn = document.getElementById('cancelBorrow');
+                    const modalItemName = document.getElementById('modalItemName');
+                    const modalItemOwner = document.getElementById('modalItemOwner');
+                    const modalItemImage = document.getElementById('modalItemImage');
+                    const borrowForm = document.getElementById('borrowForm');
+                    
+                    // Open modal when borrow button is clicked
+                    if (openModalBtn) {
+                        openModalBtn.addEventListener('click', function() {
+                            // Populate modal with item details
+                            if (data && data.itemDetails && data.itemDetails[0]) {
+                                modalItemName.textContent = data.itemDetails[0].item_name;
+                                modalItemOwner.textContent = `Owner: ${data.itemDetails[0].username}`;
+                                
+                                // If you have an item image, set it here
+                                modalItemImage.src = data.itemDetails[0].image_url || './resources/images/placeholder.jpg';
+                            }
+                            
+                            // Display modal
+                            modal.style.display = 'flex';
+                            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+                        });
+                    }
+                    
+                    // Close modal functions
+                    function closeModal() {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto'; // Enable scrolling again
+                        borrowForm.reset(); // Reset form when closing
+                    }
+                    
+                    // Close modal when X is clicked
+                    if (closeModalBtn) {
+                        closeModalBtn.addEventListener('click', closeModal);
+                    }
+                    
+                    // Close modal when cancel button is clicked
+                    if (cancelBtn) {
+                        cancelBtn.addEventListener('click', closeModal);
+                    }
+                    
+                    // Close modal when clicking outside
+                    window.addEventListener('click', function(event) {
+                        if (event.target === modal) {
+                            closeModal();
+                        }
+                    });
+                    
+                    // Submit the borrow form
+                    if (borrowForm) {
+                        borrowForm.addEventListener('submit', async function(event) {
+                            event.preventDefault();
+                            
+                            const borrowPeriod = document.getElementById('borrowPeriod').value;
+                            const borrowReason = document.getElementById('borrowReason').value;
+                            
+                            try {
+                                const response = await fetch('http://127.0.0.1:8808/borrow/', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    credentials: 'include',
+                                    body: JSON.stringify({
+                                        item_id: data.itemDetails[0].item_id,
+                                        duration: borrowPeriod,
+                                        reason: borrowReason,
+                                        owner_id: data.itemDetails[0].cms_id
+                                    })
+                                });
+                                
+                                const result = await response.json();
+                                
+                                if (response.ok) {
+                                    // Success - close modal and show success message
+                                    closeModal();
+                                    alert('Borrow request sent successfully!');
+                                } else {
+                                    // Handle errors
+                                    alert(result.error || 'Failed to send borrow request');
+                                }
+                                
+                            } catch (error) {
+                                console.error('Error sending borrow request:', error);
+                                alert('An error occurred. Please try again.');
+                            }
+                        });
+                    }
+                }
     }
     // If the item is tradable
     else if (data.type === 'trade') {
@@ -320,6 +473,207 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
                 // EventListener to be implemented
+                // Get modal elements
+    const tradeModal = document.getElementById('tradeModal');
+    const openTradeModalBtn = document.querySelector('.request-trade');
+    const closeModalBtn = tradeModal?.querySelector('.close-modal');
+    const cancelBtn = document.getElementById('cancelTrade');
+    const modalItemName = document.getElementById('modalItemName1');
+    const modalItemOwner = document.getElementById('modalItemOwner1');
+    const modalItemImage = document.getElementById('modalItemImage1');
+    const tradeForm = document.getElementById('tradeForm');
+    const tradeItemSelect = document.getElementById('tradeItem');
+    
+    // Function to fetch user's available items for trade
+    async function fetchUserItems() {
+        try {
+            const response = await fetch('http://127.0.0.1:8808/trade/userItems/', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            
+            if (response.status === 401) {
+                alert('You are not logged in. Please log in to continue.');
+                window.location.href = './login.html'; // Redirect to login page if not logged in
+                return;
+            }
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+            const userItems = await response.json();
+            console.log(userItems); // For debugging
+            // Clear existing options
+            tradeItemSelect.innerHTML = '<option value="">Select an item to offer</option>';
+            
+            // Add user's items to select dropdown
+            if (userItems && userItems.length > 0) {
+                userItems.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.item_id;
+                    console.log(item.item_id); // For debugging
+                    console.log(option.value); // For debugging
+                    option.textContent = item.item_name;
+                    option.dataset.category = item.category_name;
+                    tradeItemSelect.appendChild(option);
+                });
+            } else {
+                // No items available
+                const option = document.createElement('option');
+                option.disabled = true;
+                option.textContent = "You don't have any items to trade";
+                tradeItemSelect.appendChild(option);
+            }
+        } catch (error) {
+            console.error('Error fetching user items:', error);
+            alert('Could not load your items. Please try again.');
+            window.location.reload(); // Reload the page to try again
+        }
+    }
+    
+    // Show item preview when selected
+    if (tradeItemSelect) {
+        tradeItemSelect.addEventListener('change', function() {
+            const preview = document.querySelector('.item-preview');
+            if (preview) {
+                preview.remove();
+            }
+            
+            if (this.value) {
+                const selectedOption = this.options[this.selectedIndex];
+                console.log(selectedOption); // For debugging
+                const category = selectedOption.dataset.category;
+                
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'item-preview';
+                previewDiv.innerHTML = `
+                    <div class="item-preview-details">
+                        <img src="/api/placeholder/100/100" alt="Item thumbnail">
+                        <div>
+                            <div class="item-preview-name">${selectedOption.textContent}</div>
+                            <div class="item-preview-category">${category === null ? category : 'General'}</div>
+                        </div>
+                    </div>
+                `;
+                
+                this.parentNode.appendChild(previewDiv);
+            }
+        });
+    }
+    
+    // Open modal when trade button is clicked
+    if (openTradeModalBtn) {
+        openTradeModalBtn.addEventListener('click', async function() {
+            
+            // Populate modal with item details
+            if (data && data.itemDetails && data.itemDetails[0]) {
+                console.log(data.itemDetails[0]);
+                modalItemName.textContent = data.itemDetails[0].item_name;
+                modalItemOwner.textContent = `Owner: ${data.itemDetails[0].username}`;
+                
+                // If you have an item image, set it here
+                modalItemImage.src = data.itemDetails[0].image_url || './resources/images/placeholder.jpg';
+            }
+            
+            // Fetch user's items for trade
+            await fetchUserItems();
+            
+            // Display modal
+            tradeModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+        });
+    }
+    
+    // Function to check if user is logged in
+    async function checkUserLoggedIn() {
+        try {
+            const response = await fetch('http://127.0.0.1:8808/check-auth/', {
+                method: 'GET',
+                credentials: 'include',
+            });
+            return response.ok;
+        } catch (error) {
+            console.error('Auth check error:', error);
+            return false;
+        }
+    }
+    
+    // Close modal functions
+    function closeModal() {
+        tradeModal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling again
+        tradeForm.reset(); // Reset form when closing
+        
+        // Remove any item preview
+        const preview = document.querySelector('.item-preview');
+        if (preview) {
+            preview.remove();
+        }
+    }
+    
+    // Close modal when X is clicked
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+    
+    // Close modal when cancel button is clicked
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModal);
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === tradeModal) {
+            closeModal();
+        }
+    });
+    
+    // Submit the trade form
+    if (tradeForm) {
+        tradeForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const offeredItemId = tradeItemSelect.value;
+            const tradeReason = document.getElementById('tradeReason').value;
+            
+            if (!offeredItemId) {
+                alert('Please select an item to offer for trade');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8808/trade/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        desired_item_id: data.itemDetails[0].item_id,
+                        offered_item_id: offeredItemId,
+                        reason: tradeReason,
+                        owner_id: data.itemDetails[0].cms_id,
+                        token_val: data.itemDetails[0].token_val
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Success - close modal and show success message
+                    closeModal();
+                    alert('Trade request sent successfully!');
+                } else {
+                    // Handle errors
+                    alert(result.error || 'Failed to send trade request');
+                }
+                
+            } catch (error) {
+                console.error('Error sending trade request:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    }
     }
     
 
@@ -342,3 +696,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         observer.observe(element);
     });
 });
+
+

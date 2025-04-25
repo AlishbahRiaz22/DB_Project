@@ -153,6 +153,7 @@
             <a href="category.html">Categories</a>
             
             <a href="how-it-works.html">How it Works</a>
+            <a href="about.html">About Us</a>
 
         </div>
         <div class="auth-buttons">
@@ -282,10 +283,10 @@
       <div class="footer-col">
         <h3>Categories</h3>
         <ul>
-            <li><a href="category-electronics.html">Electronics</a></li>
-            <li><a href="category-clothing.html">Clothing</a></li>
-            <li><a href="category-books.html">Books</a></li>
-            <li><a href="category-furniture.html">Furniture</a></li>
+          <li><a class="cat-links" >Electronics</a></li>
+          <li><a class="cat-links" >Clothing</a></li>
+          <li><a class="cat-links" >Books</a></li>
+          <li><a class="cat-links" >Furniture</a></li>
         </ul>
     </div>
       
@@ -295,6 +296,64 @@
     </div>
   </footer>
   
-  <script src="js/script.js"></script>
+  <script>
+    const links = document.querySelectorAll('.cat-links');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor click behavior
+                const value = this.textContent.trim(); // Get the text content of the clicked link
+                const url = `browse.html?category=${value}`; // Construct the URL with the category value
+                window.location.href = url; // Redirect to the new URL
+            });
+        });
+        
+    async function userLoggedIn () {
+    const response = await fetch('http://127.0.0.1:8808/login', {
+        method: "GET",
+        credentials: 'include'
+    })
+
+    if (response.status === 200) {
+        const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+        const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+
+        // Updating the login button to act as a link to the user's profile
+        loginBtn.textContent = "";
+        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+        loginBtn.style.backgroundSize = "cover";
+        loginBtn.style.width = "40px";
+        loginBtn.style.height = "40px";
+        loginBtn.style.borderRadius = "50%";
+        loginBtn.style.border = "none";
+        loginBtn.style.cursor = "pointer";
+        loginBtn.style.marginRight = "10px";
+        loginBtn.style.padding = "0px";
+        loginBtn.style.backgroundColor = "transparent";
+        loginBtn.href = "#";
+        loginBtn.addEventListener('click', function() {
+            window.location.href = "profile.html";
+        })
+
+        // Updating the signup button to act as a logout button
+        signupBtn.textContent = "Logout";
+        signupBtn.href = "#";
+        signupBtn.addEventListener('click', async function() {
+            const response = await fetch('http://127.0.0.1:8808/logout', {
+                method: "POST",
+                credentials: 'include'
+            })
+            if(response.status === 200) {
+                // If user successfully logged out, redirect to index.html
+                // To undo the changes made to the login button, we set it back to its original state by redirection
+                window.location.href = "index.html";
+            }
+            else {
+                alert("Error logging out. Please try again.");
+            }
+        })
+    }
+}
+    userLoggedIn();
+  </script>
 </body>
 </html>

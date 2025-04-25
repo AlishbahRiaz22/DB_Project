@@ -56,8 +56,13 @@ routerLoginIn.post('/', [check('email').isEmail().normalizeEmail(),
 })
 
 routerLoginIn.get('/', (req, res) => {
-    console.log(req.session.user);
-    res.status(200).send(req.session); // Send a response indicating the session is active
+    const user = req.session.user; // Getting the user information from the session
+    if (user !== null && user !== undefined) { // If the user is logged in
+        res.status(200).send(user); // Send the user information
+    }
+    else { // If the user is not logged in
+        res.status(401).send("User not logged in"); // Send a 401 status code
+    }
 });
 
 exports.routerLoginIn = routerLoginIn;
