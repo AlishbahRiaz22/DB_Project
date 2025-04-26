@@ -37,7 +37,7 @@ routerSignUp.post("/", [check('email').isEmail().normalizeEmail(),
     const hashedPass = await hashPassword(password);
     
     // Query String
-    const que = `INSERT INTO users VALUES (${cms_id}, \'${name}\', \'${username}\', \'${hashedPass}\', \'${email}\', ${phone});`;
+    const que = `INSERT INTO users VALUES (${cms_id}, \'${name}\', \'${username}\', \'${hashedPass}\', \'${email}\', \'${phone}\', 0);`;
     // Executing the query
     pool.query(que, (err) => {
         if (err) { // If mysql server returns an error 
