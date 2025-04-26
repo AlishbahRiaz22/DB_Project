@@ -1,0 +1,51 @@
+Create user with the credentials
+For mock inputs
+
+John Doe
+
+Email: john.doe@example.com
+Password: password123
+CMS ID: 123456
+Phone: +923001234567
+Username: johndoe
+Name: John Doe
+
+
+Alice Smith
+
+Email: alice.smith@example.com
+Password: secure456
+CMS ID: 234567
+Phone: +923002345678
+Username: alicesmith
+Name: Alice Smith
+
+
+Bob Johnson
+
+Email: bob.johnson@example.com
+Password: bobpass789
+CMS ID: 345678
+Phone: +923003456789
+Username: bobjohnson
+Name: Bob Johnson
+
+
+Emma Wilson
+
+Email: emma.wilson@example.com
+Password: emma2025
+CMS ID: 456789
+Phone: +923004567890
+Username: emmawilson
+Name: Emma Wilson
+
+
+Michael Brown
+
+Email: michael.brown@example.com
+Password: michael1234
+CMS ID: 567890
+Phone: +923005678901
+Username: michaelbrown
+Name: Michael Brown

@@ -25,7 +25,7 @@ app.use(session({ // Config cookie session middleware
     }
 }));
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', // Allowing requests from this origin
+    origin: 'http://127.0.0.1:3000', // Allowing requests from this origin
     credentials: true // Allowing credentials to be sent with requests
 })); // Configuring CORS to allow cross-origin requests
 app.use(bodyParser.json()); // Config Bodyparser middleware

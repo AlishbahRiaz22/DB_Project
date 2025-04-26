@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const itemGrid = document.getElementsByClassName("item-grid")[0];
 
     // For displaying the relevant items
-    // If they are related items
+    // If there are related items
     if (data.relatedItems.length !== 0) {
         // If the item is borrowable 
         if (data.type === 'borrow') {
@@ -203,6 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } else { // If there are no related items
         const hidePara = document.getElementsByClassName('hide')[0];
+        hidePara.style.fontStyle = 'italic'; // Setting the font style to italic
         hidePara.textContent = 'No items available'; 
 
     }
@@ -318,6 +319,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         else {
             const hide1 = document.getElementsByClassName('hide1')[0];
+            hide1.style.fontStyle = 'italic'; // Setting the font style to italic
             hide1.textContent = "No feedback available";
             feedback.style.display = 'none'; // Hide the feedback section
         }
@@ -422,6 +424,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // If the item is tradable
     else if (data.type === 'trade') {
+        const feedback = document.querySelector('.feedback-section');
+        feedback.style.display = 'none'; // Hide the feedback section
+
         // Getting the main-image div 
         const mainImage = document.getElementsByClassName('main-image')[0];
         // Setting the backgroundImage

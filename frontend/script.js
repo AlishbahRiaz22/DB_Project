@@ -1,5 +1,46 @@
 // Mobile Menu Toggle Functionality
 document.addEventListener('DOMContentLoaded', async function() {
+    const itemGrid = document.querySelector('.item-grid');
+    const featuredItems = await fetch('http://127.0.1:8808/browse/featured/', {
+        method: 'GET',
+        credentials: 'include', // Sending the cookie with the request
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const featuredItemsData = await featuredItems.json(); // Parsing the response as JSON
+
+    featuredItemsData.forEach(item => {
+            // Creating a new div element for each item
+            const itemElement = document.createElement('div');
+            itemElement.className = 'item-card'; // Setting the class name for styling
+            // Setting the inner HTML of the item element with the item's details
+            itemElement.innerHTML = `
+              <div class="item-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'});">
+                <div class="item-owner">By ${item.username}</div>
+              </div>
+              <div class="item-details">
+                <h3>${item.item_name}</h3>
+                <div class="item-meta">
+                  <span>${item.category_name ? item.category_name : 'General'}</span>
+                  <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
+                </div>
+                <button class="item-btn b-btn">View Details</button>
+              </div>
+            `;
+            // Appending the item element to the borrowable items container
+            itemGrid.appendChild(itemElement);
+        });
+
+        const itemBtn = document.querySelectorAll('.item-btn');
+        itemBtn.forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                const itemId = featuredItemsData[index].item_id; // Get the item ID from the data
+                window.location.href = `./item-details.html?item_id=${itemId + 'b'}`; // Redirect to the item details page with the item ID as a query parameter
+            });
+        });
+
+
     const links = document.querySelectorAll('.cat-links');
         links.forEach(link => {
             link.addEventListener('click', function(event) {
