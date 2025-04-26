@@ -34,6 +34,8 @@ app.use('/signup', routerSignUp);
 app.use('/logout', routerLoginOut);
 app.use('/browse', require('./routes/browse').routerBrowse); // Config browse route
 app.use('/feedback', require('./routes/feedback').routerFeedback); // Config feedback route
+app.use('/borrow', require('./routes/borrow').routerBorrow); // Config borrow route
+app.use('/trade', require('./routes/trade').routerTrade); // Config trade route
 
 // Starting the server
 app.listen(port, () => {

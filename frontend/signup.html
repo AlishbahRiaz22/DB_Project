@@ -608,6 +608,7 @@ footer::before {
        
         <a href="category.html">Categories</a>
         <a href="how-it-works.html">How It Works</a>
+        <a href="about.html">About Us</a>
         
       </div>
       <div class="auth-buttons">
@@ -760,10 +761,10 @@ footer::before {
       <div class="footer-col">
         <h3>Categories</h3>
         <ul>
-          <li><a href="#">Electronics</a></li>
-          <li><a href="#">Clothing </a></li>
-          <li><a href="#">Books</a></li>
-          <li><a href="#">Furniture</a></li>
+          <li><a class="cat-links" >Electronics</a></li>
+          <li><a class="cat-links" >Clothing</a></li>
+          <li><a class="cat-links" >Books</a></li>
+          <li><a class="cat-links" >Furniture</a></li>
         </ul>
       </div>
       
@@ -787,6 +788,16 @@ footer::before {
   </footer>
   
   <script>
+    const links = document.querySelectorAll('.cat-links');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default anchor click behavior
+                const value = this.textContent.trim(); // Get the text content of the clicked link
+                const url = `browse.html?category=${value}`; // Construct the URL with the category value
+                window.location.href = url; // Redirect to the new URL
+            });
+        });
+        
     // Password strength meter functionality
     const passwordInput = document.getElementById('password');
     const strengthMeter = document.querySelector('.strength-meter');

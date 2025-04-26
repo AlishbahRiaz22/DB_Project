@@ -24,6 +24,7 @@ routerSignUp.post("/", [check('email').isEmail().normalizeEmail(),
     , async (req, res, next) => {
     // Storing the information from the req body
     let { email, password, cms_id, phone, username, name } = req.body;
+    console.log("Sign up request body:", req.body); // Logging the request body for debugging
     
     // Checking for errors during the middleware validation
     const errors = validationResult(req);

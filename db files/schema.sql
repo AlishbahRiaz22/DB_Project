@@ -49,7 +49,9 @@ CREATE TABLE IF NOT EXISTS `trades` (
   `offered_item` integer NOT NULL COMMENT 'item that is offered in exchange', 
   `requester_id` integer NOT NULL COMMENT 'id of the person who is making the request',
   `owner_id` integer NOT NULL COMMENT 'owner of the item that is being requested',
-  `requested_id` integer NOT NULL
+  `requested_id` integer NOT NULL,
+  `reason` varchar(255) NOT NULL, # Reason for the trade request
+  `creation_date` timestamp NOT NULL, # Date for when the request was made
 );
 
 # Creating the table that stores the borrow request
@@ -59,7 +61,8 @@ CREATE TABLE IF NOT EXISTS `borrow_req` (
   `requester_id` integer NOT NULL,
   `owner_id` integer NOT NULL,
   `borrow_dur` integer NOT NULL COMMENT 'Integer because it will be specified in days',
-  `creation_date` timestamp NOT NULL # Date for when the request was made
+  `creation_date` timestamp NOT NULL # Date for when the request was made,
+  `reason` varchar(255) NOT NULL # Reason for the borrow request
 );
 
 # Creating the item feedback table

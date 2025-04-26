@@ -31,6 +31,7 @@
         background-position: center;
       }
 
+<<<<<<< HEAD
       .thumbnail-container {
         display: flex;
         gap: 10px;
@@ -250,6 +251,319 @@
               grid-template-columns: 1fr;
           }
       }
+        .feedback {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .feedback-card {
+            width: 80%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feedback-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .user-avatar i {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .user-details h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
+        }
+        
+        .user-details small {
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        .rating {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+        
+        .feedback-body {
+            margin-top: 1rem;
+        }
+        
+        .feedback-body p {
+            color: #444;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .feedback-date {
+            margin-top: 1.2rem;
+            text-align: right;
+            color: #999;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feedback-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1000;
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: auto;
+    max-width: 500px;
+    width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 2rem;
+    animation: modalOpen 0.3s ease;
+}
+
+@keyframes modalOpen {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-item-info {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-item-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.modal-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-item-details h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.modal-item-details p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-cancel,
+.btn-confirm {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-cancel {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.btn-confirm {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-confirm:hover {
+    background-color: #3e8e41;
+}
+
+/* For mobile screens */
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 1.5rem;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+    }
+}
+
+/* The modal styling from before will work for this modal as well.
+   If you haven't added the modal styles yet, make sure to include them. */
+
+/* Additional styles for trade-specific elements */
+.selected-trade-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.selected-trade-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.item-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.item-preview-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-preview img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.item-preview-name {
+    font-weight: 500;
+}
+
+.item-preview-category {
+    font-size: 0.8rem;
+    color: #666;
+}
+
     </style>
 </head>
 <body>
@@ -261,6 +575,7 @@
                 <a href="index.html">Home</a>
                 <a href="category.html">Categories</a>
                 <a href="how-it-works.html">How it Works</a>
+                <a href="about.html">About Us</a>
             </div>
             <div class="auth-buttons">
                 <button class="login-btn" onclick="location.href='login.html'">Login</button>
@@ -375,6 +690,85 @@
         </div>
     </section>
 
+    <!-- Popup Modal -->
+<div id="borrowModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Borrow Request</h2>
+        
+        <div class="modal-item-info">
+            <div class="modal-item-image">
+                <img id="modalItemImage" src="/api/placeholder/200/200" alt="Item image">
+            </div>
+            <div class="modal-item-details">
+                <h3 id="modalItemName">Item Name</h3>
+                <p id="modalItemOwner">Owner: Username</p>
+            </div>
+        </div>
+        
+        <form id="borrowForm">
+            <div class="form-group">
+                <label for="borrowPeriod">Borrow Period</label>
+                <select id="borrowPeriod" name="borrowPeriod" required>
+                    <option value="">Select duration</option>
+                    <option value="1">1 day</option>
+                    <option value="3">3 days</option>
+                    <option value="7">1 week</option>
+                    <option value="14">2 weeks</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="borrowReason">Reason for borrowing</label>
+                <textarea id="borrowReason" name="borrowReason" rows="3" placeholder="Briefly explain why you want to borrow this item" required></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" id="cancelBorrow" class="btn-cancel">Cancel</button>
+                <button type="submit" id="confirmBorrow" class="btn-confirm">Confirm Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Trade Request Modal -->
+<div id="tradeModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Trade Request</h2>
+        
+        <div class="modal-item-info">
+            <div class="modal-item-image">
+                <img id="modalItemImage1" src="/api/placeholder/200/200" alt="Item image">
+            </div>
+            <div class="modal-item-details">
+                <h3 id="modalItemName1">Item Name</h3>
+                <p id="modalItemOwner1">Owner: Username</p>
+            </div>
+        </div>
+        
+        <form id="tradeForm">
+            <div class="form-group">
+                <label for="tradeItem">Select your item to trade</label>
+                <select id="tradeItem" name="tradeItem" required>
+                    <option value="">Select an item to offer</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tradeReason">Reason for trade</label>
+                <textarea id="tradeReason" name="tradeReason" rows="3" placeholder="Why do you want to trade for this item?" required></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" id="cancelTrade" class="btn-cancel">Cancel</button>
+                <button type="submit" id="confirmTrade" class="btn-confirm">Confirm Trade</button>
+            </div>
+        </form>
+    </div>
+</div>
+
     <!-- Footer Section -->
     <footer>
         <div class="footer-content">
@@ -393,10 +787,10 @@
             <div class="footer-col">
                 <h3>Categories</h3>
                 <ul>
-                    <li><a href="category-electronics.html">Electronics</a></li>
-                    <li><a href="category-clothing.html">Clothing</a></li>
-                    <li><a href="category-books.html">Books</a></li>
-                    <li><a href="category-furniture.html">Furniture</a></li>
+                    <li><a class="cat-links" >Electronics</a></li>
+                    <li><a class="cat-links" >Clothing</a></li>
+                    <li><a class="cat-links" >Books</a></li>
+                    <li><a class="cat-links" >Furniture</a></li>
                 </ul>
             </div>
         </div>
