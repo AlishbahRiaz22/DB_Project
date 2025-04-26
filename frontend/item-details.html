@@ -7,250 +7,182 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-      .product-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: space-between;
-        align-items: flex-start;
-      }
+        .product-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .product-gallery {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f5f5f5;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .thumbnail:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .product-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            margin: 1.5rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .owner-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #666;
+        }
+        
+        .product-description {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+        
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .request-trade {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .request-trade:hover {
+            background-color: #3e8e41;
+        }
+        
+        .contact-owner {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .contact-owner:hover {
+            background-color: #0b7dda;
+        }
+        
+        .save-item {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .save-item:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .related-items {
+            padding: 2rem 0;
+        }
+        
+        .related-title {
+            margin-bottom: 2rem;
+        }
+        
+        .report-item {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .report-link {
+            color: #999;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        
+        .report-link:hover {
+            text-decoration: underline;
+        }
 
-      .product-gallery {
-        flex: 1 1 45%;
-        max-width: 45%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
+        /* Feedback Section Styling */
 
-      .main-image {
-        height: 400px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        background-size: cover;
-        background-position: center;
-      }
+        .feedback-section {
+            padding: 2rem 0;
+        }
 
-<<<<<<< HEAD
-      .thumbnail-container {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-      }
-
-      .thumbnail {
-        width: 80px;
-        height: 80px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-      }
-
-      .thumbnail:hover {
-        transform: scale(1.1);
-      }
-
-      .product-info {
-        flex: 1 1 50%;
-        max-width: 50%;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1rem;
-        background-color: var(--ivory);
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      .product-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: var(--organic);
-      }
-
-      .product-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        font-size: 1rem;
-        color: var(--natural);
-      }
-
-      .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .product-description {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: var(--natural);
-      }
-
-      .action-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-start;
-      }
-
-      .action-btn {
-        padding: 0.8rem 1.5rem;
-        border-radius: 30px;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
-
-      .request-trade {
-        background-color: var(--organic);
-        color: white;
-      }
-
-      .request-trade:hover {
-        background-color: var(--apricot);
-      }
-
-      .contact-owner {
-        background-color: var(--natural);
-        color: white;
-      }
-
-      .contact-owner:hover {
-        background-color: var(--organic);
-      }
-
-      .save-item {
-        background-color: #f5f5f5;
-        color: var(--natural);
-      }
-
-      .save-item:hover {
-        background-color: #e0e0e0;
-      }
-
-      .related-items {
-        padding: 2rem 0;
-      }
-
-      .related-title {
-        margin-bottom: 2rem;
-      }
-
-      .report-item {
-        margin-top: 2rem;
-        text-align: center;
-      }
-
-      .report-link {
-        color: #999;
-        font-size: 0.9rem;
-        text-decoration: none;
-      }
-
-      .report-link:hover {
-        text-decoration: underline;
-      }
-
-      /* Feedback Section Styling */
-
-      .feedback-section {
-        padding: 2rem 0;
-      }
-
-      .feedback {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1.5rem;
-      }
-
-      .feedback-card {
-        width: 80%;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .feedback-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-      }
-
-      .feedback-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 0.8rem;
-        border-bottom: 1px solid #eee;
-      }
-
-      .user-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .user-avatar i {
-        color: #666;
-        font-size: 1.2rem;
-      }
-
-      .user-details h4 {
-        margin: 0;
-        font-size: 1rem;
-        color: #333;
-      }
-
-      .user-details small {
-        color: #666;
-        font-size: 0.8rem;
-      }
-
-      .rating {
-        color: #ffc107;
-        font-size: 1.1rem;
-      }
-
-      .feedback-body {
-        margin-top: 1rem;
-      }
-
-      .feedback-body p {
-        color: #444;
-        line-height: 1.6;
-        margin: 0;
-      }
-
-      .feedback-date {
-        margin-top: 1.2rem;
-        text-align: right;
-        color: #999;
-        font-size: 0.8rem;
-      }
-
-      /* Responsive adjustments */
-      @media (max-width: 768px) {
-          .feedback-container {
-              grid-template-columns: 1fr;
-          }
-      }
         .feedback {
             display: flex;
             flex-direction: column;
@@ -563,7 +495,6 @@
     font-size: 0.8rem;
     color: #666;
 }
-
     </style>
 </head>
 <body>
@@ -587,90 +518,19 @@
         </nav>
     </header>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const borrowButton = document.querySelector('.borrow-btn');
-        const tradeButton = document.querySelector('.trade-btn');
-        const borrowModal = document.querySelector('.borrow-modal');
-        const tradeModal = document.querySelector('.trade-modal');
-        const closeBorrowModal = document.querySelector('.close-borrow-modal');
-        const closeTradeModal = document.querySelector('.close-trade-modal');
-
-        // Open borrow modal
-        borrowButton?.addEventListener('click', () => {
-          borrowModal.style.display = 'block';
-        });
-
-        // Open trade modal
-        tradeButton?.addEventListener('click', () => {
-          tradeModal.style.display = 'block';
-        });
-
-        // Close borrow modal
-        closeBorrowModal?.addEventListener('click', () => {
-          borrowModal.style.display = 'none';
-        });
-
-        // Close trade modal
-        closeTradeModal?.addEventListener('click', () => {
-          tradeModal.style.display = 'none';
-        });
-      });
-    </script>
-
     <!-- Product Detail Section -->
     <section class="product-detail">
-      <div class="product-container">
-        <!-- Product Gallery -->
-        <div class="product-gallery">
-          <div class="main-image" style="background-image: url('/api/placeholder/800/600');"></div>
-          <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('/api/placeholder/100/100');"></div>
-            <div class="thumbnail" style="background-image: url('/api/placeholder/100/100');"></div>
-            <div class="thumbnail" style="background-image: url('/api/placeholder/100/100');"></div>
-          </div>
-        </div>
+        <div class="product-container">
+            <!-- Product Gallery -->
+            <div class="product-gallery animate-on-scroll">
+                <div class="main-image" style="background-image: url('/api/placeholder/800/600');"></div>
+            </div>
 
-        <!-- Product Information -->
-        <div class="product-info">
-          <h1 class="product-title">Item Name</h1>
-          <p class="product-description">A detailed description of the item goes here.</p>
-          <div class="action-buttons">
-            <button class="action-btn borrow-btn">Borrow</button>
-            <button class="action-btn trade-btn">Trade</button>
-          </div>
-          <p class="status">Status: Available</p>
+            <!-- Product Information -->
+            <div class="product-info animate-on-scroll">
+            </div>
         </div>
-      </div>
     </section>
-
-    <!-- Borrow Modal -->
-    <div class="borrow-modal" style="display: none;">
-      <div class="modal-content">
-        <span class="close-borrow-modal">&times;</span>
-        <h2>Borrow Item</h2>
-        <form>
-          <label for="borrow-duration">Duration (in days):</label>
-          <input type="number" id="borrow-duration" name="borrow-duration" required>
-
-          <label for="borrow-message">Message to Owner:</label>
-          <textarea id="borrow-message" name="borrow-message" rows="4"></textarea>
-
-          <button type="submit">Send Borrow Request</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Trade Modal -->
-    <div class="trade-modal" style="display: none;">
-      <div class="modal-content">
-        <span class="close-trade-modal">&times;</span>
-        <h2>Trade Item</h2>
-        <p>Are you sure you want to request a trade for this item?</p>
-        <button>Confirm Trade Request</button>
-        <button class="close-trade-modal">Cancel</button>
-      </div>
-    </div>
 
     <section class="feedback-section">
         <div class="section-title related-title feedback-title">
