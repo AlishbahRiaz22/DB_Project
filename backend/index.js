@@ -36,6 +36,7 @@ app.use('/browse', require('./routes/browse').routerBrowse); // Config browse ro
 app.use('/feedback', require('./routes/feedback').routerFeedback); // Config feedback route
 app.use('/borrow', require('./routes/borrow').routerBorrow); // Config borrow route
 app.use('/trade', require('./routes/trade').routerTrade); // Config trade route
+app.use('/item_feedback', require('./routes/item_feedback').routerFeedback); // Config item feedback route
 
 // Starting the server
 app.listen(port, () => {

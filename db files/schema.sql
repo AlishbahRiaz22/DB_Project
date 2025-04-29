@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `item_feedback` (
   `item_id` integer NOT NULL, # item that received this revies
   `review` varchar(255) NOT NULL,
   `rating` integer NOT NULL, # Rating on a scale of (1 - 10)
-  `reviewer_id` integer NOT NULL # User who gave this review
+  `reviewer_id` integer NOT NULL, # User who gave this review
+  `creation_date` timestamp NOT NULL # Date for when the review was made
 );
 
 # Creating the table that stores the reviews that a user received

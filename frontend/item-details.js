@@ -258,13 +258,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
 
                 <div class="report-item">
-                    <a href="#" class="feedback-link">feedback</a>
                 </div>`;
 
         // Displaying feedback about the item
         const feedback = document.querySelector('.feedback');
         // Fetching the feedback from the server
-        console.log(data.itemDetails[0].item_id);
         const responseFeedback = await fetch('http://127.0.0.1:8808/feedback/', {
             method: "POST",
             headers: {
@@ -700,6 +698,178 @@ document.addEventListener('DOMContentLoaded', async () => {
         element.style.transition = 'all 0.5s ease-out';
         observer.observe(element);
     });
+
+    // Add a feedback button to the action buttons section
+    const actionButtons = document.querySelector('.action-buttons');
+    if (actionButtons && data.type === 'borrow') {
+        const feedbackBtn = document.createElement('button');
+        feedbackBtn.className = 'action-btn feedback-btn';
+        feedbackBtn.innerHTML = '<i class="far fa-comment"></i> Leave Feedback';
+        actionButtons.appendChild(feedbackBtn);
+        
+        // Get modal elements
+        const feedbackModal = document.getElementById('feedbackModal');
+        const closeModalBtn = feedbackModal?.querySelector('.close-modal');
+        const cancelBtn = document.getElementById('cancelFeedback');
+        const feedbackForm = document.getElementById('feedbackForm');
+        const starRating = document.querySelector('.star-rating');
+        const ratingValue = document.getElementById('ratingValue');
+        const ratingText = document.querySelector('.rating-text');
+        const stars = starRating?.querySelectorAll('i');
+        
+        // Set up star rating functionality
+        if (stars) {
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    ratingValue.value = rating;
+                    
+                    // Update stars appearance
+                    stars.forEach(s => {
+                        const sRating = s.getAttribute('data-rating');
+                        if (sRating <= rating) {
+                            s.className = 'fas fa-star selected';
+                        } else {
+                            s.className = 'far fa-star';
+                        }
+                    });
+                    
+                    // Update rating text
+                    const ratingTexts = [
+                        'Select a rating',
+                        'Poor',
+                        'Fair',
+                        'Good',
+                        'Very Good',
+                        'Excellent'
+                    ];
+                    ratingText.textContent = ratingTexts[rating];
+                });
+            });
+        }
+        
+        // Open modal when feedback button is clicked
+        feedbackBtn.addEventListener('click', async function() {
+            // Check if user is logged in
+            const userLoggedIn = await checkUserLoggedIn();
+            if (!userLoggedIn) {
+                alert('Please log in to leave feedback');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Populate modal with item details
+            if (data && data.itemDetails && data.itemDetails[0]) {
+                document.getElementById('feedbackItemName').textContent = data.itemDetails[0].item_name;
+                document.getElementById('feedbackItemOwner').textContent = `Owner: ${data.itemDetails[0].username}`;
+                
+                // If you have an item image, set it here
+                // document.getElementById('feedbackItemImage').src = data.itemDetails[0].image_url || '/api/placeholder/200/200';
+            }
+            
+            // Display modal
+            feedbackModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+        });
+        
+        // Close modal functions
+        function closeModal() {
+            feedbackModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling again
+            feedbackForm.reset(); // Reset form when closing
+            
+            // Reset star rating
+            if (stars) {
+                stars.forEach(s => {
+                    s.className = 'far fa-star';
+                });
+            }
+            ratingValue.value = 0;
+            ratingText.textContent = 'Select a rating';
+        }
+        
+        // Close modal when X is clicked
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+        
+        // Close modal when cancel button is clicked
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', closeModal);
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === feedbackModal) {
+                closeModal();
+            }
+        });
+        
+        // Submit the feedback form
+        if (feedbackForm) {
+            feedbackForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                const rating = ratingValue.value;
+                const review = document.getElementById('reviewText').value;
+                
+                if (rating === '0') {
+                    // Show error if no rating selected
+                    if (!document.querySelector('.rating-error')) {
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'form-error rating-error';
+                        errorMsg.textContent = 'Please select a rating';
+                        ratingText.after(errorMsg);
+                    }
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('http://127.0.0.1:8808/item_feedback/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            item_id: data.itemDetails[0].item_id,
+                            rating: parseInt(rating),
+                            review: review,
+                            owner_id: data.itemDetails[0].cms_id
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        // Success - close modal and show success message
+                        closeModal();
+                        alert('Feedback submitted successfully!');
+                        
+                        window.location.reload(); // Reload the page to show updated feedback
+                    } else {
+                        // Handle errors
+                        alert(result.error || 'Failed to submit feedback');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error submitting feedback:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        }
+    }
+    
+    // Function to check if user is logged in
+    async function checkUserLoggedIn() {
+        const response = await fetch('http://127.0.0.1:8808/login', {
+            method: "GET",
+            credentials: 'include'
+        });
+
+        if (response.status === 200) {
+            return true; // User is logged in
+        }
+        return false; // User is not logged in
+    }
 });
-
-
