@@ -141,4 +141,24 @@ routerBrowse.get('/', (req, res, next) => {
     }); 
 });  
 
+routerBrowse.get('/featured', (req, res, next) => {
+    const featuredItemsQuery = `SELECT c.category_name, c.description, b.item_id, b.item_name, u.username, u.cms_id, image_url, status, item_description
+    FROM borrowable_items b
+    JOIN users u ON b.owner_id = u.cms_id
+    LEFT JOIN borrow_category Boc ON b.item_id = Boc.item_id
+    LEFT JOIN category c ON c.category_id = Boc.category_id
+    WHERE b.status = 1
+    ORDER BY RAND()
+    LIMIT 3;`;
+    
+    pool.query(featuredItemsQuery, (err, result) => {
+        if (err) { // If there is an error executing the query, log it and send a 500 response
+            console.error('Error executing query:', err);
+            return res.status(500).json({ error: 'Database query error' });
+        }
+        // Sending the featured items as JSON response
+        res.json(result); 
+    });
+});
+
 exports.routerBrowse = routerBrowse; // Exporting the router

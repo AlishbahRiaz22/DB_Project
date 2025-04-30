@@ -25,7 +25,7 @@ app.use(session({ // Config cookie session middleware
     }
 }));
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', // Allowing requests from this origin
+    origin: 'http://127.0.0.1:3000', // Allowing requests from this origin
     credentials: true // Allowing credentials to be sent with requests
 })); // Configuring CORS to allow cross-origin requests
 app.use(bodyParser.json()); // Config Bodyparser middleware
@@ -36,6 +36,7 @@ app.use('/browse', require('./routes/browse').routerBrowse); // Config browse ro
 app.use('/feedback', require('./routes/feedback').routerFeedback); // Config feedback route
 app.use('/borrow', require('./routes/borrow').routerBorrow); // Config borrow route
 app.use('/trade', require('./routes/trade').routerTrade); // Config trade route
+app.use('/item_feedback', require('./routes/item_feedback').routerFeedback); // Config item feedback route
 
 // Starting the server
 app.listen(port, () => {

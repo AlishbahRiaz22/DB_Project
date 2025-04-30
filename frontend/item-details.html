@@ -495,6 +495,50 @@
     font-size: 0.8rem;
     color: #666;
 }
+
+/* Star Rating Styles */
+.star-rating {
+    display: flex;
+    gap: 8px;
+    font-size: 24px;
+    margin: 10px 0;
+    color: #ddd;
+}
+
+.star-rating i {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star-rating i:hover,
+.star-rating i.selected {
+    color: #ffc107;
+}
+
+.rating-text {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Add button to product page */
+.feedback-btn {
+    background-color: #ff9800;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.feedback-btn:hover {
+    background-color: #f57c00;
+}
+
+/* Error message */
+.form-error {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
     </style>
 </head>
 <body>
@@ -624,6 +668,49 @@
             <div class="modal-actions">
                 <button type="button" id="cancelTrade" class="btn-cancel">Cancel</button>
                 <button type="submit" id="confirmTrade" class="btn-confirm">Confirm Trade</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Feedback Submission Modal -->
+<div id="feedbackModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Leave Feedback</h2>
+        
+        <div class="modal-item-info">
+            <div class="modal-item-image">
+                <img id="feedbackItemImage" src="/api/placeholder/200/200" alt="Item image">
+            </div>
+            <div class="modal-item-details">
+                <h3 id="feedbackItemName">Item Name</h3>
+                <p id="feedbackItemOwner">Owner: Username</p>
+            </div>
+        </div>
+        
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="ratingStars">Your Rating</label>
+                <div class="star-rating">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <input type="hidden" id="ratingValue" name="rating" value="0" required>
+                <div class="rating-text">Select a rating</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="reviewText">Your Review</label>
+                <textarea id="reviewText" name="review" rows="4" placeholder="Share your experience with this item..." required></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" id="cancelFeedback" class="btn-cancel">Cancel</button>
+                <button type="submit" id="submitFeedback" class="btn-confirm">Submit Feedback</button>
             </div>
         </form>
     </div>

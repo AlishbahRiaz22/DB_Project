@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="item-details">
                 <h3>${item.item_name}</h3>
                 <div class="item-meta">
-                  <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
+                  <span>${item.category_name ? item.category_name : 'General'}</span>
                   <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
                 <button class="item-btn b-btn">View Details</button>
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="item-details">
                 <h3>${item.item_name}</h3>
                 <div class="item-meta">
-                   <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
+                   <span>${item.category_name ? item.category_name : 'General'}</span>
                    <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
                 <button class="item-btn t-btn">View Details</button>
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="item-details">
                 <h3>${item.item_name}</h3>
                 <div class="item-meta">
-                  <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
+                  <span>${item.category_name ? item.category_name : 'General'}</span>
                   <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
                 <button class="item-btn b-btn">View Details</button>
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="item-details">
                 <h3>${item.item_name}</h3>
                 <div class="item-meta">
-                   <span>${item.category_name ? item.category_name : 'Daily Use'}</span>
+                   <span>${item.category_name ? item.category_name : 'General'}</span>
                    <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
                 <button class="item-btn t-btn">View Details</button>
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Adding an event listener to the clear button to reload the page when clicked
     clearBtn.addEventListener('click', () => {
-        window.location.reload(); // Reload the page to clear filters
+        window.location.href = 'browse.html'; // Reload the page to clear filters
     });  
 
     // Getting the filter elements for status, category, and item type
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // If the selected status is 'Available', filter the borrowable items to show only available ones
             if (selectedStatus === "Available") {
-                console.log('Available');
+                // console.log('Available');
                 const items = borrowableItemsContainer.getElementsByClassName('item-card');
                 // Looping through the borrowable items and checking their status
                 for (let i = 0; i < items.length; i++) {
@@ -292,7 +292,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     }
                 }
-            }    
+            } 
+            const visibleItems = false; 
+            const items = borrowableItemsContainer.querySelectorAll('.item-card');
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].style.display === 'block') {
+                    visibleItems = true; // Set flag to true if any item is visible
+                    break; // Exit loop if at least one item is visible
+                }
+            }
+            if (!visibleItems) {
+                borrowableItemsContainer.style.display = 'flex';
+                borrowableItemsContainer.style.justifyContent = 'center';
+                borrowableItemsContainer.style.marginTop = '-20px';
+                borrowableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+            }
+
         } 
         // If the selected item type is 'Tradable', hide the borrowable items and show the tradable items
         else if (selectedItemType === 'Tradable') {
@@ -356,6 +371,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         } 
+            const visibleItems = false; 
+            const items = tradableItemsContainer.querySelectorAll('.item-card');
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].style.display === 'block') {
+                    visibleItems = true; // Set flag to true if any item is visible
+                    break; // Exit loop if at least one item is visible
+                }
+            }
+            if (!visibleItems) {
+                tradableItemsContainer.style.display = 'flex';
+                tradableItemsContainer.style.justifyContent = 'center';
+                tradableItemsContainer.style.marginTop = '-20px';
+                tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+            }
         }
     })
 

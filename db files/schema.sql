@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `borrowable_items` (
   `item_name` varchar(255) NOT NULL, # Name of the item that can be borrowed
   `item_id` integer PRIMARY KEY AUTO_INCREMENT, # primary key to uniquely identify each item and to be used to reference the item
   `owner_id` integer NOT NULL, # Reference to the user who wants to lend this item
-  `image_url` varchar(255) UNIQUE,
+  `image_url` varchar(500) UNIQUE,
   `status` bool NOT NULL, # true for available and false for can be borrowed
   `item_description` varchar(255) NOT NULL
 );
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `trades` (
   `owner_id` integer NOT NULL COMMENT 'owner of the item that is being requested',
   `requested_id` integer NOT NULL,
   `reason` varchar(255) NOT NULL, # Reason for the trade request
-  `creation_date` timestamp NOT NULL, # Date for when the request was made
+  `creation_date` timestamp NOT NULL # Date for when the request was made
 );
 
 # Creating the table that stores the borrow request
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `borrow_req` (
   `requester_id` integer NOT NULL,
   `owner_id` integer NOT NULL,
   `borrow_dur` integer NOT NULL COMMENT 'Integer because it will be specified in days',
-  `creation_date` timestamp NOT NULL # Date for when the request was made,
+  `creation_date` timestamp NOT NULL, # Date for when the request was made,
   `reason` varchar(255) NOT NULL # Reason for the borrow request
 );
 
@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `item_feedback` (
   `item_id` integer NOT NULL, # item that received this revies
   `review` varchar(255) NOT NULL,
   `rating` integer NOT NULL, # Rating on a scale of (1 - 10)
-  `reviewer_id` integer NOT NULL # User who gave this review
+  `reviewer_id` integer NOT NULL, # User who gave this review
+  `creation_date` timestamp NOT NULL # Date for when the review was made
 );
 
 # Creating the table that stores the reviews that a user received

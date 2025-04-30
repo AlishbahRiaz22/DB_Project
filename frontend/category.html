@@ -16,15 +16,15 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 
-                <a href="categories.html" class="active">Categories</a>
+                <a href="category.html" class="active">Categories</a>
                 
                 <a href="how-it-works.html">How it Works</a>
 
                 <a href="about.html">About Us</a>
             </div>
             <div class="auth-buttons">
-                <button class="login-btn">Login</button>
-                <button class="signup-btn">Sign Up</button>
+                <button class="login-btn" onclick="location.href='login.html'">Login</button>
+                <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
             </div>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -205,6 +205,9 @@
           </footer>
         </main>
     <script>
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        mobileMenuBtn.style.display = 'none'; // Hide the mobile menu button by default
+
         const links = document.querySelectorAll('.cat-links');
         links.forEach(link => {
             link.addEventListener('click', function(event) {
