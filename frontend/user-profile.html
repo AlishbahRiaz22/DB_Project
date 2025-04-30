@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Trade Shop - User Profile</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .profile-hero {
+      height: 40vh;
+      background-image: linear-gradient(rgba(63, 66, 46, 0.8), rgba(63, 66, 46, 0.6)), url('/api/placeholder/1200/400');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+
+    .profile-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .profile-info {
+      background-color: var(--ivory);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-info label {
+      display: block;
+      font-weight: bold;
+      color: var(--organic);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .profile-info input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      color: var(--natural);
+      background-color: #f9f9f9;
+      transition: border-color 0.3s;
+    }
+
+    .profile-info input:focus {
+      border-color: var(--organic);
+      outline: none;
+      box-shadow: 0 0 5px rgba(63, 66, 46, 0.5);
+    }
+
+    .profile-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .profile-picture {
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-actions {
+      text-align: center;
+    }
+
+    .profile-actions button {
+      background-color: var(--organic);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-right: 1rem;
+      transition: all 0.3s;
+    }
+
+    .profile-actions button:hover {
+      background-color: var(--apricot);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-listings {
+      margin-top: 3rem;
+    }
+
+    .listing-item {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .listing-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      margin-right: 1rem;
+    }
+
+    .listing-item h4 {
+      color: var(--organic);
+      margin-bottom: 0.5rem;
+    }
+
+    .listing-item p {
+      color: var(--natural);
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+        <div class="logo"><a href="index.html">VirtualTrade</a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="category.html">Categories</a>
+            <a href="how-it-works.html">How it Works</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="login-btn" onclick="location.href='login.html'">Login</button>
+            <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
+        </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="profile-hero">
+      <div>
+        <h1>User Profile</h1>
+        <p>Manage your account and view your listings</p>
+      </div>
+    </section>
+
+    <section class="profile-container">
+      <div class="profile-header">
+        <div class="profile-picture"><img src="profile_picture.jpg"></div>
+        <div class="profile-info">
+          <label for="cms-id">CMS ID:</label>
+          <input type="text" id="cms-id" value="CMS12345" data-original-value="CMS12345" disabled>
+
+          <label for="full-name">Full Name:</label>
+          <input type="text" id="full-name" value="John Doe" data-original-value="John Doe" disabled>
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" value="john.doe@example.com" data-original-value="john.doe@example.com" disabled>
+
+          <label for="phone">Phone Number:</label>
+          <input type="tel" id="phone" value="123-456-7890" data-original-value="123-456-7890" disabled>
+
+          <label for="password">Password:</label>
+          <input type="password" id="password" value="password123" data-original-value="password123" disabled>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button id="edit-profile-btn">Edit Profile</button>
+        <button id="update-info-btn" style="display: none;">Update Info</button>
+        <button id="cancel-btn" style="display: none;">Cancel</button>
+      </div>
+
+      <div class="profile-listings">
+        <h2>Your Listings</h2>
+        <div class="listing-item">
+          <img src="resources/images/placeholder.jpg" alt="Item">
+          <div>
+            <h4>Item Name</h4>
+            <p>Short description of the item.</p>
+          </div>
+        </div>
+        <div class="listing-item">
+          <img src="resources/images/placeholder.jpg" alt="Item">
+          <div>
+            <h4>Item Name</h4>
+            <p>Short description of the item.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3>Virtual Trade Shop</h3>
+        <p>A community platform for sustainable trading, sharing, and reducing waste through conscious consumption.</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="browse.html">Browse Items</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Categories</h3>
+        <ul>
+            <li><a href="category-electronics.html">Electronics</a></li>
+            <li><a href="category-clothing.html">Clothing</a></li>
+            <li><a href="category-books.html">Books</a></li>
+            <li><a href="category-furniture.html">Furniture</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Virtual Trade Shop. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const editButton = document.getElementById('edit-profile-btn');
+    const updateButton = document.getElementById('update-info-btn');
+    const cancelButton = document.getElementById('cancel-btn');
+    const profileFields = document.querySelectorAll('.profile-info input');
+
+    // Initially disable all input fields
+    profileFields.forEach(input => input.disabled = true);
+
+    editButton.addEventListener('click', () => {
+      profileFields.forEach(input => input.disabled = false);
+      updateButton.style.display = 'inline-block';
+      cancelButton.style.display = 'inline-block';
+      editButton.style.display = 'none';
+    });
+
+    cancelButton.addEventListener('click', () => {
+      profileFields.forEach(input => {
+        input.disabled = true;
+        input.value = input.getAttribute('data-original-value'); // Reset to original value
+      });
+      updateButton.style.display = 'none';
+      cancelButton.style.display = 'none';
+      editButton.style.display = 'inline-block';
+    });
+
+    updateButton.addEventListener('click', () => {
+      profileFields.forEach(input => {
+        input.disabled = true;
+        input.setAttribute('data-original-value', input.value); // Save updated value
+      });
+      updateButton.style.display = 'none';
+      cancelButton.style.display = 'none';
+      editButton.style.display = 'inline-block';
+      alert('Profile updated successfully!');
+    });
+  });
+</script>
+</body>
+</html>
