@@ -37,6 +37,9 @@ app.use('/feedback', require('./routes/feedback').routerFeedback); // Config fee
 app.use('/borrow', require('./routes/borrow').routerBorrow); // Config borrow route
 app.use('/trade', require('./routes/trade').routerTrade); // Config trade route
 app.use('/item_feedback', require('./routes/item_feedback').routerFeedback); // Config item feedback route
+app.use('/upload', require('./routes/upload').routerUpload); // Config upload route
+app.use('/user', require('./routes/user').routerUser); // Config user route
+app.use('/requests', require('./routes/request').routerRequest); // Config request route
 
 // Starting the server
 app.listen(port, () => {

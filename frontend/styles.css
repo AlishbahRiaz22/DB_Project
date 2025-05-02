@@ -11,6 +11,10 @@
   --light-apricot: #E6A451;
 }
 
+.cat-links:hover {
+  cursor: pointer;
+}
+
 * {
   margin: 0;
   padding: 0;

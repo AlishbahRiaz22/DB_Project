@@ -1,54 +1,49 @@
+if (window.localStorage.getItem('loggedIn') === 'true') {
+    // If the user is logged in, we update the buttons
+    const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+    const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+
+    // Updating the login button to act as a link to the user's profile
+    loginBtn.textContent = "";
+    loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+    loginBtn.style.backgroundSize = "cover";
+    loginBtn.style.width = "40px";
+    loginBtn.style.height = "40px";
+    loginBtn.style.borderRadius = "50%";
+    loginBtn.style.border = "none";
+    loginBtn.style.cursor = "pointer";
+    loginBtn.style.marginRight = "10px";
+    loginBtn.style.padding = "0px";
+    loginBtn.style.backgroundColor = "transparent";
+    loginBtn.href = "#";
+    loginBtn.addEventListener('click', function() {
+        window.location.href = "profile.html";
+    })
+
+    // Updating the signup button to act as a logout button
+    signupBtn.textContent = "Logout";
+    signupBtn.href = "#";
+    signupBtn.addEventListener('click', async function() {
+        const response = await fetch('http://127.0.0.1:8808/logout', {
+            method: "POST",
+            credentials: 'include'
+        })
+        if(response.status === 200) {
+            // If user successfully logged out, redirect to index.html
+            // To undo the changes made to the login button, we set it back to its original state by redirection
+            window.location.href = "index.html";
+            window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
+        }
+        else {
+            alert("Error logging out. Please try again.");
+        }
+    })
+}
+
 // Function to change the main image when a thumbnail is clicked
 function changeMainImage(thumbnail) {
     const mainImage = document.querySelector('.main-image');
     mainImage.style.backgroundImage = thumbnail.style.backgroundImage;
-}
-
-async function userLoggedIn () {
-    const response = await fetch('http://127.0.0.1:8808/login', {
-        method: "GET",
-        credentials: 'include'
-    })
-
-    if (response.status === 200) {
-        const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-        const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
-
-        // Updating the login button to act as a link to the user's profile
-        loginBtn.textContent = "";
-        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-        loginBtn.style.backgroundSize = "cover";
-        loginBtn.style.width = "40px";
-        loginBtn.style.height = "40px";
-        loginBtn.style.borderRadius = "50%";
-        loginBtn.style.border = "none";
-        loginBtn.style.cursor = "pointer";
-        loginBtn.style.marginRight = "10px";
-        loginBtn.style.padding = "0px";
-        loginBtn.style.backgroundColor = "transparent";
-        loginBtn.href = "#";
-        loginBtn.addEventListener('click', function() {
-            window.location.href = "profile.html";
-        })
-
-        // Updating the signup button to act as a logout button
-        signupBtn.textContent = "Logout";
-        signupBtn.href = "#";
-        signupBtn.addEventListener('click', async function() {
-            const response = await fetch('http://127.0.0.1:8808/logout', {
-                method: "POST",
-                credentials: 'include'
-            })
-            if(response.status === 200) {
-                // If user successfully logged out, redirect to index.html
-                // To undo the changes made to the login button, we set it back to its original state by redirection
-                window.location.href = "index.html";
-            }
-            else {
-                alert("Error logging out. Please try again.");
-            }
-        })
-    }
 }
 
 // Function to generate star rating HTML
@@ -89,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
         
-    userLoggedIn(); // Check if user is logged in
+
     // Extracting the params from the url
     const urlParams = new URLSearchParams(window.location.search);
     const itemId = urlParams.get('item_id');
@@ -337,8 +332,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const borrowForm = document.getElementById('borrowForm');
                     
                     // Open modal when borrow button is clicked
+                    // Open modal when borrow button is clicked
                     if (openModalBtn) {
-                        openModalBtn.addEventListener('click', function() {
+                        openModalBtn.addEventListener('click', async function() {
+                            // Check if user is logged in
+                            if(!await checkUserLoggedIn()) {
+                                alert('Please log in to borrow items');
+                                window.location.href = 'login.html';
+                                return;
+                            }
+                    
                             // Populate modal with item details
                             if (data && data.itemDetails && data.itemDetails[0]) {
                                 modalItemName.textContent = data.itemDetails[0].item_name;
@@ -346,13 +349,49 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 
                                 // If you have an item image, set it here
                                 modalItemImage.src = data.itemDetails[0].image_url || './resources/images/placeholder.jpg';
+                                
+                                // Populate the borrow period dropdown with available durations
+                                const borrowPeriod = document.getElementById('borrowPeriod');
+                                borrowPeriod.innerHTML = ''; // Clear existing options
+
+                                const duration = await fetch('http://127.0.0.1:8808/borrow/duration/', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    credentials: 'include',
+                                    body: JSON.stringify({
+                                        item_id: data.itemDetails[0].item_id
+                                    })
+                                });
+                                
+                                const durationData = await duration.json();
+
+                                // Check if durations exist in the data
+                                if (durationData && durationData.length > 0) {
+                                    // Add each duration as an option
+                                    durationData.forEach(duration => {
+                                        const option = document.createElement('option');
+                                        option.value = duration.duration_days;
+                                        option.textContent = `${duration.duration_days} days`;
+                                        borrowPeriod.appendChild(option);
+                                    });
+                                } else {
+                                    // Default option if no durations available
+                                    const option = document.createElement('option');
+                                    option.value = '';
+                                    option.textContent = 'No durations available';
+                                    option.disabled = true;
+                                    option.selected = true;
+                                    borrowPeriod.appendChild(option);
+                                }
                             }
                             
                             // Display modal
                             modal.style.display = 'flex';
                             document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-                        });
-                    }
+                            });
+                        }
                     
                     // Close modal functions
                     function closeModal() {

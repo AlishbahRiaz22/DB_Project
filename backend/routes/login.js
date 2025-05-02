@@ -61,7 +61,7 @@ routerLoginIn.get('/', (req, res) => {
         res.status(200).send(user); // Send the user information
     }
     else { // If the user is not logged in
-        res.status(401).send("User not logged in"); // Send a 401 status code
+        res.status(401).json("User not logged in"); // Send a 401 status code
     }
 });
 

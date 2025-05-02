@@ -269,7 +269,8 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="category.html">Categories</a>
-                <a href="how-it-works.html">How it Works</a>
+                <a href="how-it-works.html">How It Works</a>
+                <a href="about.html">About Us</a> 
             </div>
             <div class="auth-buttons">
                 <button class="login-btn" onclick="location.href='login.html'">Login</button>
@@ -308,6 +309,8 @@
                         <textarea id="description" rows="4" required></textarea>
                     </div>
 
+                    <div class="hide form-group" style="display: none;"></div>
+
                     <div class="form-group">
                         <label>Item Image</label>
                         <div class="image-upload-container">
@@ -319,7 +322,7 @@
 
                     <div class="borrow-options visible">
                         <label>Available Durations</label>
-                        <div class="duration-options">
+                        <div class="duration-options" style="margin: 10px; display: flex; justify-content: space-around;">
                             <div class="duration-option" data-days="7">1 Week</div>
                             <div class="duration-option" data-days="14">2 Weeks</div>
                             <div class="duration-option" data-days="30">1 Month</div>
@@ -375,7 +378,6 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
             const uploadForm = document.getElementById('uploadForm');
             const typeOptions = document.querySelectorAll('.type-option');
             const borrowOptions = document.querySelector('.borrow-options');
@@ -383,6 +385,49 @@
             const statusSlider = document.getElementById('statusToggle');
             const imageInput = document.getElementById('itemImage');
             const imagePreview = document.querySelector('.image-preview');
+            const hiddenDiv = document.querySelector('.hide');
+
+            if (window.localStorage.getItem('loggedIn') === 'true') {
+                // If the user is logged in, we update the buttons
+                const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+                const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+        
+                // Updating the login button to act as a link to the user's profile
+                loginBtn.textContent = "";
+                loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+                loginBtn.style.backgroundSize = "cover";
+                loginBtn.style.width = "40px";
+                loginBtn.style.height = "40px";
+                loginBtn.style.borderRadius = "50%";
+                loginBtn.style.border = "none";
+                loginBtn.style.cursor = "pointer";
+                loginBtn.style.marginRight = "10px";
+                loginBtn.style.padding = "0px";
+                loginBtn.style.backgroundColor = "transparent";
+                loginBtn.href = "#";
+                loginBtn.addEventListener('click', function() {
+                    window.location.href = "profile.html";
+                })
+        
+                // Updating the signup button to act as a logout button
+                signupBtn.textContent = "Logout";
+                signupBtn.href = "#";
+                signupBtn.addEventListener('click', async function() {
+                    const response = await fetch('http://127.0.0.1:8808/logout', {
+                        method: "POST",
+                        credentials: 'include'
+                    })
+                    if(response.status === 200) {
+                        // If user successfully logged out, redirect to index.html
+                        // To undo the changes made to the login button, we set it back to its original state by redirection
+                        window.location.href = "index.html";
+                        window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
+                    }
+                    else {
+                        alert("Error logging out. Please try again.");
+                    }
+                })
+            }
 
             // Type selector handling
             typeOptions.forEach(option => {
@@ -393,16 +438,36 @@
                     if (option.dataset.type === 'borrow') {
                         borrowOptions.classList.add('visible');
                         statusToggle.classList.remove('visible');
+                        hiddenDiv.style.display = 'none';
+
                     } else {
                         borrowOptions.classList.remove('visible');
                         statusToggle.classList.add('visible');
+                        hiddenDiv.style.display = 'block';
+                        hiddenDiv.innerHTML = `
+                            <label for="itemName">Token Value:</label>
+                            <input type="text" id="tokenVal" required>
+                        `;
                     }
                 });
             });
 
+            const tokenValInput = document.getElementById('tokenVal');
+
             // Image upload handling
             imageInput.addEventListener('change', handleImageUpload);
             const dropZone = document.querySelector('.image-upload-container');
+            
+            // Make the dropzone clickable
+            dropZone.addEventListener('click', () => {
+                imageInput.click();
+            });
+            
+            // Drag and drop functionality
+            dropZone.addEventListener('dragenter', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
             
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -417,14 +482,34 @@
                 e.preventDefault();
                 dropZone.classList.remove('dragover');
                 if (e.dataTransfer.files.length) {
-                    imageInput.files = e.dataTransfer.files;
-                    handleImageUpload();
+                    const file = e.dataTransfer.files[0];
+                    // Check if file is an image
+                    if (file.type.startsWith('image/')) {
+                        imageInput.files = e.dataTransfer.files;
+                        handleImageUpload();
+                    } else {
+                        alert('Please upload an image file (JPEG, PNG, etc.)');
+                    }
                 }
             });
 
             function handleImageUpload() {
                 const file = imageInput.files[0];
                 if (file) {
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please upload an image file (JPEG, PNG, etc.)');
+                        imageInput.value = '';
+                        return;
+                    }
+                    
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Image size should not exceed 5MB');
+                        imageInput.value = '';
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
@@ -433,9 +518,79 @@
                 }
             }
 
+            // Fix the validateTokenValue function
+function validateTokenValue() {
+    // If tokenVal doesn't exist yet (e.g., when on borrowable view), return true
+    const tokenValInput = document.getElementById('tokenVal');
+    if (!tokenValInput) return true;
+    
+    const value = tokenValInput.value.trim();
+    
+    // Remove any previous error message
+    const existingError = tokenValInput.parentElement.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Check if empty
+    if (value === '') {
+        tokenValInput.style.borderColor = 'red';
+        
+        // Add error message for empty field
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'error-message';
+        errorMsg.textContent = 'Token value is required';
+        errorMsg.style.color = 'red';
+        errorMsg.style.fontSize = '0.8rem';
+        errorMsg.style.marginTop = '5px';
+        
+        tokenValInput.parentElement.appendChild(errorMsg);
+        return false;
+    }
+    
+    // Check if it's a valid number
+    if (!/^[0-9]+$/.test(value)) {
+        // Not a valid number, add error styling
+        tokenValInput.style.borderColor = 'red';
+        
+        // Add error message
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'error-message';
+        errorMsg.textContent = 'Please enter a valid number';
+        errorMsg.style.color = 'red';
+        errorMsg.style.fontSize = '0.8rem';
+        errorMsg.style.marginTop = '5px';
+        
+        tokenValInput.parentElement.appendChild(errorMsg);
+        return false;
+    } else {
+        // Valid number, reset styling
+        tokenValInput.style.borderColor = 'green';
+        return true;
+    }
+}
+
+// Add this to your DOMContentLoaded event handler to set up real-time validation
+// Place this after defining typeOptions event listeners
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'tokenVal') {
+        // Add input event listener when the field is created and clicked
+        e.target.addEventListener('input', validateTokenValue);
+    }
+});
+
+
+
             // Form submission
             uploadForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+
+                const itemType = document.querySelector('.type-option.active').dataset.type;
+    
+                // Only validate token value for tradeable items
+                if (itemType === 'trade' && !validateTokenValue()) {
+                    return; // Stop form submission if validation fails
+                }
 
                 const formData = new FormData();
                 formData.append('name', document.getElementById('itemName').value);
@@ -444,7 +599,7 @@
                     formData.append('image', imageInput.files[0]);
                 }
 
-                const itemType = document.querySelector('.type-option.active').dataset.type;
+
                 formData.append('type', itemType);
 
                 if (itemType === 'borrow') {
@@ -458,6 +613,11 @@
                 } else {
                     // For tradable items, include the status
                     formData.append('status', statusSlider.checked ? 'traded' : 'available');
+
+                    const tokenValInput = document.getElementById('tokenVal');
+                    if (tokenValInput) {
+                        formData.append('tokenValue', tokenValInput.value.trim());
+                    }
                 }
 
                 try {
@@ -488,7 +648,6 @@
                     option.classList.toggle('selected');
                 });
             });
-        });
     </script>
 </body>
 </html>

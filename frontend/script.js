@@ -1,3 +1,45 @@
+if (window.localStorage.getItem('loggedIn') === 'true') {
+    // If the user is logged in, we update the buttons
+    const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+    const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+
+    // Updating the login button to act as a link to the user's profile
+    loginBtn.textContent = "";
+    loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+    loginBtn.style.backgroundSize = "cover";
+    loginBtn.style.width = "40px";
+    loginBtn.style.height = "40px";
+    loginBtn.style.borderRadius = "50%";
+    loginBtn.style.border = "none";
+    loginBtn.style.cursor = "pointer";
+    loginBtn.style.marginRight = "10px";
+    loginBtn.style.padding = "0px";
+    loginBtn.style.backgroundColor = "transparent";
+    loginBtn.href = "#";
+    loginBtn.addEventListener('click', function() {
+        window.location.href = "profile.html";
+    })
+
+    // Updating the signup button to act as a logout button
+    signupBtn.textContent = "Logout";
+    signupBtn.href = "#";
+    signupBtn.addEventListener('click', async function() {
+        const response = await fetch('http://127.0.0.1:8808/logout', {
+            method: "POST",
+            credentials: 'include'
+        })
+        if(response.status === 200) {
+            // If user successfully logged out, redirect to index.html
+            // To undo the changes made to the login button, we set it back to its original state by redirection
+            window.location.href = "index.html";
+            window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
+        }
+        else {
+            alert("Error logging out. Please try again.");
+        }
+    })
+}
+
 // Mobile Menu Toggle Functionality
 document.addEventListener('DOMContentLoaded', async function() {
     const itemGrid = document.querySelector('.item-grid');
@@ -53,58 +95,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
-
-    // When the page loads, check if the user is logged in
-    const response = await fetch('http://127.0.0.1:8808/login', {
-        method: 'GET',
-        credentials: 'include' // Sending the cookie with the request
-    }).then(res => res.json()).then(res => {
-        return res;
-    })
- 
-    // and update the login/signup buttons accordingly
-    if (response.status === 401) {
-        // If the user is not logged in, we do nothing
-    } else {
-        // If the user is logged in, we update the buttons
-        const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-        const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
-
-        // Updating the login button to act as a link to the user's profile
-        loginBtn.textContent = "";
-        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-        loginBtn.style.backgroundSize = "cover";
-        loginBtn.style.width = "40px";
-        loginBtn.style.height = "40px";
-        loginBtn.style.borderRadius = "50%";
-        loginBtn.style.border = "none";
-        loginBtn.style.cursor = "pointer";
-        loginBtn.style.marginRight = "10px";
-        loginBtn.style.padding = "0px";
-        loginBtn.style.backgroundColor = "transparent";
-        loginBtn.href = "#";
-        loginBtn.addEventListener('click', function() {
-            window.location.href = "profile.html";
-        })
-
-        // Updating the signup button to act as a logout button
-        signupBtn.textContent = "Logout";
-        signupBtn.href = "#";
-        signupBtn.addEventListener('click', async function() {
-            const response = await fetch('http://127.0.0.1:8808/logout', {
-                method: "POST",
-                credentials: 'include'
-            })
-            if(response.status === 200) {
-                // If user successfully logged out, redirect to index.html
-                // To undo the changes made to the login button, we set it back to its original state by redirection
-                window.location.href = "index.html";
-            }
-            else {
-                alert("Error logging out. Please try again.");
-            }
-        })
-    }
     
     if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', function() {

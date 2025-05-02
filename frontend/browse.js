@@ -1,48 +1,43 @@
-async function userLoggedIn () {
-    const response = await fetch('http://127.0.0.1:8808/login', {
-        method: "GET",
-        credentials: 'include'
+if (window.localStorage.getItem('loggedIn') === 'true') {
+    // If the user is logged in, we update the buttons
+    const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+    const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+
+    // Updating the login button to act as a link to the user's profile
+    loginBtn.textContent = "";
+    loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+    loginBtn.style.backgroundSize = "cover";
+    loginBtn.style.width = "40px";
+    loginBtn.style.height = "40px";
+    loginBtn.style.borderRadius = "50%";
+    loginBtn.style.border = "none";
+    loginBtn.style.cursor = "pointer";
+    loginBtn.style.marginRight = "10px";
+    loginBtn.style.padding = "0px";
+    loginBtn.style.backgroundColor = "transparent";
+    loginBtn.href = "#";
+    loginBtn.addEventListener('click', function() {
+        window.location.href = "profile.html";
     })
 
-    if (response.status === 200) {
-        const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-        const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
-
-        // Updating the login button to act as a link to the user's profile
-        loginBtn.textContent = "";
-        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-        loginBtn.style.backgroundSize = "cover";
-        loginBtn.style.width = "40px";
-        loginBtn.style.height = "40px";
-        loginBtn.style.borderRadius = "50%";
-        loginBtn.style.border = "none";
-        loginBtn.style.cursor = "pointer";
-        loginBtn.style.marginRight = "10px";
-        loginBtn.style.padding = "0px";
-        loginBtn.style.backgroundColor = "transparent";
-        loginBtn.href = "#";
-        loginBtn.addEventListener('click', function() {
-            window.location.href = "profile.html";
+    // Updating the signup button to act as a logout button
+    signupBtn.textContent = "Logout";
+    signupBtn.href = "#";
+    signupBtn.addEventListener('click', async function() {
+        const response = await fetch('http://127.0.0.1:8808/logout', {
+            method: "POST",
+            credentials: 'include'
         })
-
-        // Updating the signup button to act as a logout button
-        signupBtn.textContent = "Logout";
-        signupBtn.href = "#";
-        signupBtn.addEventListener('click', async function() {
-            const response = await fetch('http://127.0.0.1:8808/logout', {
-                method: "POST",
-                credentials: 'include'
-            })
-            if(response.status === 200) {
-                // If user successfully logged out, redirect to index.html
-                // To undo the changes made to the login button, we set it back to its original state by redirection
-                window.location.href = "index.html";
-            }
-            else {
-                alert("Error logging out. Please try again.");
-            }
-        })
-    }
+        if(response.status === 200) {
+            // If user successfully logged out, redirect to index.html
+            // To undo the changes made to the login button, we set it back to its original state by redirection
+            window.location.href = "index.html";
+            window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
+        }
+        else {
+            alert("Error logging out. Please try again.");
+        }
+    })
 }
 // This script fetches borrowable and tradeable items from the server and displays them on the page
 // It also handles filtering of items based on their status and type (borrowable or tradable) and category
@@ -56,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.location.href = url; // Redirect to the new URL
             });
         });
-    userLoggedIn(); // Check if the user is logged in when the page loads
 
     // Fetching borrowable and tradable items from the server
     const response = await fetch('http://127.0.0.1:8808/browse/', {
@@ -225,6 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Adding an event listener to the apply button to filter items based on selected criteria
     applyBtn.addEventListener('click', () => {
+        
         // Getting the selected values from the filter elements
         const selectedStatus = statusFilter.value;
         const selectedCategory = categoryFilter.value;

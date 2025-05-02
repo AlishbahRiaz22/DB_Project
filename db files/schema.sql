@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `borrowable_items` (
   `owner_id` integer NOT NULL, # Reference to the user who wants to lend this item
   `image_url` varchar(500) UNIQUE,
   `status` bool NOT NULL, # true for available and false for can be borrowed
-  `item_description` varchar(255) NOT NULL
+  `item_description` varchar(255) NOT NULL,
+  `creation_date` timestamp NOT NULL default NOW(), # Date for when the item was added to the database
 );
 
 # Creating the table that stores the trade requests
@@ -51,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `trades` (
   `owner_id` integer NOT NULL COMMENT 'owner of the item that is being requested',
   `requested_id` integer NOT NULL,
   `reason` varchar(255) NOT NULL, # Reason for the trade request
-  `creation_date` timestamp NOT NULL # Date for when the request was made
+  `creation_date` timestamp NOT NULL default NOW() # Date for when the request was made
 );
 
 # Creating the table that stores the borrow request
@@ -61,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `borrow_req` (
   `requester_id` integer NOT NULL,
   `owner_id` integer NOT NULL,
   `borrow_dur` integer NOT NULL COMMENT 'Integer because it will be specified in days',
-  `creation_date` timestamp NOT NULL, # Date for when the request was made,
+  `creation_date` timestamp NOT NULL default NOW(), # Date for when the request was made,
   `reason` varchar(255) NOT NULL # Reason for the borrow request
 );
 
@@ -89,7 +90,10 @@ CREATE TABLE IF NOT EXISTS `notification` (
   `notification_id` integer PRIMARY KEY AUTO_INCREMENT, 
   `user_id` integer NOT NULL, # User who is to receive this notification
   `notification` varchar(255) NOT NULL,
-  `is_read` bool
+  `is_read` bool,
+  `creation_date` timestamp NOT NULL default NOW(), # Date for when the notification was made
+  `return_date` timestamp default null,
+  `item_id` integer default null, # item that is being borrowed
 );
 
 # Table to implement a many to many relation between categories and items in borrow table
@@ -104,6 +108,15 @@ CREATE TABLE IF NOT EXISTS `trade_category` (
   `category_id` integer,
   `item_id` integer,
   PRIMARY KEY (`category_id`, `item_id`)
+);
+
+CREATE TABLE IF NOT EXISTS borrowable_item_durations (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `item_id` INT NOT NULL,
+    `duration_days` INT NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES borrowable_items(item_id) ON DELETE CASCADE,
+    INDEX idx_item_id (item_id)
 );
 
 # Adding comments to the tables
@@ -133,11 +146,11 @@ ALTER TABLE `trade_category` COMMENT = 'To implement the many-to-many relation b
 
 # many to many relation between items in the borrow table and the categories
 ALTER TABLE `borrow_category` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`); 
-ALTER TABLE `borrow_category` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`);
+ALTER TABLE `borrow_category` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`) ON DELETE CASCADE;
 
 # many to many relation between items in the trade table and the categories
 ALTER TABLE `trade_category` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
-ALTER TABLE `trade_category` ADD FOREIGN KEY (`item_id`) REFERENCES `tradeable_items` (`item_id`);
+ALTER TABLE `trade_category` ADD FOREIGN KEY (`item_id`) REFERENCES `tradeable_items` (`item_id`) ON DELETE CASCADE;
 
 # one to many relation between users and the reviews they received
 ALTER TABLE `user_review` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`cms_id`);
@@ -152,10 +165,10 @@ ALTER TABLE `trades` ADD FOREIGN KEY (`requester_id`) REFERENCES `users` (`cms_i
 ALTER TABLE `trades` ADD FOREIGN KEY (`owner_id`) REFERENCES `users` (`cms_id`);
 
 # one to many relation between the tradeable items in the tradeable_items table and the offers that are being made to trade them by the owner
-ALTER TABLE `trades` ADD FOREIGN KEY (`offered_item`) REFERENCES `tradeable_items` (`item_id`);
+ALTER TABLE `trades` ADD FOREIGN KEY (`offered_item`) REFERENCES `tradeable_items` (`item_id`) ON DELETE CASCADE;
 
 # one to many relation between the tradeable items in the tradeable_items table and the requests that are being to exchange them to the owner
-ALTER TABLE `trades` ADD FOREIGN KEY (`requested_id`) REFERENCES `tradeable_items` (`item_id`);
+ALTER TABLE `trades` ADD FOREIGN KEY (`requested_id`) REFERENCES `tradeable_items` (`item_id`) ON DELETE CASCADE;
 
 # one to many relation between the users and the borrow requests that they are making
 ALTER TABLE `borrow_req` ADD FOREIGN KEY (`requester_id`) REFERENCES `users` (`cms_id`);
@@ -170,7 +183,7 @@ ALTER TABLE `tradeable_items` ADD FOREIGN KEY (`owner_id`) REFERENCES `users` (`
 ALTER TABLE `borrowable_items` ADD FOREIGN KEY (`owner_id`) REFERENCES `users` (`cms_id`);
 
 # one to many relation between borrowable items and the feedback those items received
-ALTER TABLE `item_feedback` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`);
+ALTER TABLE `item_feedback` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`) ON DELETE CASCADE;
 
 # one to many relation between users and the items they reviewed
 ALTER TABLE `item_feedback` ADD FOREIGN KEY (`reviewer_id`) REFERENCES `users` (`cms_id`);
@@ -179,4 +192,4 @@ ALTER TABLE `item_feedback` ADD FOREIGN KEY (`reviewer_id`) REFERENCES `users` (
 ALTER TABLE `notification` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`cms_id`);
 
 # one to many relation between the borrowable items and the requests that are made for those items
-ALTER TABLE `borrow_req` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`);
+ALTER TABLE `borrow_req` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`) ON DELETE CASCADE;

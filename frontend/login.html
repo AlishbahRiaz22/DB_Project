@@ -744,6 +744,7 @@
         alert("Invalid credentials. Please try again.");
       } else {
         window.location.href = "index.html"; // Redirect to home page on success   
+        window.localStorage.setItem("loggedIn", "true"); // Set login status in local storage
       }
     }
     
