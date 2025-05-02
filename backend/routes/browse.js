@@ -56,7 +56,7 @@ routerBrowse.post('/', (req, res, next) => {
         }
         else if (item_type === 'tradable') {
             // The query to fetch tradable items from the database along with their categories and owners where t.item_id = item_id
-            const que_trade = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status,   item_description, token_val
+            const que_trade = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status,   item_description
                 FROM     tradeable_items t
                 JOIN users u ON t.owner_id = u.cms_id
                 LEFT JOIN trade_category Toc ON t.item_id = Toc.item_id
@@ -71,7 +71,7 @@ routerBrowse.post('/', (req, res, next) => {
                 const relatedItems = result_trade[0].category_name;
 
                 // The query to fetch the items that have the same category
-                const que_trade_cat = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status, item_description, token_val
+                const que_trade_cat = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status, item_description
                     FROM tradeable_items t
                     JOIN users u ON t.owner_id = u.cms_id
                     LEFT JOIN trade_category Toc ON t.item_id = Toc.item_id
@@ -113,7 +113,7 @@ routerBrowse.get('/', (req, res, next) => {
     LEFT JOIN category c ON c.category_id = Boc.category_id;`;
 
     // The query to fetch tradable items from the database along with their categories and owners
-    const que_trade = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status, item_description, token_val
+    const que_trade = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status, item_description
     FROM tradeable_items t
     JOIN users u ON t.owner_id = u.cms_id
     LEFT JOIN trade_category Toc ON t.item_id = Toc.item_id

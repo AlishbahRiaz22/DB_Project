@@ -485,7 +485,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-star"></i>
-                        <span>Token Value: ${data.itemDetails[0].token_val}</span>
+                        <span>Excellent Condition</span>
                     </div>
                 </div>
 
@@ -695,7 +695,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         offered_item_id: offeredItemId,
                         reason: tradeReason,
                         owner_id: data.itemDetails[0].cms_id,
-                        token_val: data.itemDetails[0].token_val
                     })
                 });
                 

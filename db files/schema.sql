@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) UNIQUE NOT NULL, # Users username for to be displayed to other users
   `password` varchar(255) UNIQUE NOT NULL, 
   `email` varchar(255) UNIQUE NOT NULL,
-  `phone` varchar(255) UNIQUE NOT NULL,
-  `tokens` integer default 0
+  `phone` varchar(255) UNIQUE NOT NULL
 );
 
 # Creating the tradeable items table that stores the items that are up for trade
@@ -21,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `tradeable_items` (
   `owner_id` integer NOT NULL, # Reference to the user who wants to trade this item
   `image_url` varchar(255) UNIQUE, 
   `status` bool NOT NULL, # true for available and false for traded
-  `item_description` varchar(255) NOT NULL, 
-  `token_val` integer NOT NULL # Items can only be traded with other items of equal token val
+  `item_description` varchar(255) NOT NULL,
+  `creation_date` timestamp NOT NULL default NOW()
 );
 
 # Creating the table that stores the diff categories that items may belong to
@@ -41,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `borrowable_items` (
   `image_url` varchar(500) UNIQUE,
   `status` bool NOT NULL, # true for available and false for can be borrowed
   `item_description` varchar(255) NOT NULL,
-  `creation_date` timestamp NOT NULL default NOW(), # Date for when the item was added to the database
+  `creation_date` timestamp NOT NULL default NOW() # Date for when the item was added to the database
 );
 
 # Creating the table that stores the trade requests
@@ -93,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `notification` (
   `is_read` bool,
   `creation_date` timestamp NOT NULL default NOW(), # Date for when the notification was made
   `return_date` timestamp default null,
-  `item_id` integer default null, # item that is being borrowed
+  `item_id` integer default null # item that is being borrowed
 );
 
 # Table to implement a many to many relation between categories and items in borrow table
@@ -110,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `trade_category` (
   PRIMARY KEY (`category_id`, `item_id`)
 );
 
-CREATE TABLE IF NOT EXISTS borrowable_item_durations (
+CREATE TABLE IF NOT EXISTS `borrowable_item_durations` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `item_id` INT NOT NULL,
     `duration_days` INT NOT NULL,
@@ -193,3 +192,79 @@ ALTER TABLE `notification` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`cms_
 
 # one to many relation between the borrowable items and the requests that are made for those items
 ALTER TABLE `borrow_req` ADD FOREIGN KEY (`item_id`) REFERENCES `borrowable_items` (`item_id`) ON DELETE CASCADE;
+
+DELIMITER $$
+
+CREATE PROCEDURE generate_overdue_notifications()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE n_user_id INT;
+    DECLARE n_item_id INT;
+    DECLARE n_return_date DATE;
+
+    -- Cursor to find overdue items
+    DECLARE cur CURSOR FOR
+        SELECT user_id, item_id, return_date
+        FROM notification
+        WHERE return_date IS NOT NULL
+          AND return_date <= CURDATE();  -- Overdue items
+
+    -- Declare a handler to exit the loop when no more rows are found
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO n_user_id, n_item_id, n_return_date;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Avoid creating duplicate overdue notifications for the same item/user/return_date
+        IF NOT EXISTS (
+            SELECT 1 FROM notification
+            WHERE user_id = n_user_id
+              AND item_id = n_item_id
+              AND return_date = n_return_date
+              AND notification LIKE '%overdue%'
+        ) THEN
+            -- Insert a new notification for overdue item
+            INSERT INTO notification (
+                user_id,
+                item_id,
+                return_date,
+                notification,
+                is_read,
+                creation_date
+            )
+            VALUES (
+                n_user_id,
+                null,
+                null,
+                CONCAT('Item with ID ', n_item_id, ' is overdue! Due date was ', n_return_date),
+                0,
+                NOW()
+            );
+        END IF;
+
+        -- Delete rows where return_date is lesser than the current date (future return date)
+        DELETE FROM notification
+        WHERE return_date <= CURDATE() AND item_id = n_item_id AND user_id = n_user_id;
+
+        UPDATE borrowable_items
+        SET status = 1
+        WHERE item_id = n_item_id AND status = 0; -- Mark the item as available for borrowing
+
+    END LOOP;
+
+    CLOSE cur;
+END$$
+
+DELIMITER ;
+
+CREATE EVENT IF NOT EXISTS event_generate_overdue_notifications
+ON SCHEDULE EVERY 1 DAY
+DO
+CALL generate_overdue_notifications();
+
+SET GLOBAL event_scheduler = ON;

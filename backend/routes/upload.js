@@ -21,7 +21,7 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { name, description, type, durations, status, tokenValue } = req.body;
+    const { name, description, type, durations, status } = req.body;
     const imageUrl = req.file ? `./resources/images/uploads/${req.file.filename}` : null;
 
     if (type === 'borrow') {
@@ -111,17 +111,15 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
             });
     });
     } else if (type === 'trade') {
-        // Validate tokenValue for tradeable items
-        let parsedTokenValue = parseInt(tokenValue);
         
         if (isNaN(parsedTokenValue) || parsedTokenValue < 0) {
             return res.status(400).json({ error: 'Token value must be a positive number' });
         }
         
-        // Insert into tradeable_items table with token value
+        // Insert into tradeable_items table
         pool.query(
-            'INSERT INTO tradeable_items (item_name, owner_id, image_url, status, item_description, token_val) VALUES (?, ?, ?, ?, ?, ?)',
-            [name, user.cms_id, imageUrl, status === 'available', description, parsedTokenValue],
+            'INSERT INTO tradeable_items (item_name, owner_id, image_url, status, item_description) VALUES (?, ?, ?, ?, ?)',
+            [name, user.cms_id, imageUrl, status === 'available', description],
             (err, result) => {
                 if (err) {
                     console.error("Database error:", err);

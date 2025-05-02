@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VirtualTrade - User Profile</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Add this in the <head> section if not already included -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     .profile-hero {
       height: 40vh;
@@ -403,6 +405,34 @@
       align-items: center;
       justify-content: space-between;
     }
+    .notification-bell {
+  position: relative;
+  margin: 0 15px;
+  cursor: pointer;
+  color: white;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: all 0.3s;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #f44336;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   </style>
 </head>
 <body>
@@ -449,8 +479,8 @@
             <p id="borrows-count">0</p>
           </div>
           <div class="stat-box">
-            <h3>Tokens</h3>
-            <p id="tokens-count">0</p>
+            <h3>Outgoing Requests</h3>
+            <p id="Outgoing-count">0</p>
           </div>
         </div>
       </div>
@@ -482,9 +512,9 @@
       <div class="profile-content-section">
         <div class="section-tabs">
           <div class="section-tab active" data-tab="my-listings">My Listings</div>
-          <div class="section-tab" data-tab="incoming-requests">Incoming Requests</div>
+          <div class="section-tab" data-tab="incoming-requests">Incoming Borrow Requests</div>
+          <div class="section-tab" data-tab="incoming-trade-requests">Incoming Trade Requests</div>
           <div class="section-tab" data-tab="outgoing-requests">My Requests</div>
-          <div class="section-tab" data-tab="transaction-history">Transaction History</div>
         </div>
 
         <!-- My Listings Tab -->
@@ -515,8 +545,6 @@
           </div>
         </div>
 
-        <!-- Transaction History Tab -->
-        
       </div>
     </section>
   </main>
@@ -646,7 +674,7 @@
       async function loadUserData() {
         const userData = await checkUserLoggedIn();
         
-        console.log(userData);
+        // console.log(userData);
         if (userData) {
           // Populate user info
           document.getElementById('cms-id').value = userData.cms_id;
@@ -661,14 +689,15 @@
           document.getElementById('phone').value = userData.phone || 'Not provided';
           document.getElementById('phone').setAttribute('data-original-value', userData.phone || 'Not provided');
           
-          // Update stats
-          document.getElementById('tokens-count').textContent = userData.tokens || 0;
           
           // Load user listings
           loadUserListings();
           
-          // Load incoming requests
+          // Load incoming Borrow requests
           loadIncomingBorrowRequests();
+
+          // Load incoming Trade requests
+          loadIncomingTradeRequests();
           
           // Load outgoing requests
           loadOutgoingRequests();
@@ -678,50 +707,83 @@
         }
       }
       
-      // Function to update the navigation menu
-      function updateNavigation(isLoggedIn) {
-        const loginBtn = document.querySelector('.login-btn');
-        const signupBtn = document.querySelector('.signup-btn');
-        
-        if (isLoggedIn) {
-          // Change login button to user profile icon
-          loginBtn.textContent = "";
-          loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-          loginBtn.style.backgroundSize = "cover";
-          loginBtn.style.width = "40px";
-          loginBtn.style.height = "40px";
-          loginBtn.style.borderRadius = "50%";
-          loginBtn.style.border = "none";
-          loginBtn.style.cursor = "pointer";
-          loginBtn.style.marginRight = "10px";
-          loginBtn.style.padding = "0px";
-          loginBtn.style.backgroundColor = "transparent";
-          loginBtn.onclick = function() {
-            window.location.href = "user-profile.html";
-          };
-          
-          // Change signup button to logout
-          signupBtn.textContent = "Logout";
-          signupBtn.onclick = async function() {
-            try {
-              const response = await fetch('http://127.0.0.1:8808/logout', {
-                method: "POST",
-                credentials: 'include'
-              });
-              
-              if(response.status === 200) {
-                window.localStorage.setItem('loggedIn', 'false');
-                window.location.href = "index.html";
-              } else {
-                alert("Error logging out. Please try again.");
-              }
-            } catch (error) {
-              console.error('Logout error:', error);
-              alert("Error logging out. Please try again.");
-            }
-          };
-        }
+  
+// Update the navigation function with corrected bell icon placement
+function updateNavigation(isLoggedIn) {
+  const loginBtn = document.querySelector('.login-btn');
+  const signupBtn = document.querySelector('.signup-btn');
+  const authButtons = document.querySelector('.auth-buttons');
+  
+  if (isLoggedIn) {
+    // Add bell icon for notifications FIRST - before modifying login button
+    // Check if notification bell already exists
+    if (!document.querySelector('.notification-bell')) {
+      const bellIcon = document.createElement('div');
+      bellIcon.className = 'notification-bell';
+      bellIcon.innerHTML = '<i class="fas fa-bell"></i><span class="notification-badge" id="notification-count">0</span>';
+      bellIcon.onclick = function() {
+        window.location.href = "notification.html";
+      };
+      
+      // Insert bell icon BEFORE the login button (left side)
+      authButtons.insertBefore(bellIcon, loginBtn);
+    }
+    
+    // Now modify login button to profile icon
+    loginBtn.textContent = "";
+    loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+    loginBtn.style.backgroundSize = "cover";
+    loginBtn.style.width = "40px";
+    loginBtn.style.height = "40px";
+    loginBtn.style.borderRadius = "50%";
+    loginBtn.style.border = "none";
+    loginBtn.style.cursor = "pointer";
+    loginBtn.style.marginRight = "10px";
+    loginBtn.style.padding = "0px";
+    loginBtn.style.backgroundColor = "transparent";
+    loginBtn.onclick = function() {
+      window.location.href = "profile.html";
+    };
+    
+    // Change signup button to logout
+    signupBtn.textContent = "Logout";
+    signupBtn.onclick = async function() {
+      /* existing logout code */
+    };
+    
+    // Temporarily set a notification count for testing
+    const countElement = document.getElementById('notification-count');
+    if (countElement) {
+      countElement.textContent = '3';
+      countElement.style.display = 'flex';
+    }
+  }
+}
+
+// Add a function to load notification count
+async function loadNotificationCount() {
+  try {
+    const response = await fetch('http://127.0.0.1:8808/notifications/count', {
+      method: 'GET',
+      credentials: 'include'
+    });
+    
+    if (response.status === 200) {
+      const data = await response.json();
+      const countElement = document.getElementById('notification-count');
+      countElement.textContent = data.count;
+      
+      // Hide badge if no notifications
+      if (data.count === 0) {
+        countElement.style.display = 'none';
+      } else {
+        countElement.style.display = 'flex';
       }
+    }
+  } catch (error) {
+    console.error('Error loading notification count:', error);
+  }
+}
 
       // Load user listings
       async function loadUserListings() {
@@ -767,12 +829,12 @@
                     <h4>${item.item_name}</h4>
                     <p>${item.item_description.substring(0, 100)}${item.item_description.length > 100 ? '...' : ''}</p>
                     <div class="item-meta">
-                      <span>Type: ${(item.token_val !== null && item.token_val !== undefined) ? 'Tradable' : 'Borrowable'}</span>
-                      <span>Listed on: ${new Date(item.created_at).toLocaleDateString()}</span>
+                      <span>Type: ${(item.type !== 'borrowable') ? 'Tradable' : 'Borrowable'}</span>
+                      <span>Listed on: ${new Date(item.creation_date).toLocaleDateString()}</span>
                     </div>
                     <div class="item-status ${statusClass}">${statusText}</div>
                     <div class="item-actions">
-                      <button class="delete-btn" data-item-id="${item.id || item.item_id}" data-item-type="${(item.token_val !== null && item.token_val !== undefined) ? 'tradeable' : 'Borrowable'}" data-item-status=${statusText}>Delete Listing</button>
+                      <button class="delete-btn" data-item-id="${item.id || item.item_id}" data-item-type="${(item.type !== 'borrowable') ? 'Tradable' : 'Borrowable'}" data-item-status=${statusText}>Delete Listing</button>
                     </div>
                   </div>
                 </div>
@@ -798,8 +860,8 @@
           } else {
             container.innerHTML = `
               <div class="empty-state">
-                <h3>Error Loading Listings</h3>
-                <p>There was a problem loading your listings. Please try again later.</p>
+                <h3>No listings</h3>
+                <p>You haven't listed an item for trade or borrow yet.</p>
               </div>
             `;
           }
@@ -814,7 +876,130 @@
         }
       }
 
-      // Load incoming requests
+      // Load incoming trade requests
+      async function loadIncomingTradeRequests() {
+        try {
+          const response = await fetch('http://127.0.0.1:8808/user/incoming-requests/trade/', {
+            method: 'GET',
+            credentials: 'include'
+          });
+
+          const container = document.getElementById('incoming-trade-requests-container');
+
+          if (response.status === 200) {
+            const data = await response.json();
+
+            document.getElementById('trades-count').textContent = data.length;
+
+            if (data.length === 0) {
+              container.innerHTML = `
+                <div class="empty-state">
+                  <img src="./resources/images/inbox.png" alt="No requests">
+                  <h3>No Incoming Requests</h3>
+                  <p>You don't have any incoming trade requests.</p>
+                </div>
+              `;
+              return;
+            }
+
+            container.innerHTML = '';
+
+            data.forEach(request => {
+              container.innerHTML += `
+                <div class="request-card" data-request-id="${request.request_id}">
+                  <div class="request-header">
+                    <div class="request-title">Trade Request</div>
+                    <div class="item-status">Pending</div>
+                  </div>
+                  <div class="request-details">
+                    <div class="request-item-image">
+                      <img src="${request.image_url || './resources/images/placeholder.jpg'}" alt="${request.item_name}">
+                    </div>
+                    <div class="request-info">
+                      <p><strong>Item:</strong> ${request.item_name}</p>
+                      <p><strong>Offered Item:</strong> ${request.offered_item}</p>
+                      <p><strong>From:</strong> ${request.full_name}</p>
+                      <p><strong>Requested on:</strong> ${new Date(request.creation_date).toLocaleDateString()}</p>
+                      <p><strong>Reason: </strong> ${request.reason || 'Not provided'}</p>
+                    </div>
+                  </div>
+                  <div class="request-actions">
+                    <button class="accept-btn" data-request-id="${request.id}" data-offered-item="${request.offered_item}" data-requested-id="${request.requested_id}" data-offered-id="${request.offered_id}" data-item-name="${request.item_name}" data-requester-id="${request.requester_id}">Accept</button>
+                    <button class="decline-btn" data-requester-id="${request.requester_id}" data-request-id="${request.id}" data-item-name="${request.item_name}">Decline</button>
+                  </div>
+                </div>
+              `;
+            });
+
+            // console.log(data);
+            // Add event listeners for accept/decline buttons
+            document.querySelectorAll('.accept-btn').forEach(btn => {
+              btn.addEventListener('click', async (e) => {
+                const requestId = e.target.getAttribute('data-request-id');
+                const requesterId = e.target.getAttribute('data-requester-id');
+                
+                await handleTradeRequestAction(requestId, 'accept', e.target.getAttribute('data-item-name'), requesterId, e.target.getAttribute('data-offered-item'), e.target.getAttribute('data-requested-id'), e.target.getAttribute('data-offered-id'));
+              });
+            });
+
+            document.querySelectorAll('.decline-btn').forEach(btn => {
+              btn.addEventListener('click', async (e) => {
+                const requestId = e.target.getAttribute('data-request-id');
+
+                await handleTradeRequestAction(requestId, 'decline', e.target.getAttribute('data-item-name'), e.target.getAttribute('data-requester-id'));
+              });
+            });
+          } else {
+            container.innerHTML = `
+              <div class="empty-state">
+                <h3>No Incoming Trade Requests</h3>
+                <p>You have no incoming trade request.</p>
+              </div>
+            `;
+          }
+        }
+        catch (error) {
+          console.error('Error loading incoming trade requests:', error);
+          document.getElementById('incoming-trade-requests-container').innerHTML = `
+            <div class="empty-state">
+              <h3>Error Loading Requests</h3>
+              <p>There was a problem connecting to the server. Please try again later.</p>
+            </div>
+          `;
+        }
+      }
+
+      // Function to handle request actions (accept/decline)
+      async function handleTradeRequestAction(requestId, action, itemName, requesterId, offeredItem = null, requestedId = null, offeredId = null) {
+        const payload = {
+          requestId: requestId,
+          action: action,
+          itemName: itemName,
+          offeredItem: offeredItem,
+          requesterId: requesterId,
+          requestedId: requestedId,
+          offeredId: offeredId
+        };
+
+        const response = await fetch('http://127.0.0.1:8808/requests/trade/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify(payload)
+        });
+
+        if (response.status === 200) {
+          alert(`Trade request ${action}ed successfully.`);
+          loadIncomingTradeRequests();
+        } else {
+          const errorData = await response.json();
+          alert(`Failed to ${action} trade request: ${errorData.error || 'Unknown error'}`);
+        }
+      }
+
+      // Load incoming borrow requests
       async function loadIncomingBorrowRequests() {
         try {
           const response = await fetch('http://127.0.0.1:8808/user/incoming-requests/borrow/', {
@@ -835,7 +1020,7 @@
                 <div class="empty-state">
                   <img src="./resources/images/inbox.png" alt="No requests">
                   <h3>No Incoming Requests</h3>
-                  <p>You don't have any incoming trade or borrow requests.</p>
+                  <p>You don't have any incoming borrow requests.</p>
                 </div>
               `;
               return;
@@ -853,7 +1038,7 @@
                   </div>
                   <div class="request-details">
                     <div class="request-item-image">
-                      <img src="${request.item_url || './resources/images/placeholder.jpg'}" alt="${request.item_name}">
+                      <img src="${request.image_url || './resources/images/placeholder.jpg'}" alt="${request.item_name}">
                     </div>
                     <div class="request-info">
                       <p><strong>Item:</strong> ${request.item_name}</p>
@@ -896,7 +1081,7 @@
             container.innerHTML = `
               <div class="empty-state">
                 <h3>No Incoming Borrow Requests</h3>
-                <p>There was a problem loading your incoming requests. Please try again later.</p>
+                <p>You have no incoming borrow request.</p>
               </div>
             `;
           }
@@ -924,7 +1109,8 @@
           if (response.status === 200) {
             const data = await response.json();
             
-            console.log(data);
+            document.getElementById('Outgoing-count').textContent = data.length;
+            // console.log(data);
             if (data.length === 0) {
               container.innerHTML = `
                 <div class="empty-state">
@@ -955,7 +1141,6 @@
                       <p><strong>Owner:</strong> ${request.username}</p>
                       <p><strong>Requested on:</strong> ${new Date(request.creation_date).toLocaleDateString()}</p>
                       ${(request.borrow_dur !== null && request.borrow_dur !== undefined) ? `<p><strong>Duration:</strong> ${request.borrow_dur} days</p>` : ''}
-                      ${!(request.borrow_dur !== null && request.borrow_dur !== undefined) ? `<p><strong>Tokens Offered:</strong> ${request.token_val}</p>` : ''}
                       <p><strong>Reason:</strong> ${request.reason}</p>
                     </div>
                   </div>
@@ -1073,6 +1258,10 @@
           if (input.id !== 'cms-id') {
             input.disabled = false;
           }
+
+          if (input.id === 'password') {
+            input.value = ''; // Clear password field for editing
+          }
         });
         
         // Show update and cancel buttons, hide edit button
@@ -1094,67 +1283,241 @@
         editButton.style.display = 'inline-block';
       });
 
-      updateButton.addEventListener('click', async () => {
-        try {
-          // Prepare updated user data
-          const userData = {
-            name: document.getElementById('full-name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-          };
-          
-          // Check if password was changed (not just asterisks)
-          const password = document.getElementById('password').value;
-          if (password !== '********') {
-            userData.password = password;
-          }
-          
-          // Send update request
-          const response = await fetch('http://127.0.0.1:8808/user/update', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(userData)
-          });
-          
-          if (response.status === 200) {
-            // Update was successful
-            alert('Profile updated successfully!');
-            
-            // Update data-original-value attributes
-            Object.keys(userData).forEach(key => {
-              const input = document.getElementById(key === 'name' ? 'full-name' : key);
-              if (input && key !== 'password') {
-                input.setAttribute('data-original-value', userData[key]);
-              }
-            });
-            
-            // If password was changed, update the password field
-            if (userData.password) {
-              document.getElementById('password').value = '********';
-              document.getElementById('password').setAttribute('data-original-value', '********');
-            }
-            
-            // Disable fields
-            profileFields.forEach(input => {
-              input.disabled = true;
-            });
-            
-            // Hide update and cancel buttons, show edit button
-            updateButton.style.display = 'none';
-            cancelButton.style.display = 'none';
-            editButton.style.display = 'inline-block';
-          } else {
-            const errorData = await response.json();
-            alert(`Error updating profile: ${errorData.error || 'Something went wrong'}`);
-          }
-        } catch (error) {
-          console.error('Error updating profile:', error);
-          alert('Failed to update profile. Please try again later.');
+      // Add these validation functions after your existing listeners
+// ===== Validation Functions =====
+function validateName(name) {
+  if (name.trim() === '') {
+    return { valid: false, message: 'Name cannot be empty' };
+  }
+  if (name.length < 3) {
+    return { valid: false, message: 'Name must be at least 3 characters long' };
+  }
+  if (!/^[A-Za-z\s.'-]+$/.test(name)) {
+    return { valid: false, message: 'Name can only contain letters, spaces, and characters (\'.-, \')' };
+  }
+  return { valid: true };
+}
+
+function validateEmail(email) {
+  if (email.trim() === '') {
+    return { valid: false, message: 'Email cannot be empty' };
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { valid: false, message: 'Please enter a valid email address' };
+  }
+  return { valid: true };
+}
+
+function validatePhone(phone) {
+  if (phone.trim() === '' || phone === 'Not provided') {
+    return { valid: true }; // Phone is optional
+  }
+  // Allow various phone formats with country codes, dashes, etc.
+  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,9}$/;
+  if (!phoneRegex.test(phone)) {
+    return { valid: false, message: 'Please enter a valid phone number' };
+  }
+  return { valid: true };
+}
+
+function validatePassword(password) {
+  if (password === '********') {
+    return { valid: true }; // Password unchanged
+  }
+  if (password.length < 8) {
+    return { valid: false, message: 'Password must be at least 8 characters long' };
+  }
+  if (!/[A-Z]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one uppercase letter' };
+  }
+  if (!/[a-z]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one lowercase letter' };
+  }
+  if (!/[0-9]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one number' };
+  }
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    return { valid: false, message: 'Password must contain at least one special character' };
+  }
+  return { valid: true };
+}
+
+// Function to show validation errors
+function showValidationError(inputElement, message) {
+  // Remove any existing error messages
+  const existingError = inputElement.parentElement.querySelector('.validation-error');
+  if (existingError) {
+    existingError.remove();
+  }
+  
+  // Create error message element
+  const errorElement = document.createElement('div');
+  errorElement.className = 'validation-error';
+  errorElement.textContent = message;
+  errorElement.style.color = 'red';
+  errorElement.style.fontSize = '0.8rem';
+  errorElement.style.marginTop = '-10px';
+  errorElement.style.marginBottom = '10px';
+  
+  // Add error styling to input
+  inputElement.style.borderColor = 'red';
+  
+  // Insert error message after input
+  inputElement.parentElement.insertBefore(errorElement, inputElement.nextSibling);
+}
+
+// Function to clear validation errors
+function clearValidationError(inputElement) {
+  const existingError = inputElement.parentElement.querySelector('.validation-error');
+  if (existingError) {
+    existingError.remove();
+  }
+  inputElement.style.borderColor = '';
+}
+
+// Add input event listeners for real-time validation
+document.getElementById('full-name').addEventListener('input', function() {
+  const result = validateName(this.value);
+  if (!result.valid) {
+    showValidationError(this, result.message);
+  } else {
+    clearValidationError(this);
+  }
+});
+
+document.getElementById('email').addEventListener('input', function() {
+  const result = validateEmail(this.value);
+  if (!result.valid) {
+    showValidationError(this, result.message);
+  } else {
+    clearValidationError(this);
+  }
+});
+
+document.getElementById('phone').addEventListener('input', function() {
+  const result = validatePhone(this.value);
+  if (!result.valid) {
+    showValidationError(this, result.message);
+  } else {
+    clearValidationError(this);
+  }
+});
+
+document.getElementById('password').addEventListener('input', function() {
+  const result = validatePassword(this.value);
+  if (!result.valid) {
+    showValidationError(this, result.message);
+  } else {
+    clearValidationError(this);
+  }
+});
+
+// Update the update button click handler to include validation
+updateButton.addEventListener('click', async () => {
+  try {
+    // Get input values
+    const fullName = document.getElementById('full-name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+    const cmsId = document.getElementById('cms-id').value;
+    
+    // Validate all fields
+    const nameValidation = validateName(fullName);
+    const emailValidation = validateEmail(email);
+    const phoneValidation = validatePhone(phone);
+    const passwordValidation = validatePassword(password);
+    
+    // Clear previous errors
+    clearValidationError(document.getElementById('full-name'));
+    clearValidationError(document.getElementById('email'));
+    clearValidationError(document.getElementById('phone'));
+    clearValidationError(document.getElementById('password'));
+    
+    // Check if there are any validation errors
+    let hasErrors = false;
+    
+    if (!nameValidation.valid) {
+      showValidationError(document.getElementById('full-name'), nameValidation.message);
+      hasErrors = true;
+    }
+    
+    if (!emailValidation.valid) {
+      showValidationError(document.getElementById('email'), emailValidation.message);
+      hasErrors = true;
+    }
+    
+    if (!phoneValidation.valid) {
+      showValidationError(document.getElementById('phone'), phoneValidation.message);
+      hasErrors = true;
+    }
+    
+    if (!passwordValidation.valid) {
+      showValidationError(document.getElementById('password'), passwordValidation.message);
+      hasErrors = true;
+    }
+    
+    // If there are validation errors, stop form submission
+    if (hasErrors) {
+      return;
+    }
+    
+    // Prepare updated user data
+    const userData = {
+      name: fullName,
+      email: email,
+      phone: phone === 'Not provided' ? '' : phone,
+      cms_id: cmsId,
+      password: password
+    };
+    
+    // Send update request
+    const response = await fetch('http://127.0.0.1:8808/signup/update/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(userData)
+    });
+    
+    if (response.status === 200) {
+      // Update was successful
+      alert('Profile updated successfully!');
+      
+      // Update data-original-value attributes
+      Object.keys(userData).forEach(key => {
+        const input = document.getElementById(key === 'name' ? 'full-name' : key);
+        if (input && key !== 'password') {
+          input.setAttribute('data-original-value', userData[key]);
         }
       });
+      
+      // If password was changed, update the password field
+      if (userData.password) {
+        document.getElementById('password').value = '********';
+        document.getElementById('password').setAttribute('data-original-value', '********');
+      }
+      
+      // Disable fields
+      profileFields.forEach(input => {
+        input.disabled = true;
+      });
+      
+      // Hide update and cancel buttons, show edit button
+      updateButton.style.display = 'none';
+      cancelButton.style.display = 'none';
+      editButton.style.display = 'inline-block';
+    } else {
+      const errorData = await response.json();
+      alert(`Error updating profile: ${errorData.error || 'Something went wrong'}`);
+    }
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    alert('Failed to update profile. Please try again later.');
+  }
+});
 
       // Initialize the page
       loadUserData();

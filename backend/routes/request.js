@@ -96,4 +96,87 @@ routerRequest.post('/:action/:request_id', (req, res, next) => {
     }
 });
 
+routerRequest.post('/trade', (req, res, next) => {
+    const action = req.body.action; // Extracting the action from the request body
+    const requestId = req.body.requestId; // Extracting the request ID from the request body
+    const item_name = req.body.itemName; // Extracting the item name from the request body
+    const requester_id = req.body.requesterId; // Extracting the requester ID from the request body
+
+    const user = req.session.user; // Getting the user from the session
+
+    if (user === null || user === undefined) { // If the user is not logged in
+        return res.status(401).json({ error: 'Unauthorized' }); // Send a 401 Unauthorized response
+    }
+
+    if (action === 'accept') { // If the action is to accept the trade request
+        const offered_id = req.body.offeredId; // Extracting the offered ID from the request body
+        const offered_item_name = req.body.offeredItem; // Extracting the offered item name from the request body
+        const requested_id = req.body.requestedId; // Extracting the requested ID from the request body
+
+        // Debugging
+        // console.log("Action:", action);
+        // console.log("Request ID:", requestId);
+        // console.log("Item Name:", item_name);
+        // console.log("Requester ID:", requester_id);
+        // console.log("Offered ID:", offered_id);
+        // console.log("Offered Item Name:", offered_item_name);
+        // console.log("Requested ID:", requested_id);
+        // console.log("User ID:", user.cms_id);
+
+        pool.query("DELETE FROM trades WHERE trade_id = ?", [requestId], (err, result) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+
+            pool.query('SELECT requester_id FROM trades WHERE requested_id = ? OR requested_id = ?', [offered_id, requested_id], (err, result) => {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+                if (result.length > 0) {
+                    const requesterIds = result.map(row => row.requester_id); // Extracting all requester IDs for the item
+                    const notificationPromises = requesterIds.map(requesterId => {
+                        return pool.query('INSERT INTO notification (user_id, notification, is_read) VALUES (?, ?, ?)', [requesterId, `The trade request for the item "${item_name}/${offered_item_name}" has been accepted. Cannot be traded for now.`, 0]);
+                    });
+                    return Promise.all(notificationPromises);
+                }
+            });
+
+            pool.query('DELETE FROM tradeable_items WHERE item_id = ? OR item_id = ?', [offered_id, requested_id], (err, result) => {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+
+                pool.query('INSERT INTO notification (user_id, notification, is_read) VALUES (?, ?, ?)', [requester_id, `Your trade request for the item "${item_name}" has been accepted. Contact the owner at ${req.session.user.phone}`, 0], (err, result) => {
+                    if (err) {
+                        console.error("Database error:", err);
+                        return res.status(500).json({ error: 'Database error' });
+                    }
+                });
+
+                return res.status(200).json({ message: 'Trade request accepted successfully' });
+            });
+        });
+    }
+    else if (action === 'decline') { // If the action is to decline the trade request
+        pool.query('DELETE FROM trades WHERE trade_id = ?', [requestId], (err, result) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+
+            pool.query('INSERT INTO notification (user_id, notification, is_read) VALUES (?, ?, ?)', [requester_id, `Your trade request for the item "${item_name}" has been declined`, 0], (err, result) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+            });
+
+            return res.status(200).json({ message: 'Trade request declined successfully' });    
+        });
+    }
+});
+
 exports.routerRequest = routerRequest; // Exporting the router for use in other files

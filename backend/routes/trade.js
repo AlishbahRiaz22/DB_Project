@@ -6,7 +6,6 @@ routerTrade.post('/', (req, res) => {
     const offered_item_id = req.body.offered_item_id;
     const reason = req.body.reason;
     const owner_id = req.body.owner_id;
-    const token_val = req.body.token_val; // Token value for the item being offered
 
     const user = req.session.user;
     if (!user) {
@@ -15,10 +14,6 @@ routerTrade.post('/', (req, res) => {
 
     if (user.cms_id === owner_id) {
         return res.status(400).json({ error: 'You cannot trade with yourself' });
-    }
-
-    if (user.tokens < token_val) {
-        return res.status(400).json({ error: 'You do not have enough tokens to trade' });
     }
 
     // Check if the desired item is available and not owned by the requester
@@ -71,7 +66,7 @@ routerTrade.get('/userItems', (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    pool.query('SELECT t.item_id, t.owner_id, t.status, t.token_val, t.image_url, c.category_name FROM tradeable_items t LEFT JOIN trade_category tc ON t.item_id = tc.item_id LEFT JOIN category c ON c.category_id = tc.category_id WHERE owner_id = ? and status = 1;', [user.cms_id], (err, results) => {
+    pool.query('SELECT t.item_id, t.item_name, t.owner_id, t.status, t.image_url, c.category_name FROM tradeable_items t LEFT JOIN trade_category tc ON t.item_id = tc.item_id LEFT JOIN category c ON c.category_id = tc.category_id WHERE owner_id = ? and status = 1;', [user.cms_id], (err, results) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: 'Database error' });

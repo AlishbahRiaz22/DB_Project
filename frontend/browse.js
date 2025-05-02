@@ -103,7 +103,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             itemElement.innerHTML = `
               <div class="item-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'});">
                 <div class="item-owner">By ${item.username}</div>
-                <div class="item-owner item-token">Token: ${item.token_val}</div>
             </div>
             <div class="item-details">
                 <h3>${item.item_name}</h3>
@@ -157,7 +156,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             itemElement.innerHTML = `
               <div class="item-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'});">
                 <div class="item-owner">By ${item.username}</div>
-                <div class="item-owner item-token">Token: ${item.token_val}</div>
             </div>
             <div class="item-details">
                 <h3>${item.item_name}</h3>

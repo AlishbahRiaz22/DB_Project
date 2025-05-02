@@ -51,14 +51,17 @@ routerUser.get('/listings', (req, res, next) => {
                 console.error('Error fetching user listings:', error); // Logging any errors that occur during the query
                 return res.status(500).json({ error: 'Internal server error' }); // Sending a 500 response if an error occurs
             }
-            console.log('User listings:', results_bor, results_trade); // Logging the user listings
+            // console.log('User listings:', results_bor, results_trade); // Logging the user listings
+            results_bor.forEach(item => { // Iterating through the borrowable items
+                item.type = 'borrowable'; // Setting the type of the item to 'borrowable'
+            });
               
             results = [...results_bor, ...results_trade]; // Merging the results from both queries
             if (results.length === 0) {
                 return res.status(404).json({ error: 'No listings found' }); // Sending a 404 response if no listings are found
             }
             
-            res.json(results); // Sending the user listings as a JSON response
+            res.status(200).json(results); // Sending the user listings as a JSON response
         });
     }); 
 }); // Defining a GET route to fetch user listings
@@ -164,7 +167,7 @@ routerUser.get('/outgoing-requests', (req, res) => {
 
         // console.log('Outgoing requests:', results); // Logging the outgoing requests
         
-        pool.query('SELECT tr.requested_id AS item_id, tr.trade_id AS id, tr.creation_date, reason, token_val, username, item_name, image_url FROM trades tr JOIN users u ON u.cms_id = tr.owner_id JOIN tradeable_items ti ON ti.item_id = tr.requested_id WHERE requester_id = ?', [userId], (error, results_trade) => { // Querying the database for outgoing requests
+        pool.query('SELECT tr.requested_id AS item_id, tr.trade_id AS id, tr.creation_date, reason, username, item_name, image_url FROM trades tr JOIN users u ON u.cms_id = tr.owner_id JOIN tradeable_items ti ON ti.item_id = tr.requested_id WHERE requester_id = ?', [userId], (error, results_trade) => { // Querying the database for outgoing requests
             if (error) {
                 console.log("HELLO");
                 console.error('Error fetching outgoing requests:', error); // Logging any errors that occur during the query
@@ -214,5 +217,27 @@ routerUser.delete('/outgoing-requests/:type/cancel/:request_id', (req, res) => {
         res.status(200).json({ message: 'Request cancelled successfully' }); // Sending a success message as a JSON response
     });
 }); // Defining a DELETE route to cancel outgoing requests
+
+routerUser.get('/incoming-requests/trade', (req, res) => {
+    const userId = req.session.user.cms_id; // Retrieving the user ID from the session
+
+    if (!userId) {
+        return res.status(401).json({ error: 'Unauthorized' }); // Sending a 401 response if user ID is not found in the session
+    }
+
+    // Query to fetch incoming trade requests from the database
+    pool.query('SELECT tr.trade_id AS id, tr.offered_item AS offered_id, tr.requested_id, tr.creation_date, reason, ti.item_name, ti2.image_url, tr.requester_id, u.full_name, tr.requested_id AS item_id, ti2.item_name AS offered_item FROM trades tr JOIN tradeable_items ti ON ti.item_id = tr.requested_id JOIN tradeable_items ti2 ON ti2.item_id = tr.offered_item JOIN users u ON u.cms_id = tr.requester_id WHERE tr.owner_id = ?', [userId], (error, results) => { // Querying the database for incoming trade requests
+        if (error) {
+            console.error('Error fetching incoming trade requests:', error); // Logging any errors that occur during the query
+            return res.status(500).json({ error: 'Internal server error' }); // Sending a 500 response if an error occurs
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'No incoming trade requests found' }); // Sending a 404 response if no incoming trade requests are found
+        }
+
+        res.status(200).json(results); // Sending the incoming trade requests as a JSON response
+    });
+});
 
 exports.routerUser = routerUser; // Exporting the router for use in other files

@@ -1,86 +1,128 @@
--- First, let's insert categories
+USE db_project;
+
+-- Add more categories (continuing from existing ones)
 INSERT INTO `category` (`category_name`, `description`) VALUES
-('Electronics', 'Electronic devices like laptops, smartphones, and accessories'),
-('Books', 'Textbooks, novels, and other reading materials'),
-('Sports Equipment', 'Items for various sports and outdoor activities'),
-('Clothing', 'Various types of clothes, shoes, and accessories'),
-('Kitchen Appliances', 'Small appliances and tools for cooking and dining');
+('Gaming', 'Video games, board games, and gaming accessories'),
+('Outdoor Gear', 'Equipment for camping, hiking, and outdoor activities'),
+('Musical Instruments', 'Various musical instruments and equipment'),
+('Tools', 'Power tools, hand tools, and workshop equipment'),
+('Art Supplies', 'Materials for painting, drawing, and other creative activities');
 
--- Insert tradeable items
-INSERT INTO `tradeable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`, `token_val`) VALUES
-('Sony WH-1000XM4 Headphones', 123456, 'https://m.media-amazon.com/images/I/71o8Q5XJS5L._AC_SX522_.jpg', TRUE, 'Premium noise cancelling headphones with exceptional sound quality. Barely used and in excellent condition with all original accessories included.', 10),
-('MacBook Pro 2022', 234567, 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-spacegray-select-202301?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1671304673229', TRUE, 'M2 chip with 16GB RAM and 512GB SSD. Purchased 6 months ago with AppleCare+ until 2025. Perfect condition with zero scratches.', 15),
-('Harry Potter Complete Book Collection', 345678, 'https://m.media-amazon.com/images/I/71rOzy4cyAL._AC_SL1500_.jpg', TRUE, 'Complete set of all 7 Harry Potter books in hardcover. Books are in excellent condition with minimal wear. Special anniversary edition with beautiful cover art.', 5),
-('PlayStation 5 Console', 456789, 'https://m.media-amazon.com/images/I/51QKZfyi-dL._AC_SL1500_.jpg', TRUE, 'PS5 console with one DualSense controller. Includes several digital games already installed on the system. Only used for a few months.', 10),
-('Nike Air Jordan 1', 567890, 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/7c2fff30-0cf4-4bef-a2b2-5114092310f7/air-jordan-1-mid-shoes-SQf7DM.png', TRUE, 'Air Jordan 1 Mid, size 10, black and red colorway. Worn only twice, practically new. Original box and extra laces included.', 5),
-('Canon EOS R5 Camera', 123456, 'https://m.media-amazon.com/images/I/81depb5FkhL._AC_SL1500_.jpg', TRUE, '45MP full-frame mirrorless camera with 8K video capability. Includes 24-105mm lens, two batteries, and camera bag. Purchased last year with low shutter count.', 10),
-('Nintendo Switch OLED', 345678, 'https://m.media-amazon.com/images/I/61lYIKPieDL._SL1500_.jpg', TRUE, 'White Nintendo Switch OLED model with improved screen and kickstand. Includes all original accessories and three physical games. Protected with screen protector since day one.', 8),
-('iPad Pro 12.9" (2023)', 567890, 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-finish-select-202210-11inch-space-gray-wifi?wid=5120&hei=2880&fmt=p-jpg&qlt=95&.v=1664411207212', TRUE, 'Latest M2 iPad Pro with 256GB storage and WiFi+Cellular. Includes Apple Pencil 2 and Magic Keyboard. Still under warranty for 9 more months.', 15),
-('Bose QuietComfort Earbuds', 234567, 'https://m.media-amazon.com/images/I/51G5JGP1+WL._AC_SL1500_.jpg', TRUE, 'Wireless noise-cancelling earbuds with amazing sound quality. Includes all ear tip sizes and charging case. Battery life still excellent with minimal usage.', 5),
-('DJI Mini 3 Pro Drone', 456789, 'https://m.media-amazon.com/images/I/61Y1P6uIRFL._AC_SL1500_.jpg', TRUE, 'Lightweight drone with 4K camera and obstacle avoidance. Includes extra batteries, propellers, and carrying case. Perfect for beginners or experienced pilots.', 10);
+-- Add more tradeable items
+INSERT INTO `tradeable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`) VALUES
+('Fender Stratocaster Guitar', 123456, 'https://example.com/stratocaster.jpg', TRUE, 'American-made Stratocaster in sunburst finish. Includes hard case and extra strings. Great condition with minimal playing wear.'),
+('Samsung Galaxy S24 Ultra', 234567, 'https://example.com/galaxy-s24.jpg', TRUE, 'Latest Samsung flagship phone with 512GB storage. Includes original box, charger, and two cases. Under warranty until 2026.'),
+('Dyson V15 Vacuum', 345678, 'https://example.com/dyson-v15.jpg', TRUE, 'Cordless vacuum with powerful suction and all attachments. Barely used as it was a duplicate gift.'),
+('Lego Star Wars Millennium Falcon', 456789, 'https://example.com/lego-falcon.jpg', TRUE, 'Ultimate Collector Series set #75192. Brand new in sealed box. Limited edition item that\'s now hard to find.'),
+('Trek Mountain Bike', 567890, 'https://example.com/trek-bike.jpg', TRUE, 'Full suspension mountain bike with carbon frame. Size medium. Recently serviced with new tires and brakes.'),
+('Gaming PC Build', 123456, 'https://example.com/gaming-pc.jpg', TRUE, 'Custom PC with RTX 4080, i9 processor, 32GB RAM, and 2TB SSD. RGB lighting and liquid cooling. Perfect for gaming or content creation.'),
+('Patek Philippe Watch', 234567, 'https://example.com/patek-watch.jpg', TRUE, 'Genuine luxury timepiece in excellent condition. Includes box, papers, and extra links. Recently serviced by authorized dealer.'),
+('Limited Edition Sneakers', 345678, 'https://example.com/limited-sneakers.jpg', TRUE, 'Rare collaboration sneakers, size 9. Never worn, deadstock condition with original box and tags.'),
+('Espresso Machine', 456789, 'https://example.com/espresso.jpg', TRUE, 'Commercial-grade espresso machine with built-in grinder. Makes perfect coffee and has been well maintained.'),
+('Drone with 8K Camera', 567890, 'https://example.com/drone-8k.jpg', TRUE, 'Professional-grade drone with stabilized 8K camera. Includes multiple batteries and controller with screen. Perfect for aerial photography.');
 
--- Insert borrowable items
+-- Add more borrowable items
 INSERT INTO `borrowable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`) VALUES
-('Dell XPS 15 Laptop', 123456, 'https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/xps-notebooks/xps-15-9530/media-gallery/black/notebook-xps-15-9530-t-black-gallery-1.psd?fmt=png-alpha&pscan=auto&scl=1&wid=4000&hei=2500&qlt=100,0&resMode=sharp2&size=4000,2500', TRUE, 'Powerful laptop with i9 processor, 32GB RAM and 1TB SSD. Perfect for programming, design work, or gaming. Includes charger and protective case.'),
-('The Lord of the Rings Trilogy', 234567, 'https://m.media-amazon.com/images/I/71JqAUXOcvL._AC_SL1000_.jpg', TRUE, 'Hardcover illustrated edition of the complete Lord of the Rings trilogy. Beautiful collector\'s item in excellent condition with original dust jackets.'),
-('Badminton Set', 345678, 'https://m.media-amazon.com/images/I/71RYRoHL0kL._AC_SL1500_.jpg', TRUE, 'Complete set with 4 rackets, shuttlecocks, and carrying case. Professional quality rackets with good grip and balance. Perfect for recreational play.'),
-('Hiking Backpack', 456789, 'https://m.media-amazon.com/images/I/81VcN6-lXaL._AC_SL1500_.jpg', TRUE, '65L capacity backpack with multiple compartments and rain cover. Ergonomic design with padded straps and back support. Great for weekend or week-long trips.'),
-('Instant Pot Pressure Cooker', 567890, 'https://m.media-amazon.com/images/I/71pB9CIXxoL._AC_SL1500_.jpg', TRUE, '7-in-1 electric pressure cooker with various cooking modes. Perfect for quick meals, stews, rice, yogurt, and more. Includes recipe book and accessories.'),
-('GoPro Hero 11', 123456, 'https://m.media-amazon.com/images/I/61eL42FvmrL._AC_SL1500_.jpg', TRUE, 'Latest model GoPro with 5.3K video and water resistance. Includes multiple mounts and extra batteries. Perfect for capturing action and adventure footage.'),
-('Tennis Racket Set', 234567, 'https://m.media-amazon.com/images/I/71+yM5Z-TmL._AC_SL1500_.jpg', TRUE, 'Two professional Wilson tennis rackets with a tube of balls. Well-maintained with new grip tape. Suitable for beginners or intermediate players.'),
-('Yoga Mat and Blocks', 345678, 'https://m.media-amazon.com/images/I/71+aWMWpWBL._AC_SL1500_.jpg', TRUE, 'Thick, non-slip yoga mat with two foam blocks and a strap. Perfect for home practice or taking to classes. Mat is easily washable and durable.'),
-('Board Game Collection', 456789, 'https://m.media-amazon.com/images/I/91RSg9MCGtL._AC_SL1500_.jpg', TRUE, 'Collection includes Catan, Ticket to Ride, Pandemic, and Codenames. All games are complete with all pieces and instructions. Great for game nights with friends.'),
-('Camping Tent', 567890, 'https://m.media-amazon.com/images/I/81MODCeNnFL._AC_SL1500_.jpg', TRUE, '4-person waterproof tent with easy setup. Includes rainfly, stakes, and carrying bag. Perfect for family camping trips in various weather conditions.');
+('DSLR Camera with Lenses', 123456, 'https://example.com/dslr-set.jpg', TRUE, 'Nikon D850 with 24-70mm and 70-200mm lenses. Includes camera bag, tripod, and memory cards. Great for professional photography.'),
+('Electric Drill Set', 234567, 'https://example.com/drill-set.jpg', TRUE, 'DeWalt 20V drill with multiple bits and attachments. Recently purchased and barely used. Perfect for home projects.'),
+('Projector', 345678, 'https://example.com/projector.jpg', TRUE, '4K projector with 120" screen. Great for movie nights or presentations. Easy to set up and use.'),
+('Beach Umbrella and Chairs', 456789, 'https://example.com/beach-set.jpg', TRUE, 'Large beach umbrella with 4 folding chairs and cooler. Perfect for beach days or outdoor events.'),
+('Stand Mixer', 567890, 'https://example.com/stand-mixer.jpg', TRUE, 'KitchenAid Professional 600 mixer with all attachments. Great for baking projects or making pasta.'),
+('Telescope', 123456, 'https://example.com/telescope.jpg', TRUE, 'Celestron computerized telescope with tripod. Perfect for stargazing and astrophotography. Includes instructional guide.'),
+('Sewing Machine', 234567, 'https://example.com/sewing-machine.jpg', TRUE, 'Brother computerized sewing machine with multiple stitch options. Great for clothing repairs or crafting projects.'),
+('Snowboard and Boots', 345678, 'https://example.com/snowboard.jpg', TRUE, 'Burton snowboard (155cm) with bindings and size 10 boots. Perfect for beginners or intermediate riders.'),
+('Pressure Washer', 456789, 'https://example.com/pressure-washer.jpg', TRUE, '3000 PSI electric pressure washer with multiple nozzles. Great for cleaning driveways, decks, and vehicles.'),
+('Air Fryer', 567890, 'https://example.com/air-fryer.jpg', TRUE, 'Large capacity air fryer with digital controls. Perfect for healthier cooking with less oil. Includes recipe book.');
 
--- Insert category relationships for tradeable items
+-- Add durations for borrowable items
+INSERT INTO `borrowable_item_durations` (`item_id`, `duration_days`) VALUES
+(1, 3), (1, 7), -- DSLR Camera
+(2, 3), (2, 7), -- Electric Drill Set
+(3, 2), (3, 5), -- Projector
+(4, 3), (4, 7), -- Beach Umbrella
+(5, 3), (5, 7), -- Stand Mixer
+(6, 5), (6, 10), -- Telescope
+(7, 7), (7, 14), -- Sewing Machine
+(8, 7), (8, 14), -- Snowboard
+(9, 2), (9, 5), -- Pressure Washer
+(10, 3), (10, 7); -- Air Fryer
+
+-- Add category relationships for tradeable items (assuming new category IDs start at 6)
 INSERT INTO `trade_category` (`category_id`, `item_id`) VALUES
-(1, 1), -- Sony Headphones - Electronics
-(1, 2), -- MacBook Pro - Electronics
-(2, 3), -- Harry Potter Books - Books
-(1, 4), -- PlayStation 5 - Electronics
-(4, 5), -- Nike Shoes - Clothing
-(1, 6), -- Canon Camera - Electronics
-(1, 7), -- Nintendo Switch - Electronics
-(1, 8), -- iPad Pro - Electronics
-(1, 9), -- Bose Earbuds - Electronics
-(1, 10); -- DJI Drone - Electronics
+(2, 1), -- Fender Guitar - Musical Instruments
+(1, 2), -- Samsung Galaxy - Electronics
+(5, 3), -- Dyson Vacuum - Kitchen Appliances (closest category)
+(5, 4), -- Lego Star Wars - Gaming
+(3, 5), -- Trek Mountain Bike - Sports Equipment
+(1, 6), -- Gaming PC - Electronics
+(4, 7), -- Patek Philippe Watch - Clothing (as accessory)
+(4, 8), -- Limited Edition Sneakers - Clothing
+(5, 9), -- Espresso Machine - Kitchen Appliances
+(1, 10); -- Drone with 8K Camera - Electronics
 
--- Insert category relationships for borrowable items
+-- Add category relationships for borrowable items
 INSERT INTO `borrow_category` (`category_id`, `item_id`) VALUES
-(1, 1), -- Dell Laptop - Electronics
-(2, 2), -- Lord of the Rings - Books
-(3, 3), -- Badminton Set - Sports Equipment
-(3, 4), -- Hiking Backpack - Sports Equipment
-(5, 5), -- Instant Pot - Kitchen Appliances
-(1, 6), -- GoPro - Electronics
-(3, 7), -- Tennis Racket - Sports Equipment
-(3, 8), -- Yoga Mat - Sports Equipment
-(2, 9), -- Board Games - Books (could also be its own category)
-(3, 10); -- Camping Tent - Sports Equipment
+(1, 1), -- DSLR Camera - Electronics
+(2, 2), -- Electric Drill Set - Tools
+(1, 3), -- Projector - Electronics
+(3, 4), -- Beach Umbrella - Outdoor Gear
+(5, 5), -- Stand Mixer - Kitchen Appliances
+(1, 6), -- Telescope - Electronics
+(4, 7), -- Sewing Machine - Tools
+(3, 8), -- Snowboard - Sports Equipment
+(5, 9), -- Pressure Washer - Tools
+(5, 10); -- Air Fryer - Kitchen Appliances
 
--- Sample trade requests
+-- Add more trade requests
 INSERT INTO `trades` (`offered_item`, `requester_id`, `owner_id`, `requested_id`, `reason`, `creation_date`) VALUES
-(3, 345678, 456789, 4, 'I would love to trade my book collection for your PS5. Books are in excellent condition!', '2025-04-20 14:30:00'),
-(5, 567890, 123456, 1, 'My shoes for your headphones? They\'re practically new and very comfortable.', '2025-04-22 09:15:00');
+(1, 123456, 234567, 2, 'Would love to trade my guitar for your new Samsung phone. Guitar is in excellent condition and includes case.', '2025-04-24 11:20:00'),
+(3, 345678, 123456, 6, 'My Dyson vacuum for your gaming PC? The vacuum is practically new and works perfectly.', '2025-04-25 15:45:00'),
+(5, 567890, 345678, 3, 'Would you consider trading my mountain bike for your vacuum? Bike was recently serviced.', '2025-04-26 09:30:00'),
+(7, 234567, 456789, 4, 'My luxury watch for your Lego collection? The watch is genuine and comes with all documentation.', '2025-04-27 14:15:00'),
+(9, 456789, 567890, 10, 'Would love to trade my espresso machine for your drone. Machine makes perfect coffee every time!', '2025-04-28 16:40:00');
 
--- Sample borrow requests
+-- Add more borrow requests
 INSERT INTO `borrow_req` (`item_id`, `requester_id`, `owner_id`, `borrow_dur`, `creation_date`, `reason`) VALUES
-(1, 234567, 123456, 7, '2025-04-21 10:45:00', 'Need a powerful laptop for a week-long coding project. Will take good care of it.'),
-(5, 345678, 567890, 3, '2025-04-23 16:20:00', 'Would like to borrow the Instant Pot to try some new recipes for a dinner party this weekend.');
+(3, 123456, 345678, 3, '2025-04-24 10:30:00', 'Would like to borrow the badminton set for a weekend family gathering. Will return in perfect condition.'),
+(6, 567890, 123456, 5, '2025-04-25 13:15:00', 'Need the GoPro for an upcoming hiking trip. Promise to take good care of it and return promptly.'),
+(1, 345678, 123456, 7, '2025-04-26 11:45:00', 'Would love to borrow your DSLR for a wedding I\'m attending. I\'m an experienced photographer and will handle it carefully.'),
+(5, 456789, 567890, 3, '2025-04-27 09:20:00', 'Need to borrow the stand mixer for a baking project. I\'ll clean it thoroughly before returning.'),
+(6, 234567, 123456, 5, '2025-04-28 14:30:00', 'Would like to borrow the telescope for my son\'s science project. We\'ll use it responsibly.');
 
--- Sample item feedback
-INSERT INTO `item_feedback` (`item_id`, `review`, `rating`, `reviewer_id`) VALUES
-(2, 'The books were in pristine condition, exactly as described. A pleasure to read!', 9, 345678),
-(6, 'GoPro worked perfectly for my hiking trip. All the mounts were very useful!', 10, 456789);
+-- Add more item feedback
+-- Note: Fixed the creation_date field which appears required based on your schema
+INSERT INTO `item_feedback` (`item_id`, `review`, `rating`, `reviewer_id`, `creation_date`) VALUES
+(1, 'The laptop worked perfectly for my project. Battery life is excellent!', 10, 234567, '2025-04-28 15:20:00'),
+(3, 'Badminton set was in great condition with quality rackets. Perfect for our family event!', 9, 123456, '2025-04-29 11:30:00'),
+(5, 'The Instant Pot was amazing! So easy to use and made delicious meals.', 10, 345678, '2025-04-30 14:45:00'),
+(1, 'Camera and lenses were all in excellent condition. Got some amazing shots!', 10, 345678, '2025-05-01 10:15:00'),
+(5, 'Stand mixer worked perfectly for my baking project. All attachments included and in great condition.', 9, 456789, '2025-05-01 16:30:00');
 
--- Sample user reviews
+-- Add more user reviews
 INSERT INTO `user_review` (`user_id`, `review`, `rating`, `reviewer_id`) VALUES
-(123456, 'John was very responsive and the item was in excellent condition as promised.', 9, 234567),
-(345678, 'Bob was punctual and returned the item in the same condition. Would lend to him again!', 10, 567890);
+(234567, 'Sarah was prompt in communication and returned the item in perfect condition.', 10, 123456),
+(456789, 'David was respectful and took great care of the borrowed item. Would definitely lend to him again.', 9, 567890),
+(567890, 'Michael was wonderful to deal with. Transaction was smooth and he was very honest about the item condition.', 10, 234567),
+(123456, 'John is a reliable borrower who returns items on time and in good condition. Highly recommended!', 10, 345678),
+(345678, 'Robert is a pleasure to trade with. Very fair and honest in all dealings.', 9, 456789);
 
--- Sample notifications
-INSERT INTO `notification` (`user_id`, `notification`, `is_read`) VALUES
-(123456, 'You have a new trade request for your Sony Headphones.', FALSE),
-(345678, 'Your borrow request for the Instant Pot has been approved.', FALSE),
-(456789, 'Someone left a review on your item.', TRUE),
-(234567, 'Your trade offer has been accepted!', FALSE);
+-- Add more notifications
+INSERT INTO `notification` (`user_id`, `notification`, `is_read`, `creation_date`) VALUES
+(123456, 'Your item "Fender Stratocaster Guitar" has received a new trade offer.', FALSE, '2025-04-29 09:15:00'),
+(234567, 'Your borrow request for the telescope has been approved.', FALSE, '2025-04-29 14:30:00'),
+(345678, 'Someone has left feedback on your "Badminton Set".', TRUE, '2025-04-30 10:45:00'),
+(456789, 'You have a new borrow request for your "Stand Mixer".', FALSE, '2025-04-30 15:20:00'),
+(567890, 'Your item "Trek Mountain Bike" has a new trade offer.', FALSE, '2025-05-01 11:30:00'),
+(123456, 'Your borrow request for the "Snowboard and Boots" has been declined.', TRUE, '2025-05-01 14:15:00'),
+(234567, 'You have a new review from a user you traded with.', FALSE, '2025-05-01 16:45:00'),
+(345678, 'An item you borrowed is due for return in 2 days.', FALSE, '2025-05-02 09:10:00'),
+(456789, 'Your trade request has been accepted! Please arrange exchange details.', FALSE, '2025-05-02 11:30:00'),
+(567890, 'A borrowed item is now overdue. Please return it or request an extension.', FALSE, '2025-05-02 13:45:00');
+
+-- Add notification with return date for testing overdue notification procedure
+INSERT INTO `notification` (`user_id`, `notification`, `is_read`, `creation_date`, `return_date`, `item_id`) VALUES
+(123456, 'You have borrowed "Badminton Set". Please return by the due date.', FALSE, '2025-04-22 10:30:00', '2025-05-04', 3),
+(234567, 'You have borrowed "Stand Mixer". Please return by the due date.', FALSE, '2025-04-23 14:15:00', '2025-05-03', 15),
+(345678, 'You have borrowed "GoPro Hero 11". Please return by the due date.', FALSE, '2025-04-24 11:45:00', '2025-05-05', 6),
+(456789, 'You have borrowed "DSLR Camera". Please return by the due date.', FALSE, '2025-04-25 16:20:00', '2025-05-06', 11),
+(567890, 'You have borrowed "Telescope". Please return by the due date.', FALSE, '2025-04-26 09:30:00', '2025-05-07', 16);

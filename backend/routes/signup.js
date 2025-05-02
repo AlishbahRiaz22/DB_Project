@@ -24,7 +24,7 @@ routerSignUp.post("/", [check('email').isEmail().normalizeEmail(),
     , async (req, res, next) => {
     // Storing the information from the req body
     let { email, password, cms_id, phone, username, name } = req.body;
-    console.log("Sign up request body:", req.body); // Logging the request body for debugging
+    // console.log("Sign up request body:", req.body); // Logging the request body for debugging
     
     // Checking for errors during the middleware validation
     const errors = validationResult(req);
@@ -38,7 +38,43 @@ routerSignUp.post("/", [check('email').isEmail().normalizeEmail(),
     const hashedPass = await hashPassword(password);
     
     // Query String
-    const que = `INSERT INTO users VALUES (${cms_id}, \'${name}\', \'${username}\', \'${hashedPass}\', \'${email}\', \'${phone}\', 0);`;
+    const que = `INSERT INTO users VALUES (${cms_id}, \'${name}\', \'${username}\', \'${hashedPass}\', \'${email}\', \'${phone}\');`;
+    // Executing the query
+    pool.query(que, (err) => {
+        if (err) { // If mysql server returns an error 
+            console.log("Error while Querying", err);
+            res.status(400).send("Sign up failed");
+            return;
+        } else { // IF the user is created successfully
+            res.status(200).send("User created successfully");
+        }
+    });
+})
+
+// Defining the post route for the sign up requests
+routerSignUp.post("/update", [check('email').isEmail().normalizeEmail(),
+    check('name').isString().isLength({ min: 3 }).trim().escape(),
+    check('cms_id').isNumeric().isLength({ min: 6, max: 6 }).trim(),
+    check('password').isLength({ min: 6 }).trim()]
+    , async (req, res, next) => {
+    // Storing the information from the req body
+    let { email, password, cms_id, phone, name } = req.body;
+    // console.log("Sign up request body:", req.body); // Logging the request body for debugging
+    
+    // Checking for errors during the middleware validation
+    const errors = validationResult(req);
+    
+    // If there are errors, we return status 400
+    if (!errors.isEmpty()) {
+        console.log("Validation errors:", errors.array()); // Log the validation errors for debugging
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Hashing the password
+    const hashedPass = await hashPassword(password);
+    
+    // Query String
+    const que = `UPDATE users SET email = \'${email}\', full_name = \'${name}\', password = \'${hashedPass}\', phone = \'${phone}\' WHERE cms_id = ${cms_id};`;
     // Executing the query
     pool.query(que, (err) => {
         if (err) { // If mysql server returns an error 
