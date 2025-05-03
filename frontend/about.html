@@ -6,6 +6,571 @@
     <title>About Us - Virtual Trade Shop</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .about-container {
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .about-header h1 {
+            font-size: 2.8rem;
+            color: var(--organic);
+            margin-bottom: 20px;
+        }
+        
+        .about-header p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--natural);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .about-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--apricot);
+            border-radius: 3px;
+        }
+        
+        .mission-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .mission-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(215, 139, 48, 0.1), transparent 70%);
+            z-index: -1;
+        }
+        
+        .mission-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .mission-icon {
+            font-size: 2.5rem;
+            color: var(--apricot);
+            margin-bottom: 20px;
+            display: inline-block;
+            border-radius: 50%;
+            padding: 20px;
+            background: rgba(215, 139, 48, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .mission-card:hover .mission-icon {
+            transform: scale(1.1) rotate(10deg);
+            background: rgba(215, 139, 48, 0.2);
+        }
+        
+        .mission-card h2 {
+            font-size: 1.8rem;
+            color: var(--organic);
+            margin-bottom: 15px;
+        }
+        
+        .mission-card p {
+            color: var(--natural);
+            line-height: 1.7;
+        }
+        
+        .story-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+        
+        @media (max-width: 992px) {
+            .story-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .story-image {
+            position: relative;
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .story-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--apricot);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .story-content {
+            padding: 20px;
+        }
+        
+        .story-content h2 {
+            font-size: 2.2rem;
+            color: var(--organic);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .story-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--apricot);
+            border-radius: 3px;
+        }
+        
+        .story-content p {
+            color: var(--natural);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-section {
+            margin-bottom: 80px;
+        }
+        
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .timeline-header h2 {
+            font-size: 2.2rem;
+            color: var(--organic);
+            margin-bottom: 15px;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background: var(--apricot);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background: var(--ivory);
+            border: 3px solid var(--apricot);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .timeline-date {
+            display: inline-block;
+            color: white;
+            background: var(--apricot);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            position: absolute;
+            top: -15px;
+            left: 20px;
+        }
+        
+        .timeline-content h3 {
+            color: var(--organic);
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .timeline-content p {
+            color: var(--natural);
+            line-height: 1.7;
+        }
+        
+        .team-section {
+            margin-bottom: 80px;
+        }
+        
+        .team-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .team-header h2 {
+            font-size: 2.2rem;
+            color: var(--organic);
+            margin-bottom: 15px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .member-photo {
+            height: 250px;
+            background: #ddd;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .member-social {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(63, 66, 46, 0.8);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            transform: translateY(100%);
+            transition: all 0.3s;
+        }
+        
+        .team-member:hover .member-social {
+            transform: translateY(0);
+        }
+        
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--organic);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background: var(--apricot);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .member-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .member-info h3 {
+            color: var(--organic);
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+        
+        .member-info p {
+            color: var(--natural);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .contact-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 60px 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(215, 139, 48, 0.05), transparent 70%);
+            z-index: -1;
+            animation: rotate 30s linear infinite;
+        }
+        
+        .contact-header h2 {
+            font-size: 2.2rem;
+            color: var(--organic);
+            margin-bottom: 20px;
+        }
+        
+        .contact-header p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: var(--natural);
+        }
+        
+        .contact-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--apricot);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: 0.5s;
+            z-index: -1;
+            transform: skewX(-25deg);
+        }
+        
+        .contact-btn:hover::before {
+            width: 100%;
+        }
+        
+        .contact-btn:hover {
+            background: var(--light-apricot);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 80px 0;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(63, 66, 46, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .parallax-content {
+            color: white;
+        }
+        
+        .parallax-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .parallax-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--apricot);
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .stat-desc {
+            color: var(--organic);
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:nth-child(odd)::after,
+            .timeline-item:nth-child(even)::after {
+                left: 22px;
+            }
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
     <!-- Header Section -->
@@ -15,128 +580,245 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="category.html">Categories</a>
-                <a href="how-it-works.html">How It Works</a>
-                <a href="about.html">About Us</a>
+                <a href="how-it-works.html">How it Works</a>
+                <a href="about.html" class="active">About Us</a>
+                <a href="browse.html">Browse</a>
             </div>
             <div class="auth-buttons">
                 <button class="login-btn" onclick="location.href='login.html'">Login</button>
                 <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
             </div>
-            <button class="mobile-menu-btn">
+            <button class="mobile-menu-btn" style="display: none;">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
     </header>
 
-    <!-- About Hero Section -->
-    <section class="hero about-hero">
+    <!-- Hero Section with Particles -->
+    <section class="hero">
+        <div class="particles-container" id="particles-js"></div>
         <div class="hero-content">
-            <h1>About VirtualTrade</h1>
-            <p>Learn about our mission to create a sustainable community through trading.</p>
+            <h1 class="gradient-text">About VirtualTrade</h1>
+            <p>We're on a mission to create a sustainable trading community focused on reusing items and reducing waste.</p>
         </div>
     </section>
 
-    <!-- About Content Section -->
-    <section class="about-content">
-        <div class="section-title">
-            <h2>Our Story</h2>
+    <!-- About Container -->
+    <div class="about-container">
+        <!-- About Header -->
+        <div class="about-header animate-on-scroll">
+            <h1 class="gradient-text">About VirtualTrade</h1>
+            <p>We're on a mission to create a sustainable trading community focused on reusing items and reducing waste. Our platform connects people who want to trade or borrow items, giving new life to things that might otherwise be discarded.</p>
         </div>
-        
-        <p>VirtualTrade was founded in 2020 with a simple idea: to create a platform where people could trade goods they no longer needed for items they did need, reducing waste and consumption while building community connections.</p>
-        
-        <p>What started as a small local initiative has grown into a global community of eco-conscious traders who value sustainability, connection, and giving items a second life. Our platform now hosts thousands of trades each month, keeping countless items out of landfills and helping people acquire what they need without buying new.</p>
-        
-        <div class="about-grid animate-on-scroll">
-            <div class="about-card">
-                <div class="about-card-content">
-                    <div class="about-card-icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3>Our Mission</h3>
-                    <p>To create a sustainable alternative to consumer culture by facilitating peer-to-peer trading that reduces waste, saves resources, and builds community connections.</p>
-                </div>
-            </div>
-            <div class="about-card">
-                <div class="about-card-content">
-                    <div class="about-card-icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <h3>Our Values</h3>
-                    <p>We believe in sustainability, community, trust, accessibility, and innovation. These core values guide everything we do, from platform features to community guidelines.</p>
-                </div>
-            </div>
-            <div class="about-card">
-                <div class="about-card-content">
-                    <div class="about-card-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h3>Our Impact</h3>
-                    <p>Since our founding, we've facilitated over 50,000 trades, keeping an estimated 200 tons of goods out of landfills and building a global community of conscious consumers.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Team Section -->
-    <section class="team-section">
-        <div class="section-title">
-            <h2>Meet Our Team</h2>
-            <p>The passionate individuals behind VirtualTrade.</p>
-        </div>
-        
-        <div class="team-grid">
-            <div class="team-member animate-on-scroll">
-                <div class="team-img" style="background-image: url('/api/placeholder/300/300');"></div>
-                <div class="team-info">
-                    <h3>Emily Chen</h3>
-                    <p>Founder & CEO</p>
-                    <p>Emily founded VirtualTrade after witnessing firsthand the environmental impact of consumer waste. She has a background in environmental science and digital marketing.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
+        <!-- Mission Section -->
+        <div class="mission-section">
+            <div class="mission-card animate-on-scroll">
+                <div class="mission-icon">
+                    <i class="fas fa-leaf"></i>
                 </div>
+                <h2>Our Mission</h2>
+                <p>To create a sustainable community that promotes resource sharing and reduces waste by facilitating the trading and borrowing of items between individuals.</p>
             </div>
-            <div class="team-member animate-on-scroll">
-                <div class="team-img" style="background-image: url('/api/placeholder/300/300');"></div>
-                <div class="team-info">
-                    <h3>Marcus Johnson</h3>
-                    <p>CTO</p>
-                    <p>With 15 years of experience in tech, Marcus oversees our platform development, ensuring a secure and user-friendly experience for all our traders.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="team-member animate-on-scroll">
-                <div class="team-img" style="background-image: url('/api/placeholder/300/300');"></div>
-                <div class="team-info">
-                    <h3>Sophia Martinez</h3>
-                    <p>Community Manager</p>
-                    <p>Sophia is the heart of our community, fostering connections between traders and ensuring a positive experience for everyone on the platform.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="team-member animate-on-scroll">
-                <div class="team-img" style="background-image: url('/api/placeholder/300/300');"></div>
-                <div class="team-info">
-                    <h3>David Kim</h3>
-                    <p>Head of Sustainability</p>
-                    <p>David leads our environmental initiatives and partnerships, measuring our impact and finding new ways to promote sustainable practices.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Footer Section -->
+            <div class="mission-card animate-on-scroll">
+                <div class="mission-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h2>Our Vision</h2>
+                <p>A world where reuse is the norm, communities are connected through sharing, and the environmental impact of consumerism is dramatically reduced.</p>
+            </div>
+
+            <div class="mission-card animate-on-scroll">
+                <div class="mission-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h2>Our Values</h2>
+                <p>Trust, sustainability, community, and innovation drive everything we do. We believe in creating value through shared resources and meaningful connections.</p>
+            </div>
+        </div>
+
+        <!-- Our Story Section -->
+        <div class="story-section">
+            <div class="story-image animate-on-scroll">
+                <img src="./resources/images/placeholder.jpg" alt="VirtualTrade Team">
+            </div>
+            <div class="story-content animate-on-scroll">
+                <h2 class="gradient-text">Our Story</h2>
+                <p>VirtualTrade was born out of a simple idea: what if we could create a platform that makes it easy for people to share and trade items they no longer need regularly? The concept came to life in 2024 when a group of university students noticed how much waste was generated at the end of each semester as students discarded perfectly good items.</p>
+                <p>Starting with a small campus community, we've grown to connect thousands of users who are passionate about sustainability and sharing resources. Our platform has facilitated countless trades and borrowing arrangements, giving new life to items that might otherwise have ended up in landfills.</p>
+                <p>Today, we're more committed than ever to our mission of building a sustainable future through community sharing and trading.</p>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-item animate-on-scroll">
+                <span class="stat-number" data-count="15000">0</span>
+                <span class="stat-desc">Active Users</span>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <span class="stat-number" data-count="45000">0</span>
+                <span class="stat-desc">Items Traded</span>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <span class="stat-number" data-count="20">0</span>
+                <span class="stat-desc">Campus Communities</span>
+            </div>
+            <div class="stat-item animate-on-scroll">
+                <span class="stat-number" data-count="30000">0</span>
+                <span class="stat-desc">Kg of Waste Saved</span>
+            </div>
+        </div>
+
+        <!-- Parallax Section -->
+        <div class="parallax-bg animate-on-scroll" style="background-image: url('./resources/images/placeholder.jpg');">
+            <div class="parallax-overlay">
+                <div class="parallax-content">
+                    <h2>Join the Sustainability Movement</h2>
+                    <p>Every trade makes a difference. By giving items a second life, you're helping build a more sustainable future for our planet and communities.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="timeline-section">
+            <div class="timeline-header animate-on-scroll">
+                <h2 class="gradient-text">Our Journey</h2>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-content scroll-reveal">
+                        <div class="timeline-date">2024 Jan</div>
+                        <h3>The Idea</h3>
+                        <p>VirtualTrade was conceived during a university environmental project focused on reducing campus waste.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-content scroll-reveal">
+                        <div class="timeline-date">2024 Mar</div>
+                        <h3>Beta Launch</h3>
+                        <p>We launched our beta platform at five university campuses, focusing on textbooks and electronics.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-content scroll-reveal">
+                        <div class="timeline-date">2024 Jun</div>
+                        <h3>First 1,000 Users</h3>
+                        <p>We celebrated our first milestone of 1,000 active users and over 3,000 items listed for trade.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-content scroll-reveal">
+                        <div class="timeline-date">2024 Aug</div>
+                        <h3>Mobile App Launch</h3>
+                        <p>Our mobile applications for iOS and Android were released, making it easier to connect and trade on the go.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-content scroll-reveal">
+                        <div class="timeline-date">2024 Oct</div>
+                        <h3>Expansion</h3>
+                        <p>We expanded to 10 more campuses across the country, bringing sustainable trading to thousands more students.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-content scroll-reveal">
+                        <div class="timeline-date">2025 Jan</div>
+                        <h3>Sustainability Award</h3>
+                        <p>VirtualTrade received recognition for its contribution to campus sustainability efforts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="team-section">
+            <div class="team-header animate-on-scroll">
+                <h2 class="gradient-text">Meet Our Team</h2>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo" style="background-image: url('./resources/images/profile_pic.jpg');">
+                        <div class="member-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Alex Johnson</h3>
+                        <p>Founder & CEO</p>
+                        <p>Alex has a passion for sustainability and building communities that make a positive impact.</p>
+                    </div>
+                </div>
+
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo" style="background-image: url('./resources/images/profile_pic.jpg');">
+                        <div class="member-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Maya Patel</h3>
+                        <p>Chief Technology Officer</p>
+                        <p>Maya leads our technical team and ensures the platform provides a seamless trading experience.</p>
+                    </div>
+                </div>
+
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo" style="background-image: url('./resources/images/profile_pic.jpg');">
+                        <div class="member-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>David Chen</h3>
+                        <p>Community Manager</p>
+                        <p>David works directly with our campus representatives to build and grow our trading communities.</p>
+                    </div>
+                </div>
+
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo" style="background-image: url('./resources/images/profile_pic.jpg');">
+                        <div class="member-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Sophie Rodriguez</h3>
+                        <p>Sustainability Officer</p>
+                        <p>Sophie oversees our environmental initiatives and ensures we're maximizing our positive impact.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section animate-on-scroll">
+            <div class="contact-header">
+                <h2 class="gradient-text">Get In Touch</h2>
+                <p>Have questions about VirtualTrade or want to bring our platform to your campus? We'd love to hear from you!</p>
+            </div>
+
+            <button class="contact-btn" onclick="location.href='#'">Contact Us Today</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-col">
@@ -147,27 +829,17 @@
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="category.html">Category</a></li>
+                    <li><a href="browse.html">Browse Items</a></li>
                     <li><a href="about.html">About Us</a></li>
-                    
                 </ul>
             </div>
             <div class="footer-col">
                 <h3>Categories</h3>
                 <ul>
-                    <li><a class="cat-links" >Electronics</a></li>
-                    <li><a class="cat-links" >Clothing</a></li>
-                    <li><a class="cat-links" >Books</a></li>
-                    <li><a class="cat-links" >Furniture</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h3>Connect With Us</h3>
-                <ul>
-                    <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a></li>
+                    <li><a class="cat-links">Electronics</a></li>
+                    <li><a class="cat-links">Clothing</a></li>
+                    <li><a class="cat-links">Books</a></li>
+                    <li><a class="cat-links">Furniture</a></li>
                 </ul>
             </div>
         </div>
@@ -176,10 +848,134 @@
         </div>
     </footer>
 
+    <!-- Particle.js for cool background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
     <script>
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        mobileMenuBtn.style.display = 'none'; // Hide the mobile menu button by default
-        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles.js
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+
+            // Number counter animation
+            const stats = document.querySelectorAll('.stat-number');
+            
+            const observerOptions = {
+                threshold: 0.5
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const count = parseInt(target.getAttribute('data-count'));
+                        let current = 0;
+                        const increment = Math.ceil(count / 50);
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current > count) {
+                                current = count;
+                                clearInterval(timer);
+                            }
+                            target.textContent = current.toLocaleString();
+                        }, 30);
+                        observer.unobserve(target);
+                    }
+                });
+            }, observerOptions);
+            
+            stats.forEach(stat => {
+                observer.observe(stat);
+            });
+            
+            // Reveal on scroll animation
+            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+            
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        scrollObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15
+            });
+            
+            scrollRevealElements.forEach(el => {
+                scrollObserver.observe(el);
+            });
+        });
+
         const links = document.querySelectorAll('.cat-links');
         links.forEach(link => {
             link.addEventListener('click', function(event) {

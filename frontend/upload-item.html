@@ -5,10 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Item | Virtual Trade</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Hero section for upload page */
+        .upload-hero {
+   
+            background-size: cover;
+            background-position: center;
+            padding: 3rem 1rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .upload-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--ivory), var(--apricot));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .upload-hero p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            color: var(--ivory);
+        }
+
         .upload-container {
-            max-width: 1000px;
-            margin: 5rem auto;
+            max-width: 1200px;
+            margin: 3rem auto 5rem;
             padding: 0 2rem;
             display: flex;
             gap: 3rem;
@@ -19,56 +48,90 @@
             flex: 1;
             background-color: white;
             padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .upload-form-container:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
         }
 
         .upload-form-header {
             text-align: center;
             margin-bottom: 2.5rem;
+            position: relative;
         }
 
         .upload-form-header h2 {
             font-size: 2.2rem;
             color: var(--organic);
             margin-bottom: 0.8rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .upload-form-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--organic), var(--apricot));
+            border-radius: 3px;
+        }
+
+        .upload-form-header p {
+            font-size: 1.1rem;
+            color: var(--natural);
         }
 
         .form-group {
-            margin-bottom: 1.8rem;
+            margin-bottom: 2rem;
+            position: relative;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 0.8rem;
             color: var(--organic);
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.05rem;
         }
 
         .form-group input[type="text"],
+        .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
             font-size: 1rem;
             transition: all 0.3s;
+            background-color: #fafafa;
         }
 
         .form-group input[type="text"]:focus,
+        .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--apricot);
-            box-shadow: 0 0 0 2px rgba(215, 139, 48, 0.2);
+            box-shadow: 0 0 0 3px rgba(215, 139, 48, 0.15);
+            background-color: #fff;
         }
 
         .image-upload-container {
             border: 2px dashed var(--natural);
-            border-radius: 8px;
-            padding: 2rem;
+            border-radius: 12px;
+            padding: 3rem 2rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: #fafafa;
         }
 
         .image-upload-container:hover {
@@ -77,25 +140,60 @@
         }
 
         .image-upload-container i {
-            font-size: 2rem;
-            color: var(--natural);
+            font-size: 2.5rem;
+            color: var(--apricot);
             margin-bottom: 1rem;
+            transition: transform 0.3s;
+        }
+        
+        .image-upload-container:hover i {
+            transform: scale(1.1);
+        }
+
+        .image-upload-container p {
+            color: var(--natural);
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-upload-container .file-types {
+            font-size: 0.85rem;
+            color: #999;
         }
 
         .upload-type-selector {
             display: flex;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .type-option {
             flex: 1;
-            padding: 1rem;
+            padding: 1.5rem;
             text-align: center;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            border: 2px solid #eaeaea;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: #fafafa;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .type-option::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(to top, rgba(215, 139, 48, 0.1), transparent);
+            transition: height 0.3s;
+            z-index: -1;
+        }
+        
+        .type-option:hover::before {
+            height: 100%;
         }
 
         .type-option.active {
@@ -105,104 +203,249 @@
 
         .type-option:hover {
             border-color: var(--apricot);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        .type-option i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--natural);
+            transition: transform 0.3s, color 0.3s;
+        }
+        
+        .type-option.active i,
+        .type-option:hover i {
+            color: var(--apricot);
+            transform: scale(1.1);
+        }
+
+        .type-option h3 {
+            font-size: 1.2rem;
+            color: var(--organic);
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .type-option.active h3,
+        .type-option:hover h3 {
+            color: var(--apricot);
+        }
+
+        .type-option p {
+            font-size: 0.9rem;
+            color: var(--natural);
         }
 
         .borrow-options {
             display: none;
             margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s;
         }
 
         .borrow-options.visible {
             display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .duration-options {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            margin-top: 1rem;
         }
 
         .duration-option {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 20px;
+            padding: 0.7rem 1.2rem;
+            border: 2px solid #eaeaea;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 500;
+            background-color: white;
         }
 
         .duration-option.selected {
             background-color: var(--apricot);
             color: white;
             border-color: var(--apricot);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(215, 139, 48, 0.2);
+        }
+        
+        .duration-option:hover:not(.selected) {
+            border-color: var(--apricot);
+            transform: translateY(-3px);
         }
 
         .upload-btn {
             width: 100%;
-            padding: 1rem;
-            background-color: var(--apricot);
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--organic), var(--apricot));
             color: white;
             font-weight: 600;
             font-size: 1.1rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+            letter-spacing: 1px;
+        }
+        
+        .upload-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
         }
 
         .upload-btn:hover {
-            background-color: var(--light-apricot);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--apricot), var(--light-apricot));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(215, 139, 48, 0.3);
+        }
+
+        .upload-btn:active {
+            transform: translateY(-2px);
         }
 
         .preview-container {
-            flex: 0 0 300px;
+            flex: 0 0 380px;
             position: sticky;
             top: 2rem;
+            transition: all 0.3s;
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .image-preview {
             width: 100%;
-            height: 300px;
-            border-radius: 12px;
+            height: 380px;
+            border-radius: 16px;
             overflow: hidden;
-            background-color: #f5f5f5;
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .image-preview:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: scale(1.02);
         }
 
         .image-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .image-preview img:hover {
+            transform: scale(1.05);
         }
 
         .preview-placeholder {
-            color: var(--natural);
             text-align: center;
+            padding: 2rem;
+        }
+        
+        .preview-placeholder i {
+            font-size: 4rem;
+            color: var(--apricot);
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .preview-info {
+            background: linear-gradient(135deg, rgba(215, 139, 48, 0.1), rgba(63, 66, 46, 0.1));
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .preview-info p {
+            color: var(--organic);
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .status-toggle {
-            margin-top: 1.5rem;
-            display: none;
-            background-color: var(--ivory);
-            padding: 1.5rem;
-            border-radius: 8px;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
             text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .status-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
         }
 
         .status-toggle.visible {
             display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .toggle-switch {
+            width: 65px;
+            height: 36px;
             position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            margin: 0 10px;
         }
 
         .toggle-switch input {
@@ -218,7 +461,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background: linear-gradient(to right, #e0e0e0, #d0d0d0);
             transition: .4s;
             border-radius: 34px;
         }
@@ -226,28 +469,152 @@
         .toggle-slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 28px;
+            width: 28px;
             left: 4px;
             bottom: 4px;
-            background-color: white;
+            background: #fff;
             transition: .4s;
             border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         input:checked + .toggle-slider {
-            background-color: var(--apricot);
+            background: linear-gradient(135deg, var(--organic), var(--apricot));
         }
 
         input:checked + .toggle-slider:before {
-            transform: translateX(26px);
+            transform: translateX(29px);
         }
 
         .status-label {
-            display: inline-block;
-            vertical-align: middle;
+            font-weight: 600;
             color: var(--organic);
+            transition: color 0.3s;
+        }
+
+        .category-select-container {
+            margin-bottom: 2rem;
+        }
+        
+        .category-select {
+            position: relative;
+        }
+        
+        .condition-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .condition-option {
+            padding: 0.7rem 1.2rem;
+            border: 2px solid #eaeaea;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
             font-weight: 500;
+            background-color: white;
+        }
+
+        .condition-option.selected {
+            background-color: var(--apricot);
+            color: white;
+            border-color: var(--apricot);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(215, 139, 48, 0.2);
+        }
+        
+        .condition-option:hover:not(.selected) {
+            border-color: var(--apricot);
+            transform: translateY(-3px);
+        }
+        
+        .form-progress {
+            margin-bottom: 2.5rem;
+            padding: 0 1rem;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #eaeaea;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #eaeaea;
+            color: var(--natural);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .progress-step.active .step-number {
+            background-color: var(--apricot);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(215, 139, 48, 0.2);
+        }
+        
+        .progress-step.completed .step-number {
+            background-color: var(--organic);
+            color: white;
+        }
+        
+        .progress-step.completed .step-number::after {
+            content: '✓';
+            font-size: 0.9rem;
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--natural);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .progress-step.active .step-label {
+            color: var(--apricot);
+            font-weight: 600;
+        }
+        
+        .progress-step.completed .step-label {
+            color: var(--organic);
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background-color: var(--apricot);
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 0;
+            z-index: 1;
+            transition: width 0.5s ease;
         }
 
         @media (max-width: 992px) {
@@ -258,7 +625,251 @@
             .preview-container {
                 position: static;
                 width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
             }
+            
+            .upload-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .upload-form-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .upload-type-selector {
+                flex-direction: column;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
+            
+            .progress-steps::before {
+                width: 3px;
+                height: 100%;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .progress-bar {
+                height: 0;
+                width: 3px !important;
+                top: 0;
+                transition: height 0.5s ease;
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-overlay.visible {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--apricot);
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .feedback-message {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .feedback-message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feedback-message.success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.2));
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            color: #28a745;
+        }
+
+        .feedback-message.error {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+        }
+
+        .feedback-message i {
+            font-size: 1.5rem;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+        }
+
+        .form-group.success input,
+        .form-group.success textarea {
+            border-color: #28a745;
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+        }
+
+        .error-text {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.error .error-text {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1200px) {
+            .upload-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .preview-container {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 4rem 1rem;
+            }
+
+            .upload-form {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-container {
+                padding: 1.5rem;
+            }
+
+            .image-preview {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .status-wrapper {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .upload-form {
+                padding: 1rem;
+            }
+
+            .preview-container {
+                padding: 1rem;
+            }
+
+            .image-preview {
+                height: 250px;
+            }
+        }
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            position: relative;
+            display: none;
+        }
+
+        .success-checkmark.visible {
+            display: block;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .checkmark {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #28a745;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0 0 0 #28a745;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #28a745;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+
+        @keyframes fill {
+            100% { box-shadow: inset 0 0 0 80px #28a745; }
         }
     </style>
 </head>
@@ -269,31 +880,63 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="category.html">Categories</a>
-                <a href="how-it-works.html">How It Works</a>
-                <a href="about.html">About Us</a> 
+                <a href="how-it-works.html">How it Works</a>
+                <a href="about.html">About Us</a>
             </div>
             <div class="auth-buttons">
                 <button class="login-btn" onclick="location.href='login.html'">Login</button>
                 <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
             </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     </header>
 
     <main>
+        <section class ="hero">
+        
+            <div class="particles-container" id="particles-js"></div>
+            <div class="hero-content"></div>
+            <h1 class="gradient-text">Share Your Items</h1>
+            <p>Upload your items to trade or lend with the community. Help reduce waste and connect with others!</p>
+        </div>
+        </section>
+    
         <div class="upload-container">
             <div class="upload-form-container">
                 <div class="upload-form-header">
                     <h2>Upload Your Item</h2>
-                    <p>Share your item with the community</p>
+                    <p>Fill in the details about your item</p>
+                </div>
+                
+                <div class="form-progress">
+                    <div class="progress-steps">
+                        <div class="progress-bar"></div>
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Details</div>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Options</div>
+                        </div>
+                        <div class="progress-step" data-step="3">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Finish</div>
+                        </div>
+                    </div>
                 </div>
 
                 <form id="uploadForm" class="upload-form">
                     <div class="upload-type-selector">
                         <div class="type-option active" data-type="borrow">
+                            <i class="fas fa-handshake"></i>
                             <h3>Borrowable</h3>
                             <p>Let others borrow your item</p>
                         </div>
                         <div class="type-option" data-type="trade">
+                            <i class="fas fa-exchange-alt"></i>
                             <h3>Tradeable</h3>
                             <p>Exchange with other items</p>
                         </div>
@@ -301,37 +944,60 @@
 
                     <div class="form-group">
                         <label for="itemName">Item Name</label>
-                        <input type="text" id="itemName" required>
+                        <br><br>
+                        <input type="text" id="itemName" placeholder="Enter the name of your item" required>
+                    </div>
+
+                    <div class="form-group category-select-container">
+                        <label for="itemCategory">Category</label>
+                        <select id="itemCategory" class="category-select" required>
+                            <option value="" disabled selected>Select a category</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Item Condition</label>
+                        <br><br>
+                        <div class="condition-options">
+                            <div class="condition-option" data-condition="new">Brand New</div>
+                            <div class="condition-option" data-condition="like-new">Like New</div>
+                            <div class="condition-option" data-condition="good">Good</div>
+                            <div class="condition-option" data-condition="fair">Fair</div>
+                            <div class="condition-option" data-condition="worn">Well Used</div>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" rows="4" required></textarea>
+                        <br><br>
+                        <textarea id="description" rows="4" placeholder="Describe your item, including its features and condition" required></textarea>
                     </div>
-
-                    <div class="hide form-group" style="display: none;"></div>
 
                     <div class="form-group">
                         <label>Item Image</label>
                         <div class="image-upload-container">
-                            <i>📸</i>
+                            <i class="fas fa-cloud-upload-alt"></i>
                             <p>Click to upload or drag and drop</p>
+                            <span class="file-types">Supported formats: JPG, PNG, GIF (max 5MB)</span>
                             <input type="file" id="itemImage" accept="image/*" hidden>
                         </div>
                     </div>
 
                     <div class="borrow-options visible">
                         <label>Available Durations</label>
-                        <div class="duration-options" style="margin: 10px; display: flex; justify-content: space-around;">
+                        <p style="color: var(--natural); margin-bottom: 1rem; font-size: 0.9rem;">Select how long others can borrow this item</p>
+                        <div class="duration-options">
                             <div class="duration-option" data-days="7">1 Week</div>
                             <div class="duration-option" data-days="14">2 Weeks</div>
                             <div class="duration-option" data-days="30">1 Month</div>
                             <div class="duration-option" data-days="90">3 Months</div>
+                            <div class="duration-option" data-days="180">6 Months</div>
                         </div>
                     </div>
 
                     <div class="status-toggle">
                         <label>Item Status</label>
+                        <p style="color: var(--natural); margin-bottom: 1rem; font-size: 0.9rem;">Set the current availability of your item</p>
                         <div class="status-wrapper">
                             <span class="status-label">Available</span>
                             <label class="toggle-switch">
@@ -349,9 +1015,12 @@
             <div class="preview-container">
                 <div class="image-preview">
                     <div class="preview-placeholder">
-                        <i>🖼️</i>
+                        <i class="fas fa-image"></i>
                         <p>Image preview will appear here</p>
                     </div>
+                </div>
+                <div class="preview-info" style="text-align: center; color: var(--natural);">
+                    <p>High-quality images increase the chances of successful trades or borrowing</p>
                 </div>
             </div>
         </div>
@@ -371,283 +1040,122 @@
                     <li><a href="about.html">About Us</a></li>
                 </ul>
             </div>
+            <div class="footer-col">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a class="cat-links">Electronics</a></li>
+                    <li><a class="cat-links">Clothing</a></li>
+                    <li><a class="cat-links">Books</a></li>
+                    <li><a class="cat-links">Furniture</a></li>
+                </ul>
+            </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2025 Virtual Trade. All rights reserved.</p>
         </div>
     </footer>
-
+  <!-- Particle.js for cool background effects -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          particlesJS('particles-js', {
+              "particles": {
+                  "number": {
+                      "value": 80,
+                      "density": {
+                          "enable": true,
+                          "value_area": 800
+                      }
+                  },
+                  "color": {
+                      "value": "#ffffff"
+                  },
+                  "shape": {
+                      "type": "circle",
+                      "stroke": {
+                          "width": 0,
+                          "color": "#000000"
+                      },
+                  },
+                  "opacity": {
+                      "value": 0.5,
+                      "random": false,
+                  },
+                  "size": {
+                      "value": 3,
+                      "random": true,
+                  },
+                  "line_linked": {
+                      "enable": true,
+                      "distance": 150,
+                      "color": "#ffffff",
+                      "opacity": 0.4,
+                      "width": 1
+                  },
+                  "move": {
+                      "enable": true,
+                      "speed": 2,
+                      "direction": "none",
+                      "random": false,
+                      "straight": false,
+                      "out_mode": "out",
+                      "bounce": false,
+                  }
+              },
+              "interactivity": {
+                  "detect_on": "canvas",
+                  "events": {
+                      "onhover": {
+                          "enable": true,
+                          "mode": "grab"
+                      },
+                      "onclick": {
+                          "enable": true,
+                          "mode": "push"
+                      },
+                      "resize": true
+                  },
+                  "modes": {
+                      "grab": {
+                          "distance": 140,
+                          "line_linked": {
+                              "opacity": 1
+                          }
+                      },
+                      "push": {
+                          "particles_nb": 4
+                      },
+                  }
+              },
+              "retina_detect": true
+          });
+      });
+  </script>
+    <script src="upload.js"></script>
     <script>
-            const uploadForm = document.getElementById('uploadForm');
-            const typeOptions = document.querySelectorAll('.type-option');
-            const borrowOptions = document.querySelector('.borrow-options');
-            const statusToggle = document.querySelector('.status-toggle');
-            const statusSlider = document.getElementById('statusToggle');
-            const imageInput = document.getElementById('itemImage');
-            const imagePreview = document.querySelector('.image-preview');
-            const hiddenDiv = document.querySelector('.hide');
-
-            if (window.localStorage.getItem('loggedIn') === 'true') {
-                // If the user is logged in, we update the buttons
-                const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-                const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
-        
-                // Updating the login button to act as a link to the user's profile
-                loginBtn.textContent = "";
-                loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-                loginBtn.style.backgroundSize = "cover";
-                loginBtn.style.width = "40px";
-                loginBtn.style.height = "40px";
-                loginBtn.style.borderRadius = "50%";
-                loginBtn.style.border = "none";
-                loginBtn.style.cursor = "pointer";
-                loginBtn.style.marginRight = "10px";
-                loginBtn.style.padding = "0px";
-                loginBtn.style.backgroundColor = "transparent";
-                loginBtn.href = "#";
-                loginBtn.addEventListener('click', function() {
-                    window.location.href = "profile.html";
-                })
-        
-                // Updating the signup button to act as a logout button
-                signupBtn.textContent = "Logout";
-                signupBtn.href = "#";
-                signupBtn.addEventListener('click', async function() {
-                    const response = await fetch('http://127.0.0.1:8808/logout', {
-                        method: "POST",
-                        credentials: 'include'
-                    })
-                    if(response.status === 200) {
-                        // If user successfully logged out, redirect to index.html
-                        // To undo the changes made to the login button, we set it back to its original state by redirection
-                        window.location.href = "index.html";
-                        window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
-                    }
-                    else {
-                        alert("Error logging out. Please try again.");
-                    }
-                })
+        // Light/Dark mode toggle
+        function setupDarkMode() {
+            const darkModeToggle = document.createElement('button');
+            darkModeToggle.classList.add('dark-mode-toggle');
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            document.body.appendChild(darkModeToggle);
+            const darkMode = localStorage.getItem('darkMode') === 'enabled';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
-
-            // Type selector handling
-            typeOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    typeOptions.forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    
-                    if (option.dataset.type === 'borrow') {
-                        borrowOptions.classList.add('visible');
-                        statusToggle.classList.remove('visible');
-                        hiddenDiv.style.display = 'none';
-
-                    } else {
-                        borrowOptions.classList.remove('visible');
-                        statusToggle.classList.add('visible');
-                        hiddenDiv.style.display = 'block';
-                        hiddenDiv.innerHTML = `
-                            <label for="itemName">Token Value:</label>
-                            <input type="text" id="tokenVal" required>
-                        `;
-                    }
-                });
-            });
-
-            const tokenValInput = document.getElementById('tokenVal');
-
-            // Image upload handling
-            imageInput.addEventListener('change', handleImageUpload);
-            const dropZone = document.querySelector('.image-upload-container');
-            
-            // Make the dropzone clickable
-            dropZone.addEventListener('click', () => {
-                imageInput.click();
-            });
-            
-            // Drag and drop functionality
-            dropZone.addEventListener('dragenter', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('dragover');
-            });
-            
-            dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('dragover');
-            });
-
-            dropZone.addEventListener('dragleave', () => {
-                dropZone.classList.remove('dragover');
-            });
-
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-                if (e.dataTransfer.files.length) {
-                    const file = e.dataTransfer.files[0];
-                    // Check if file is an image
-                    if (file.type.startsWith('image/')) {
-                        imageInput.files = e.dataTransfer.files;
-                        handleImageUpload();
-                    } else {
-                        alert('Please upload an image file (JPEG, PNG, etc.)');
-                    }
-                }
-            });
-
-            function handleImageUpload() {
-                const file = imageInput.files[0];
-                if (file) {
-                    // Validate file type
-                    if (!file.type.startsWith('image/')) {
-                        alert('Please upload an image file (JPEG, PNG, etc.)');
-                        imageInput.value = '';
-                        return;
-                    }
-                    
-                    // Validate file size (max 5MB)
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert('Image size should not exceed 5MB');
-                        imageInput.value = '';
-                        return;
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-
-            // Fix the validateTokenValue function
-function validateTokenValue() {
-    // If tokenVal doesn't exist yet (e.g., when on borrowable view), return true
-    const tokenValInput = document.getElementById('tokenVal');
-    if (!tokenValInput) return true;
-    
-    const value = tokenValInput.value.trim();
-    
-    // Remove any previous error message
-    const existingError = tokenValInput.parentElement.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-    
-    // Check if empty
-    if (value === '') {
-        tokenValInput.style.borderColor = 'red';
-        
-        // Add error message for empty field
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'error-message';
-        errorMsg.textContent = 'Token value is required';
-        errorMsg.style.color = 'red';
-        errorMsg.style.fontSize = '0.8rem';
-        errorMsg.style.marginTop = '5px';
-        
-        tokenValInput.parentElement.appendChild(errorMsg);
-        return false;
-    }
-    
-    // Check if it's a valid number
-    if (!/^[0-9]+$/.test(value)) {
-        // Not a valid number, add error styling
-        tokenValInput.style.borderColor = 'red';
-        
-        // Add error message
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'error-message';
-        errorMsg.textContent = 'Please enter a valid number';
-        errorMsg.style.color = 'red';
-        errorMsg.style.fontSize = '0.8rem';
-        errorMsg.style.marginTop = '5px';
-        
-        tokenValInput.parentElement.appendChild(errorMsg);
-        return false;
-    } else {
-        // Valid number, reset styling
-        tokenValInput.style.borderColor = 'green';
-        return true;
-    }
-}
-
-// Add this to your DOMContentLoaded event handler to set up real-time validation
-// Place this after defining typeOptions event listeners
-document.addEventListener('click', function(e) {
-    if (e.target && e.target.id === 'tokenVal') {
-        // Add input event listener when the field is created and clicked
-        e.target.addEventListener('input', validateTokenValue);
-    }
-});
-
-
-
-            // Form submission
-            uploadForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const itemType = document.querySelector('.type-option.active').dataset.type;
-    
-                // Only validate token value for tradeable items
-                if (itemType === 'trade' && !validateTokenValue()) {
-                    return; // Stop form submission if validation fails
-                }
-
-                const formData = new FormData();
-                formData.append('name', document.getElementById('itemName').value);
-                formData.append('description', document.getElementById('description').value);
-                if (imageInput.files[0]) {
-                    formData.append('image', imageInput.files[0]);
-                }
-
-
-                formData.append('type', itemType);
-
-                if (itemType === 'borrow') {
-                    const selectedDurations = Array.from(document.querySelectorAll('.duration-option.selected'))
-                        .map(option => option.dataset.days);
-                    if (selectedDurations.length === 0) {
-                        alert('Please select at least one duration option');
-                        return;
-                    }
-                    formData.append('durations', JSON.stringify(selectedDurations));
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                    this.innerHTML = '<i class="fas fa-sun"></i>';
                 } else {
-                    // For tradable items, include the status
-                    formData.append('status', statusSlider.checked ? 'traded' : 'available');
-
-                    const tokenValInput = document.getElementById('tokenVal');
-                    if (tokenValInput) {
-                        formData.append('tokenValue', tokenValInput.value.trim());
-                    }
-                }
-
-                try {
-                    const response = await fetch('http://127.0.0.1:8808/upload/', {
-                        method: 'POST',
-                        body: formData,
-                        credentials: 'include'
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        alert('Item uploaded successfully!');
-                        window.location.href = 'browse.html';
-                    } else {
-                        throw new Error(result.error || 'Failed to upload item');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert(error.message || 'An error occurred while uploading the item');
+                    localStorage.setItem('darkMode', 'disabled');
+                    this.innerHTML = '<i class="fas fa-moon"></i>';
                 }
             });
-
-            // Duration options handling
-            const durationOptions = document.querySelectorAll('.duration-option');
-            durationOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    option.classList.toggle('selected');
-                });
-            });
+        }
+        document.addEventListener('DOMContentLoaded', setupDarkMode);
     </script>
 </body>
 </html>

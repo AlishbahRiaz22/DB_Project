@@ -3,299 +3,966 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Trade Shop - How It Works</title>
+  <title>How It Works - Virtual Trade Shop</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .how-hero {
-      height: 40vh;
-      background-image: linear-gradient(rgba(63, 66, 46, 0.8), rgba(63, 66, 46, 0.6)), url('/api/placeholder/1200/400');
+    .how-it-works-container {
+      max-width: 1200px;
+      margin: 120px auto 50px;
+      padding: 0 20px;
     }
     
-    .how-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 3rem 2rem;
-    }
-    
-    .process-timeline {
-      margin: 4rem 0;
-    }
-    
-    .timeline-step {
-      display: flex;
-      margin-bottom: 4rem;
+    .how-it-works-header {
+      text-align: center;
+      margin-bottom: 60px;
       position: relative;
     }
     
-    .timeline-step:last-child {
-      margin-bottom: 0;
+    .how-it-works-header h1 {
+      font-size: 2.8rem;
+      color: var(--organic);
+      margin-bottom: 20px;
     }
     
-    .timeline-step:not(:last-child)::after {
-      content: "";
+    .how-it-works-header p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--natural);
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+    
+    .how-it-works-header::after {
+      content: '';
       position: absolute;
-      left: 60px;
-      top: 120px;
-      bottom: -60px;
-      width: 4px;
-      background-color: var(--apricot);
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--apricot);
+      border-radius: 3px;
+    }
+    
+    .steps-container {
+      margin-bottom: 80px;
+    }
+    
+    .step-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 80px;
+      position: relative;
+    }
+    
+    .step-item:nth-child(even) {
+      grid-template-columns: 1fr 1fr;
+      direction: rtl;
+    }
+    
+    .step-item:nth-child(even) .step-content {
+      direction: ltr;
+    }
+    
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 40px;
+      background: var(--apricot);
+      opacity: 0.5;
+    }
+    
+    @media (max-width: 992px) {
+      .step-item,
+      .step-item:nth-child(even) {
+        grid-template-columns: 1fr;
+        direction: ltr;
+        gap: 20px;
+      }
+    }
+    
+    .step-image {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+    
+    .step-image:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .step-image img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
     
     .step-number {
-      flex-shrink: 0;
-      width: 120px;
-      height: 120px;
-      background-color: var(--apricot);
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 60px;
+      height: 60px;
+      background: var(--apricot);
+      color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      color: white;
-      margin-right: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 2;
     }
     
     .step-content {
-      padding-top: 1rem;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
     
-    .step-content h3 {
+    .step-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, rgba(215, 139, 48, 0.08), transparent 70%);
+      z-index: -1;
+    }
+    
+    .step-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .step-content h2 {
+      font-size: 2rem;
       color: var(--organic);
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .step-content h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--apricot);
+      border-radius: 3px;
     }
     
     .step-content p {
       color: var(--natural);
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
+      line-height: 1.7;
+      margin-bottom: 20px;
     }
     
-    .step-tip {
-      background-color: var(--ivory);
-      border-left: 4px solid var(--apricot);
-      padding: 1rem;
-      margin-top: 1.5rem;
+    .step-tips {
+      background: rgba(215, 139, 48, 0.1);
+      padding: 15px 20px;
+      border-left: 3px solid var(--apricot);
+      border-radius: 0 8px 8px 0;
+      margin-top: 20px;
     }
     
-    .step-tip h4 {
+    .step-tips h4 {
+      color: var(--apricot);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .step-tips h4 i {
+      font-size: 1.1rem;
+    }
+    
+    .step-tips ul {
+      list-style-type: none;
+      padding-left: 5px;
+    }
+    
+    .step-tips li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 8px;
       color: var(--organic);
-      margin-bottom: 0.5rem;
+    }
+    
+    .step-tips li::before {
+      content: '✓';
+      color: var(--apricot);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+    
+    .cta-section {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 60px 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 80px;
+    }
+    
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(215, 139, 48, 0.05), transparent 70%);
+      z-index: -1;
+      animation: rotate 30s linear infinite;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .cta-header h2 {
+      font-size: 2.2rem;
+      color: var(--organic);
+      margin-bottom: 20px;
+    }
+    
+    .cta-header p {
+      max-width: 600px;
+      margin: 0 auto 30px;
+      color: var(--natural);
+      line-height: 1.8;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .cta-btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: 0.5s;
+      z-index: -1;
+      transform: skewX(-25deg);
+    }
+    
+    .cta-btn:hover::before {
+      width: 100%;
+    }
+    
+    .primary-btn {
+      background: var(--apricot);
+      color: white;
+    }
+    
+    .primary-btn:hover {
+      background: var(--light-apricot);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .secondary-btn {
+      background: var(--organic);
+      color: white;
+    }
+    
+    .secondary-btn:hover {
+      background: var(--dark-organic);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
     
     .faq-section {
-      margin-top: 5rem;
+      margin-bottom: 80px;
     }
     
-    .faq-item {
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 1.5rem;
-    }
-    
-    .faq-question {
-      font-weight: 600;
-      color: var(--organic);
-      margin-bottom: 0.8rem;
-      font-size: 1.2rem;
-    }
-    
-    .faq-answer {
-      color: var(--natural);
-      line-height: 1.6;
-    }
-    
-    .ready-section {
-      margin-top: 5rem;
+    .faq-header {
       text-align: center;
-      background-color: var(--ivory);
-      padding: 3rem;
-      border-radius: 12px;
+      margin-bottom: 50px;
     }
     
-    .ready-section h2 {
+    .faq-header h2 {
+      font-size: 2.2rem;
       color: var(--organic);
-      margin-bottom: 1.5rem;
+      margin-bottom: 15px;
     }
     
-    .ready-section p {
-      max-width: 600px;
-      margin: 0 auto 2rem;
+    .faq-header p {
+      max-width: 700px;
+      margin: 0 auto;
       color: var(--natural);
     }
     
-    .get-started-btn {
-      display: inline-block;
-      background-color: var(--organic);
-      color: white;
-      padding: 1rem 2.5rem;
-      border-radius: 30px;
-      font-weight: 500;
-      font-size: 1.1rem;
+    .accordion {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .accordion-item {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .accordion-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .accordion-header {
+      padding: 20px 25px;
+      background: none;
+      border: none;
+      text-align: left;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
       transition: all 0.3s;
     }
     
-    .get-started-btn:hover {
-      background-color: var(--apricot);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    .accordion-header h3 {
+      font-size: 1.2rem;
+      color: var(--organic);
+      transition: all 0.3s;
+    }
+    
+    .accordion-icon {
+      font-size: 1.2rem;
+      color: var(--natural);
+      transition: all 0.3s;
+    }
+    
+    .accordion-header:hover h3 {
+      color: var(--apricot);
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 25px;
+      color: var(--natural);
+      line-height: 1.7;
+    }
+    
+    .accordion-item.active .accordion-content {
+      max-height: 300px;
+      padding-bottom: 20px;
+    }
+    
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+      color: var(--apricot);
+    }
+    
+    .accordion-item.active .accordion-header h3 {
+      color: var(--apricot);
+    }
+    
+    .testimonialsSection {
+      margin-bottom: 80px;
+    }
+    
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .testimonials-header h2 {
+      font-size: 2.2rem;
+      color: var(--organic);
+      margin-bottom: 15px;
+    }
+    
+    .testimonials-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .testimonial-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .testimonial-quote {
+      font-size: 4rem;
+      position: absolute;
+      top: -20px;
+      left: 20px;
+      color: rgba(215, 139, 48, 0.2);
+      font-family: serif;
+    }
+    
+    .testimonial-text {
+      color: var(--organic);
+      line-height: 1.8;
+      margin-bottom: 20px;
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .testimonial-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--natural);
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .testimonial-info h4 {
+      color: var(--organic);
+      margin-bottom: 5px;
+    }
+    
+    .testimonial-info p {
+      color: var(--natural);
+      font-size: 0.9rem;
+    }
+    
+    .testimonial-rating {
+      display: flex;
+      margin-top: 5px;
+    }
+    
+    .testimonial-rating i {
+      color: gold;
+      font-size: 0.9rem;
+      margin-right: 3px;
+    }
+    
+    .video-section {
+      margin-bottom: 80px;
+      text-align: center;
+    }
+    
+    .video-header {
+      margin-bottom: 40px;
+    }
+    
+    .video-header h2 {
+      font-size: 2.2rem;
+      color: var(--organic);
+      margin-bottom: 15px;
+    }
+    
+    .video-container {
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      aspect-ratio: 16/9;
+      background-color: #000;
+    }
+    
+    .video-placeholder {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: rgba(215, 139, 48, 0.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+    
+    .play-button:hover {
+      background: var(--apricot);
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 0 30px rgba(215, 139, 48, 0.5);
+    }
+    
+    .play-button i {
+      color: white;
+      font-size: 2rem;
+      margin-left: 5px;
+    }
+    
+    .video-iframe {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 5;
+      display: none;
+    }
+    
+    .step-circles {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .step-circles {
+        display: flex;
+        justify-content: center;
+        margin: 40px 0;
+      }
+      
+      .circle {
+        width: 15px;
+        height: 15px;
+        background: rgba(215, 139, 48, 0.3);
+        border-radius: 50%;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      
+      .circle.active {
+        background: var(--apricot);
+        transform: scale(1.2);
+      }
+      
+      .step-item:not(:first-child) {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Header Section -->
   <header>
     <nav>
-        <div class="logo"><a href="index.html">VirtualTrade</a></div>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            
-            <a href="category.html">Categories</a>
-            
-            <a href="how-it-works.html" class="active">How it Works</a>
-            <a href="about.html">About Us</a>
-
-        </div>
-        <div class="auth-buttons">
-            <button class="login-btn" onclick="location.href='login.html'">Login</button>
-            <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
-        </div>
-        
+      <div class="logo"><a href="index.html">VirtualTrade</a></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="category.html">Categories</a>
+        <a href="how-it-works.html" class="active">How it Works</a>
+        <a href="about.html">About Us</a>
+        <a href="browse.html">Browse</a>
+      </div>
+      <div class="auth-buttons">
+        <button class="login-btn" onclick="location.href='login.html'">Login</button>
+        <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
+      </div>
+      <button class="mobile-menu-btn" style="display: none;">
+        <i class="fas fa-bars"></i>
+      </button>
     </nav>
-</header>
-  
-  <main>
-    <section class="hero how-hero">
-      <div class="hero-content">
-        <h1>How It Works</h1>
-        <p>Simple steps to join our community and start trading sustainably</p>
-      </div>
-    </section>
-    
-    <section class="how-container">
-      <div class="section-intro">
-        <h2>A Simple Process for Sustainable Trading</h2>
-        <p>The Virtual Trade Shop makes it easy to Trade or Borrow items with fellow members, saving money and connecting like-minded individuals. Follow these steps to get started.</p>
-      </div>
-      
-      <div class="process-timeline">
-        <div class="timeline-step">
+  </header>
+
+  <!-- Hero Section with Particles -->
+  <section class="hero">
+    <div class="particles-container" id="particles-js"></div>
+    <div class="hero-content">
+      <h1 class="gradient-text">How VirtualTrade Works</h1>
+      <p>Join our sustainable trading community with these simple steps</p>
+    </div>
+  </section>
+
+  <!-- How It Works Container -->
+  <div class="how-it-works-container">
+    <!-- How It Works Header -->
+    <div class="how-it-works-header animate-on-scroll">
+      <h1 class="gradient-text">How VirtualTrade Works</h1>
+      <p>VirtualTrade makes it simple to trade or borrow items within your community. Follow these easy steps to get started and join our sustainable trading network.</p>
+    </div>
+
+    <!-- Steps Section -->
+    <div class="steps-container">
+      <div class="step-item animate-on-scroll">
+        <div class="step-image">
+          <img src="./resources/images/placeholder.jpg" alt="Create Account">
           <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>Create Your Account</h3>
-            <p>Sign up for free using your email address . Complete your profile by adding a photo, your location, and a short bio to help community members get to know you.</p>
-            <p>A complete profile builds trust in our community-based platform.</p>
-            
+        </div>
+        <div class="step-content">
+          <h2>Create an Account</h2>
+          <p>Sign up with your email or connect with your social media accounts. Complete your profile by adding a photo, your location, and a brief description about yourself.</p>
+          <p>A complete profile helps build trust with other members of the community and increases your chances of successful trades.</p>
+          <div class="step-tips">
+            <h4><i class="fas fa-lightbulb"></i> Tips for Success</h4>
+            <ul>
+              <li>Use a clear profile photo of yourself</li>
+              <li>Add your university or neighborhood for better local matches</li>
+              <li>Be specific about your interests to connect with like-minded traders</li>
+            </ul>
           </div>
         </div>
-        
-        <div class="timeline-step">
+      </div>
+
+      <div class="step-item animate-on-scroll">
+        <div class="step-image">
+          <img src="./resources/images/placeholder.jpg" alt="Upload Items">
           <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>List Your Items</h3>
-            <p>Take clear photos of items you'd like to share, swap, or give away. Write detailed descriptions including condition, size, and any other relevant details. Add tags to help categorize your items.</p>
-            <p>You can list as many items as you want, and update your listings anytime.</p>
-            <div class="step-tip">
-              <h4>Pro Tip:</h4>
-              <p>Items with multiple, well-lit photos and detailed descriptions receive the most interest from other members.</p>
-            </div>
+        </div>
+        <div class="step-content">
+          <h2>Upload Your Items</h2>
+          <p>Take clear photos of the items you want to trade or lend, add detailed descriptions, and specify whether you're offering them for trade, borrow, or both.</p>
+          <p>The more information you provide about your items, the more likely they are to attract interest from other users.</p>
+          <div class="step-tips">
+            <h4><i class="fas fa-lightbulb"></i> Tips for Success</h4>
+            <ul>
+              <li>Take photos in good lighting from multiple angles</li>
+              <li>Mention any flaws or wear and tear honestly</li>
+              <li>Include dimensions, brand, and age of the item</li>
+              <li>Specify what you might want in return for trades</li>
+            </ul>
           </div>
         </div>
-        
-        <div class="timeline-step">
+      </div>
+
+      <div class="step-item animate-on-scroll">
+        <div class="step-image">
+          <img src="./resources/images/placeholder.jpg" alt="Browse Items">
           <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>Browse and Connect</h3>
-            <p>Explore items from other community members based on your interests. When you find something you like, send a trade or borrow request to the owner simply just by one click.</p>
-            
+        </div>
+        <div class="step-content">
+          <h2>Browse and Connect</h2>
+          <p>Explore items available in your community. Use filters to narrow down results by category, location, or trade type. When you find something you like, send a message to the owner.</p>
+          <p>Our integrated messaging system makes it easy to discuss details and arrange meetups without sharing personal contact information until you're ready.</p>
+          <div class="step-tips">
+            <h4><i class="fas fa-lightbulb"></i> Tips for Success</h4>
+            <ul>
+              <li>Use specific search terms to find exactly what you need</li>
+              <li>Save searches to get notifications about new listings</li>
+              <li>Be polite and clear in your initial messages</li>
+              <li>Ask questions about anything that isn't clear in the listing</li>
+            </ul>
           </div>
         </div>
-        
-        <div class="timeline-step">
+      </div>
+
+      <div class="step-item animate-on-scroll">
+        <div class="step-image">
+          <img src="./resources/images/placeholder.jpg" alt="Make the Exchange">
           <div class="step-number">4</div>
-          <div class="step-content">
-            <h3>Arrange the Exchange</h3>
-            <p>Once you've done the trade , arrange a meeting place and time that works for both parties. We recommend meeting in public places for safety and convenience.</p>
-            <p>After the exchange, mark the item as traded in your dashboard.</p>
-            
+        </div>
+        <div class="step-content">
+          <h2>Make the Exchange</h2>
+          <p>Once you've agreed on terms with another user, arrange a safe meeting place to exchange items for trades, or set a timeframe and conditions for borrowing.</p>
+          <p>Use our built-in scheduling tool to coordinate the exchange and receive reminders as the date approaches.</p>
+          <div class="step-tips">
+            <h4><i class="fas fa-lightbulb"></i> Safety Tips</h4>
+            <ul>
+              <li>Meet in public places during daylight hours</li>
+              <li>For borrowing, document the condition of items before and after</li>
+              <li>Use the trade agreement feature for high-value items</li>
+              <li>Confirm the exchange details through the app's messaging system</li>
+            </ul>
           </div>
         </div>
-        
-        <div class="timeline-step">
+      </div>
+
+      <div class="step-item animate-on-scroll">
+        <div class="step-image">
+          <img src="./resources/images/placeholder.jpg" alt="Leave Feedback">
           <div class="step-number">5</div>
-          <div class="step-content">
-            <h3>Leave Feedback</h3>
-            <p>After completing a trade, share your experience by leaving feedback for the other member. Positive reviews help build trust in our community and improve everyone's experience.</p>
-            <p>Building a good reputation will make future trades easier and more enjoyable.</p>
-            <div class="step-tip">
-              <h4>Pro Tip:</h4>
-              <p>Be honest but kind in your feedback. Remember that detailed, constructive feedback helps everyone improve.</p>
+        </div>
+        <div class="step-content">
+          <h2>Leave Feedback</h2>
+          <p>After completing a trade or returning a borrowed item, leave feedback for the other user. This helps build a trusted community and improves everyone's experience on the platform.</p>
+          <p>Your positive reviews help other users build their reputation, and constructive feedback helps everyone improve.</p>
+          <div class="step-tips">
+            <h4><i class="fas fa-lightbulb"></i> Feedback Guidelines</h4>
+            <ul>
+              <li>Be honest but respectful in your reviews</li>
+              <li>Rate on communication, item condition, and reliability</li>
+              <li>Include specific details about what went well</li>
+              <li>Submit feedback promptly after completing the exchange</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step Circles for Mobile -->
+    <div class="step-circles">
+      <div class="circle active" data-step="0"></div>
+      <div class="circle" data-step="1"></div>
+      <div class="circle" data-step="2"></div>
+      <div class="circle" data-step="3"></div>
+      <div class="circle" data-step="4"></div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section animate-on-scroll">
+      <div class="cta-header">
+        <h2 class="gradient-text">Ready to Start?</h2>
+        <p>Join thousands of users already trading and borrowing items in your community. Create your account today and start making a positive environmental impact!</p>
+      </div>
+      <div class="cta-buttons">
+        <button class="cta-btn primary-btn" onclick="location.href='signup.html'">Sign Up Now</button>
+        <button class="cta-btn secondary-btn" onclick="location.href='browse.html'">Browse Available Items</button>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <div class="faq-header animate-on-scroll">
+        <h2 class="gradient-text">Frequently Asked Questions</h2>
+        <p>Find answers to common questions about using VirtualTrade.</p>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-item animate-on-scroll">
+          <button class="accordion-header">
+            <h3>Is VirtualTrade free to use?</h3>
+            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>Yes, VirtualTrade is completely free for basic users. We offer premium features for a small subscription fee, but all essential functions like listing items, messaging, and making trades are available at no cost.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item animate-on-scroll">
+          <button class="accordion-header">
+            <h3>How do I ensure safe trades?</h3>
+            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>We recommend meeting in public places during daylight hours, checking user reviews before trading, and using our in-app messaging to keep records of your arrangements. For high-value items, consider using our trade agreement feature which documents the terms of your exchange.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item animate-on-scroll">
+          <button class="accordion-header">
+            <h3>What happens if someone damages my item?</h3>
+            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>We encourage users to document the condition of items through photos before lending. If damage occurs, our support team can help mediate the situation. For valuable items, we recommend our optional protection plan which covers damages during borrowing periods.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item animate-on-scroll">
+          <button class="accordion-header">
+            <h3>Can I trade outside my local area?</h3>
+            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>VirtualTrade is primarily designed for local trading to minimize environmental impact and make exchanges convenient. However, you can adjust your search radius to find items further away if needed. Some users do arrange shipping for items, but this is handled between the trading parties.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item animate-on-scroll">
+          <button class="accordion-header">
+            <h3>How does the rating system work?</h3>
+            <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="accordion-content">
+            <p>After completing a trade or borrow arrangement, both parties can rate each other on a 5-star scale and leave a review. Ratings cover communication, item accuracy, reliability, and overall experience. Your average rating is displayed on your profile to help build trust with other users.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Section -->
+    <div class="video-section animate-on-scroll">
+      <div class="video-header">
+        <h2 class="gradient-text">See VirtualTrade in Action</h2>
+      </div>
+      <div class="video-container">
+        <img src="./resources/images/placeholder.jpg" alt="Video Thumbnail" class="video-placeholder">
+        <div class="play-button">
+          <i class="fas fa-play"></i>
+        </div>
+        <iframe class="video-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="testimonialsSection">
+      <div class="testimonials-header animate-on-scroll">
+        <h2 class="gradient-text">What Our Users Say</h2>
+      </div>
+
+      <div class="testimonials-container">
+        <div class="testimonial-card animate-on-scroll">
+          <div class="testimonial-quote">"</div>
+          <div class="testimonial-text">
+            VirtualTrade completely changed how I think about my possessions. Instead of buying new things I rarely use, I can borrow them from my neighbors. I've saved money and made great friends!
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background-image: url('./resources/images/profile_pic.jpg');"></div>
+            <div class="testimonial-info">
+              <h4>Sarah K.</h4>
+              <p>Member since 2024</p>
+              <div class="testimonial-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card animate-on-scroll">
+          <div class="testimonial-quote">"</div>
+          <div class="testimonial-text">
+            As a student, I'm always on a budget. VirtualTrade lets me trade my old textbooks for ones I need this semester. The platform is so easy to use and the community is incredibly helpful.
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background-image: url('./resources/images/profile_pic.jpg');"></div>
+            <div class="testimonial-info">
+              <h4>Mike T.</h4>
+              <p>Member since 2024</p>
+              <div class="testimonial-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card animate-on-scroll">
+          <div class="testimonial-quote">"</div>
+          <div class="testimonial-text">
+            I love that I'm reducing waste while connecting with people who share my values. I've traded everything from kitchen appliances to camping gear, and each exchange has been smooth and enjoyable.
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background-image: url('./resources/images/profile_pic.jpg');"></div>
+            <div class="testimonial-info">
+              <h4>Elena R.</h4>
+              <p>Member since 2024</p>
+              <div class="testimonial-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="faq-section">
-        <h1>Frequently Asked Questions</h1>
-        <br>
-        <div class="faq-item">
-          <div class="faq-question">Is Virtual Trade Shop completely free to use?</div>
-          <div class="faq-answer">Yes, creating an account, listing items, and making trades are all completely free. We believe in making sustainable consumption accessible to everyone.</div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">How does Virtual Trade Shop ensure safety during exchanges?</div>
-          <div class="faq-answer">We provide safety guidelines for all members, recommend public meeting places, and have a feedback system for user profiles. this allows users to address any concerns that arised during the trading process for that user.</div>
-        </div>
-       
-        
-        <div class="faq-item">
-          <div class="faq-question">Is there a limit to how many items I can list?</div>
-          <div class="faq-answer">There's no limit! List as many items as you'd like to share with the community. The more you list, the more opportunities you create for sustainable exchanges.</div>
-        </div>
-      </div>
-      
-      <div class="ready-section">
-        <h2>Ready to Start Trading?</h2>
-        <p>Join thousands of community members already swapping items, reducing waste, and building connections through sustainable sharing.</p>
-        <a href="signup.html" class="get-started-btn">Create Account</a>
-      </div>
-    </section>
-  </main>
-  
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer>
     <div class="footer-content">
       <div class="footer-col">
-        <h3>Virtual Trade Shop</h3>
-        <p>A community platform for sustainable trading, sharing, and reducing waste through conscious consumption.</p>
+        <h3>VirtualTrade</h3>
+        <p>Trading platform for a sustainable future. Connect, exchange, and give items a second life.</p>
       </div>
-      
       <div class="footer-col">
         <h3>Quick Links</h3>
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="browse.html">Browse Items</a></li>
-            <li><a href="about.html">About Us</a></li>
-            
+          <li><a href="index.html">Home</a></li>
+          <li><a href="browse.html">Browse Items</a></li>
+          <li><a href="about.html">About Us</a></li>
         </ul>
-    </div>
-      
+      </div>
       <div class="footer-col">
         <h3>Categories</h3>
         <ul>
-          <li><a class="cat-links" >Electronics</a></li>
-          <li><a class="cat-links" >Clothing</a></li>
-          <li><a class="cat-links" >Books</a></li>
-          <li><a class="cat-links" >Furniture</a></li>
+          <li><a class="cat-links">Electronics</a></li>
+          <li><a class="cat-links">Clothing</a></li>
+          <li><a class="cat-links">Books</a></li>
+          <li><a class="cat-links">Furniture</a></li>
         </ul>
+      </div>
     </div>
-      
-   
     <div class="footer-bottom">
-      <p>&copy; 2025 Virtual Trade Shop. All rights reserved.</p>
+      <p>&copy; 2025 VirtualTrade. All rights reserved.</p>
     </div>
   </footer>
-  
+
+  <!-- Particle.js for cool background effects -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="script.js"></script>
   <script>
     const links = document.querySelectorAll('.cat-links');
         links.forEach(link => {
@@ -348,6 +1015,133 @@
               }
           })
       }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize particles.js
+      particlesJS('particles-js', {
+        "particles": {
+          "number": {
+            "value": 80,
+            "density": {
+              "enable": true,
+              "value_area": 800
+            }
+          },
+          "color": {
+            "value": "#ffffff"
+          },
+          "shape": {
+            "type": "circle",
+            "stroke": {
+              "width": 0,
+              "color": "#000000"
+            },
+          },
+          "opacity": {
+            "value": 0.5,
+            "random": false,
+          },
+          "size": {
+            "value": 3,
+            "random": true,
+          },
+          "line_linked": {
+            "enable": true,
+            "distance": 150,
+            "color": "#ffffff",
+            "opacity": 0.4,
+            "width": 1
+          },
+          "move": {
+            "enable": true,
+            "speed": 2,
+            "direction": "none",
+            "random": false,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+          }
+        },
+        "interactivity": {
+          "detect_on": "canvas",
+          "events": {
+            "onhover": {
+              "enable": true,
+              "mode": "grab"
+            },
+            "onclick": {
+              "enable": true,
+              "mode": "push"
+            },
+            "resize": true
+          },
+          "modes": {
+            "grab": {
+              "distance": 140,
+              "line_linked": {
+                "opacity": 1
+              }
+            },
+            "push": {
+              "particles_nb": 4
+            }
+          }
+        },
+        "retina_detect": true
+      });
+
+      // Accordion Functionality
+      const accordionItems = document.querySelectorAll('.accordion-item');
+      
+      accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        
+        header.addEventListener('click', () => {
+          // Close all other accordion items
+          accordionItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+              otherItem.classList.remove('active');
+            }
+          });
+          
+          // Toggle current item
+          item.classList.toggle('active');
+        });
+      });
+      
+      // Video Play Button Functionality
+      const playButton = document.querySelector('.play-button');
+      const videoPlaceholder = document.querySelector('.video-placeholder');
+      const videoIframe = document.querySelector('.video-iframe');
+      
+      if (playButton) {
+        playButton.addEventListener('click', () => {
+          // Replace with your actual video URL
+          videoIframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+          videoIframe.style.display = 'block';
+          videoPlaceholder.style.display = 'none';
+          playButton.style.display = 'none';
+        });
+      }
+      
+      // Mobile Steps Navigation
+      const circles = document.querySelectorAll('.circle');
+      const steps = document.querySelectorAll('.step-item');
+      
+      if (circles.length > 0 && steps.length > 0) {
+        circles.forEach(circle => {
+          circle.addEventListener('click', () => {
+            // Remove active class from all circles and steps
+            circles.forEach(c => c.classList.remove('active'));
+            steps.forEach(s => s.style.display = 'none');
+            
+            // Add active class to clicked circle and show corresponding step
+            circle.classList.add('active');
+            const stepIndex = parseInt(circle.getAttribute('data-step'));
+            steps[stepIndex].style.display = 'grid';
+          });
+        });
+      }
+    });
   </script>
 </body>
 </html>

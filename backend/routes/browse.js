@@ -14,7 +14,7 @@ routerBrowse.post('/', (req, res, next) => {
         // If the item to be displayed is of borrowable type
         if (item_type === 'borrowable') {
             // The query to fetch borrowable items from the database along with their categories and owners where b.item_id equals item_id param
-            const que_borrow = `SELECT c.category_name, c.description, b.item_id, b.item_name, u.username, u.cms_id, image_url, status, item_description 
+            const que_borrow = `SELECT c.category_name, c.description, b.item_id, b.item_name, u.username, u.cms_id, image_url, status, item_description, b.item_condition, b.creation_date
             FROM borrowable_items b
             JOIN users u ON b.owner_id = u.cms_id
             LEFT JOIN borrow_category Boc ON b.item_id = Boc.item_id
@@ -29,7 +29,7 @@ routerBrowse.post('/', (req, res, next) => {
                 const relatedItems = result_borrow[0].category_name;
 
                 // The query to fetch the items that have the same category
-                const que_borrow_cat = `SELECT c.category_name, c.description, b.item_id, b.item_name, u.username, u.cms_id, image_url, status, item_description 
+                const que_borrow_cat = `SELECT c.category_name, c.description, b.item_id, b.item_name, u.username, u.cms_id, image_url, status, item_description, b.item_condition, b.creation_date
                 FROM borrowable_items b
                 JOIN users u ON b.owner_id = u.cms_id
                 LEFT JOIN borrow_category Boc ON b.item_id = Boc.item_id
@@ -56,7 +56,7 @@ routerBrowse.post('/', (req, res, next) => {
         }
         else if (item_type === 'tradable') {
             // The query to fetch tradable items from the database along with their categories and owners where t.item_id = item_id
-            const que_trade = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status,   item_description
+            const que_trade = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status,   item_description, t.item_condition
                 FROM     tradeable_items t
                 JOIN users u ON t.owner_id = u.cms_id
                 LEFT JOIN trade_category Toc ON t.item_id = Toc.item_id
@@ -71,7 +71,7 @@ routerBrowse.post('/', (req, res, next) => {
                 const relatedItems = result_trade[0].category_name;
 
                 // The query to fetch the items that have the same category
-                const que_trade_cat = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status, item_description
+                const que_trade_cat = `SELECT c.category_name, c.description, u.username, t.item_name, t.item_id, u.cms_id, image_url, status, item_description, t.item_condition
                     FROM tradeable_items t
                     JOIN users u ON t.owner_id = u.cms_id
                     LEFT JOIN trade_category Toc ON t.item_id = Toc.item_id
@@ -157,6 +157,22 @@ routerBrowse.get('/featured', (req, res, next) => {
             return res.status(500).json({ error: 'Database query error' });
         }
         // Sending the featured items as JSON response
+        res.json(result); 
+    });
+});
+
+routerBrowse.get('/categories', (req, res, next) => {
+    // This route handles GET requests to the /browse/categories endpoint
+    // It retrieves all categories from the database and sends them as a JSON response
+
+    const categoriesQuery = `SELECT * FROM category;`;
+
+    pool.query(categoriesQuery, (err, result) => {
+        if (err) { // If there is an error executing the query, log it and send a 500 response
+            console.error('Error executing query:', err);
+            return res.status(500).json({ error: 'Database query error' });
+        }
+        // Sending the categories as JSON response
         res.json(result); 
     });
 });

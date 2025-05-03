@@ -21,7 +21,7 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { name, description, type, durations, status } = req.body;
+    const { name, description, type, durations, status, condition, category } = req.body;
     const imageUrl = req.file ? `./resources/images/uploads/${req.file.filename}` : null;
 
     if (type === 'borrow') {
@@ -53,8 +53,8 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
     
                 // Insert into borrowable_items table
                 connection.query(
-                    'INSERT INTO borrowable_items (item_name, owner_id, image_url, status, item_description) VALUES (?, ?, ?, ?, ?)',
-                    [name, user.cms_id, imageUrl, true, description],
+                    'INSERT INTO borrowable_items (item_name, owner_id, image_url, status, item_description, item_condition) VALUES (?, ?, ?, ?, ?, ?)',
+                    [name, user.cms_id, imageUrl, true, description, condition],
                     (err, result) => {
                         if (err) {
                             return connection.rollback(() => {
@@ -65,6 +65,19 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
                         }
     
                         const itemId = result.insertId;
+
+                        pool.query(
+                            'INSERT INTO borrow_category (item_id, category_id) VALUES (?, ?)',
+                            [itemId, category],
+                            (err, result) => {
+                                if (err) {
+                                    return connection.rollback(() => {
+                                        connection.release();
+                                        console.error("Database error:", err);
+                                        res.status(500).json({ error: 'Failed to upload item' });
+                                    });
+                                }
+                            });
                         
                         // Insert durations into borrowable_item_durations table
                         const durationInsertPromises = durationOptions.map(days => {
@@ -112,22 +125,29 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
     });
     } else if (type === 'trade') {
         
-        if (isNaN(parsedTokenValue) || parsedTokenValue < 0) {
-            return res.status(400).json({ error: 'Token value must be a positive number' });
-        }
-        
         // Insert into tradeable_items table
         pool.query(
-            'INSERT INTO tradeable_items (item_name, owner_id, image_url, status, item_description) VALUES (?, ?, ?, ?, ?)',
-            [name, user.cms_id, imageUrl, status === 'available', description],
+            'INSERT INTO tradeable_items (item_name, owner_id, image_url, status, item_description, item_condition) VALUES (?, ?, ?, ?, ?, ?)',
+            [name, user.cms_id, imageUrl, status === 'available', description, condition],
             (err, result) => {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Failed to upload item' });
                 }
+
+                pool.query(
+                    'INSERT INTO trade_category (item_id, category_id) VALUES (?, ?)',
+                    [result.insertId, category],
+                    (err, result) => {
+                        if (err) {
+                            console.error("Database error:", err);
+                            return res.status(500).json({ error: 'Failed to upload item' });
+                        }
+                        
+                // Successfully uploaded the item
                 res.status(200).json({ message: 'Item uploaded successfully', itemId: result.insertId });
-            }
-        );
+            });
+        });
     }
 });
 

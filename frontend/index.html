@@ -19,20 +19,24 @@
                 
                 <a href="how-it-works.html">How it Works</a>
                 <a href="about.html">About Us</a>
+                <a href="browse.html">Browse</a>
 
             </div>
             <div class="auth-buttons">
                 <button class="login-btn" onclick="location.href='login.html'">Login</button>
                 <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
             </div>
-            
+            <button class="mobile-menu-btn" style="display: none;">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="particles-container" id="particles-js"></div>
         <div class="hero-content">
-            <h1>Trade and Borrow Virtually — Save Money, and Build Your Campus Community!</h1>
+            <h1 class="gradient-text">Trade and Borrow Virtually — Save Money, and Build Your Campus Community!</h1>
             <p>Join the community where you can trade items with people around the campus. Give your unused items a new life and find treasures from others.</p>
             <button class="hero-btn" onclick="location.href='signup.html'">Start Trading Now</button>
         </div>
@@ -41,7 +45,7 @@
     <!-- Categories Section -->
     <section class="categories-section">
         <div class="section-title">
-            <h2>Popular Categories</h2>
+            <h2 class="gradient-text">Popular Categories</h2>
             <p>Explore our most popular trading categories and find what you're looking for.</p>
         </div>
         <div class="categories">
@@ -92,7 +96,7 @@
     <section class="featured">
         <div class="section-title">
             <h2>Featured Items</h2>
-            <p>Check out these popular items currently available for Borrow.</p>
+            <p>Check out these popular items currently available for borrow.</p>
         </div>
         <div class="item-grid">
         </div>
@@ -101,7 +105,7 @@
     <!-- How It Works Section -->
     <section class="how-it-works">
         <div class="section-title">
-            <h2>How It Works</h2>
+            <h2 class="gradient-text">How It Works</h2>
             <p>Trading on our platform is simple, secure, and sustainable.</p>
         </div>
         <div class="steps">
@@ -132,7 +136,7 @@
     <!-- Testimonials Section -->
     <section>
         <div class="section-title">
-            <h2>Happy Traders</h2>
+            <h2 class="gradient-text">Happy Traders</h2>
             <p>Hear from our community members about their trading experiences.</p>
         </div>
         <div class="testimonials">
@@ -178,10 +182,10 @@
             <div class="footer-col">
                 <h3>Categories</h3>
                 <ul>
-                    <li><a class="cat-links" >Electronics</a></li>
-                    <li><a class="cat-links" >Clothing</a></li>
-                    <li><a class="cat-links" >Books</a></li>
-                    <li><a class="cat-links" >Furniture</a></li>
+                    <li><a class="cat-links">Electronics</a></li>
+                    <li><a class="cat-links">Clothing</a></li>
+                    <li><a class="cat-links">Books</a></li>
+                    <li><a class="cat-links">Furniture</a></li>
                 </ul>
             </div>
             
@@ -191,6 +195,83 @@
         </div>
     </footer>
 
+    <!-- Particle.js for cool background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

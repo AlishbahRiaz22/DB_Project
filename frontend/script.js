@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     featuredItemsData.forEach(item => {
             // Creating a new div element for each item
             const itemElement = document.createElement('div');
-            itemElement.className = 'item-card'; // Setting the class name for styling
+            itemElement.className = 'item-card animate-on-scroll'; // Setting the class name for styling
             // Setting the inner HTML of the item element with the item's details
             itemElement.innerHTML = `
               <div class="item-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'});">
@@ -172,4 +172,171 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     window.addEventListener('scroll', animateOnScroll);
     animateOnScroll(); // Run once on initial load
+});
+
+// Header scroll effect
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) {
+        header.classList.add('header-scrolled');
+    } else {
+        header.classList.remove('header-scrolled');
+    }
+});
+
+// Smooth page transitions
+document.addEventListener('DOMContentLoaded', function() {
+    // Add transition class to body
+    document.body.classList.add('page-transition');
+    
+    // Handle all navigation links
+    document.querySelectorAll('a[href^="./"], a[href^="/"], a[href^="index"], a[href^="about"], a[href^="browse"], a[href^="category"], a[href^="login"], a[href^="signup"], a[href^="user-profile"], a[href^="upload-item"], a[href^="item-details"], a[href^="how-it-works"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Skip if modifier keys are pressed or it's an external link
+            if (e.metaKey || e.ctrlKey || this.target === '_blank') return;
+            
+            e.preventDefault();
+            const currentPage = window.location.href;
+            const newPage = this.href;
+            
+            // Don't animate if it's the same page
+            if (currentPage === newPage) return;
+            
+            // Start exit animation
+            document.body.classList.add('page-exit');
+            
+            // After animation completes, navigate to new page
+            setTimeout(() => {
+                window.location.href = newPage;
+            }, 500);
+        });
+    });
+    
+    // Entrance animation when page loads
+    setTimeout(() => {
+        document.body.classList.add('page-loaded');
+    }, 100);
+});
+
+// Animation on scroll
+const animateElements = () => {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    
+    elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.2;
+        
+        if (elementPosition < screenPosition) {
+            element.classList.add('animated');
+        }
+    });
+};
+
+// Run animation check on load and scroll
+window.addEventListener('scroll', animateElements);
+window.addEventListener('load', animateElements);
+
+// Interactive category cards
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryCards = document.querySelectorAll('.category-card');
+    
+    categoryCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            const icon = this.querySelector('.category-img i');
+            icon.classList.add('fa-beat');
+            
+            setTimeout(() => {
+                icon.classList.remove('fa-beat');
+            }, 1000);
+        });
+    });
+});
+
+// Dark mode toggle
+function setupDarkMode() {
+    const darkModeToggle = document.createElement('button');
+    darkModeToggle.classList.add('dark-mode-toggle');
+    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    document.body.appendChild(darkModeToggle);
+    
+    // Check for saved user preference
+    const darkMode = localStorage.getItem('darkMode') === 'enabled';
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    darkModeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+            this.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+            this.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    });
+}
+
+// Call setup function when DOM is loaded
+document.addEventListener('DOMContentLoaded', setupDarkMode);
+
+// Parallax effect for hero section
+document.addEventListener('DOMContentLoaded', function() {
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.pageYOffset;
+            hero.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+        });
+    }
+});
+
+// Interactive 3D card tilt effect for item cards
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.item-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', handleCardMove);
+        card.addEventListener('mouseleave', handleCardLeave);
+    });
+    
+    function handleCardMove(e) {
+        const card = this;
+        const cardRect = card.getBoundingClientRect();
+        const cardWidth = cardRect.width;
+        const cardHeight = cardRect.height;
+        
+        // Get mouse position relative to card
+        const mouseX = e.clientX - cardRect.left;
+        const mouseY = e.clientY - cardRect.top;
+        
+        // Calculate rotation angles (max 10 degrees)
+        const rotateY = ((mouseX / cardWidth) - 0.5) * 10;
+        const rotateX = -((mouseY / cardHeight) - 0.5) * 10;
+        
+        // Apply the transform
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        
+        // Create shine effect
+        const shine = card.querySelector('.shine') || document.createElement('div');
+        if (!card.querySelector('.shine')) {
+            shine.classList.add('shine');
+            card.appendChild(shine);
+        }
+        
+        const shineX = (mouseX / cardWidth) * 100;
+        const shineY = (mouseY / cardHeight) * 100;
+        shine.style.background = `radial-gradient(circle at ${shineX}% ${shineY}%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%)`;
+    }
+    
+    function handleCardLeave() {
+        // Reset transform on mouse leave
+        this.style.transform = '';
+        const shine = this.querySelector('.shine');
+        if (shine) {
+            shine.remove();
+        }
+    }
 });

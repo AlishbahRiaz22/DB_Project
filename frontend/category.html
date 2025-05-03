@@ -6,6 +6,436 @@
     <title>Categories - Virtual Trade Shop</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Category page specific styles */
+        .hero-categories {
+            min-height: 45vh;
+            background-image: linear-gradient(rgba(63, 66, 46, 0.85), rgba(63, 66, 46, 0.7)), url('https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero-categories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-categories h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--ivory), var(--apricot));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-categories p {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--ivory);
+            line-height: 1.6;
+        }
+        
+        .categories-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--organic);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--organic), var(--apricot));
+            border-radius: 4px;
+        }
+        
+        .section-title p {
+            color: var(--natural);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .category-card {
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            transform-origin: center bottom;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: rgba(215, 139, 48, 0.3);
+        }
+        
+        .category-img {
+            height: 140px;
+            background: linear-gradient(135deg, var(--organic), var(--apricot));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-img::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            top: -25%;
+            left: -25%;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .category-card:hover .category-img::before {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        
+        .category-card:hover .category-img {
+            height: 150px;
+        }
+        
+        .category-img i {
+            transition: all 0.4s;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .category-card:hover .category-img i {
+            transform: scale(1.2);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .category-info {
+            padding: 2rem;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(to bottom, #ffffff, #f9f9f9);
+        }
+        
+        .category-info h3 {
+            font-size: 1.5rem;
+            color: var(--organic);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover .category-info h3 {
+            color: var(--apricot);
+            transform: translateY(-5px);
+        }
+        
+        .category-info p {
+            color: var(--natural);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            transition: all 0.3s;
+        }
+        
+        .category-btn {
+            padding: 0.9rem 1.8rem;
+            background: linear-gradient(135deg, var(--organic), var(--apricot));
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-top: auto;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .category-card:hover .category-btn::before {
+            left: 100%;
+        }
+        
+        .category-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(215, 139, 48, 0.35);
+            background: linear-gradient(135deg, var(--apricot), var(--light-apricot));
+        }
+        
+        .category-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--organic);
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover .category-badge {
+            background-color: var(--apricot);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(215, 139, 48, 0.25);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(215, 139, 48, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(215, 139, 48, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(215, 139, 48, 0);
+            }
+        }
+        
+        /* Search bar styling */
+        .category-search {
+            margin-bottom: 2rem;
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+        
+        .category-search input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .category-search input:focus {
+            outline: none;
+            border-color: var(--apricot);
+            box-shadow: 0 5px 20px rgba(215, 139, 48, 0.15);
+        }
+        
+        .category-search button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            width: 50px;
+            background: linear-gradient(135deg, var(--organic), var(--apricot));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-search button:hover {
+            background: linear-gradient(135deg, var(--apricot), var(--light-apricot));
+            transform: scale(1.05);
+        }
+        
+        /* Filter and sort controls */
+        .category-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+        
+        .category-filters {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .filter-btn {
+            padding: 0.7rem 1.2rem;
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .filter-btn i {
+            font-size: 0.8rem;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--apricot);
+            color: white;
+            border-color: var(--apricot);
+        }
+        
+        .category-sort select {
+            padding: 0.7rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            appearance: none;
+            background: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>") no-repeat;
+            background-position: right 10px top 50%;
+            background-color: white;
+            padding-right: 30px;
+        }
+        
+        .category-sort select:focus {
+            outline: none;
+            border-color: var(--apricot);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-categories h1 {
+                font-size: 2.5rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .category-controls {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .category-filters {
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 0.5rem;
+                gap: 0.5rem;
+            }
+            
+            .filter-btn {
+                flex-shrink: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-categories h1 {
+                font-size: 2rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-search input {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -15,11 +445,8 @@
             </div>
             <div class="nav-links">
                 <a href="index.html">Home</a>
-                
                 <a href="category.html" class="active">Categories</a>
-                
                 <a href="how-it-works.html">How it Works</a>
-
                 <a href="about.html">About Us</a>
             </div>
             <div class="auth-buttons">
@@ -33,232 +460,477 @@
     </header>
 
     <main>
-        <section>
-            <div class="section-title">
-                <h1>Browse by Categories</h2>
-                <p>Find exactly what you're looking for by exploring our categories</p>
+        <section class ="hero">
+        
+            <div class="particles-container" id="particles-js"></div>
+            <div class="hero-content"></div>
+                
+                <h1>Browse by Categories</h1>
+                <p>Find exactly what you're looking for by exploring our curated collection of categories. Each category contains unique items waiting to be discovered.</p>
             </div>
-        
+        </section>
 
-        
+        <div class="categories-container">
             <div class="section-title">
                 <h2>All Categories</h2>
-                <p>Discover items organized by category for easier browsing</p>
+                <p>Discover items organized by category for easier browsing and finding what suits your needs</p>
+            </div>
+            
+            <div class="category-search">
+                <input type="text" id="categorySearch" placeholder="Search for a category...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="category-controls">
+                <div class="category-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="popular"><i class="fas fa-fire"></i> Popular</button>
+                    <button class="filter-btn" data-filter="new"><i class="fas fa-star"></i> New</button>
+                    <button class="filter-btn" data-filter="sustainable"><i class="fas fa-leaf"></i> Sustainable</button>
+                </div>
+                
+                <div class="category-sort">
+                    <select id="categorySorting">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                    </select>
+                </div>
             </div>
 
             <div class="categories-grid">
-                <div class="category-card">
+                <div class="category-card" data-category="furniture popular">
                     <div class="category-img">
                         <i class="fas fa-couch"></i>
                     </div>
-
                     <div class="category-info">
-                        <h3>Furniture</h3>
-                        <p>Chairs, tables, sofas, and more for your home</p> 
-                        <button class="category-btn" onclick="location.href='browse.html'">Browse Furniture</button>
+                        <div>
+                            <h3>Furniture</h3>
+                            <p>Chairs, tables, sofas, and more for your home</p>
                         </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Furniture'">Browse Furniture</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="electronics popular">
                     <div class="category-img">
                         <i class="fas fa-laptop"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Electronics</h3>
-                        <p>Devices, gadgets, and tech equipment</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Electronics</button>
+                        <div>
+                            <h3>Electronics</h3>
+                            <p>Devices, gadgets, and tech equipment</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Electronics'">Browse Electronics</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="clothing">
                     <div class="category-img">
                         <i class="fas fa-tshirt"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Clothing</h3>
-                        <p>Sustainable fashion for all ages and styles</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Clothing</button>
+                        <div>
+                            <h3>Clothing</h3>
+                            <p>Sustainable fashion for all ages and styles</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Clothing'">Browse Clothing</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="books popular sustainable">
                     <div class="category-img">
                         <i class="fas fa-book"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Books</h3>
-                        <p>Fiction, non-fiction, textbooks, and more</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Books</button>
+                        <div>
+                            <h3>Books</h3>
+                            <p>Fiction, non-fiction, textbooks, and more</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Books'">Browse Books</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="tools">
                     <div class="category-img">
                         <i class="fas fa-tools"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Tools</h3>
-                        <p>Hand tools, power tools, and equipment</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Tools</button>
+                        <div>
+                            <h3>Tools</h3>
+                            <p>Hand tools, power tools, and equipment</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Tools'">Browse Tools</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="sports new">
                     <div class="category-img">
                         <i class="fas fa-bicycle"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Sports & Outdoor</h3>
-                        <p>Equipment for all your outdoor activities</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Sports & Outdoor</button>
+                        <div>
+                            <h3>Sports & Outdoor</h3>
+                            <p>Equipment for all your outdoor activities</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Sports'">Browse Sports & Outdoor</button>
+                    </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="music">
                     <div class="category-img">
                         <i class="fas fa-guitar"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Musical Instruments</h3>
-                        <p>Instruments, equipment, and accessories</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Music</button>
+                        <div>
+                            <h3>Musical Instruments</h3>
+                            <p>Instruments, equipment, and accessories</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Music'">Browse Music</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="games popular">
                     <div class="category-img">
                         <i class="fas fa-gamepad"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Games & Toys</h3>
-                        <p>Entertainment for all ages</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Games</button>
+                        <div>
+                            <h3>Games & Toys</h3>
+                            <p>Entertainment for all ages</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Games'">Browse Games</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="kitchen new">
                     <div class="category-img">
                         <i class="fas fa-utensils"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Kitchen & Dining</h3>
-                        <p>Cookware, appliances, and dining essentials</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Kitchen</button>
+                        <div>
+                            <h3>Kitchen & Dining</h3>
+                            <p>Cookware, appliances, and dining essentials</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Kitchen'">Browse Kitchen</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="garden sustainable">
                     <div class="category-img">
                         <i class="fas fa-seedling"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Garden & Plants</h3>
-                        <p>Tools, plants, and outdoor accessories</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Garden</button>
+                        <div>
+                            <h3>Garden & Plants</h3>
+                            <p>Tools, plants, and outdoor accessories</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Garden'">Browse Garden</button>
                     </div>
                 </div>
 
-                <div class="category-card">
+                <div class="category-card" data-category="arts new">
                     <div class="category-img">
                         <i class="fas fa-paint-brush"></i>
                     </div>
                     <div class="category-info">
-                        <h3>Arts & Crafts</h3>
-                        <p>Supplies and tools for creative projects</p>
-                        <button class="category-btn"onclick="location.href='browse.html'">Browse Arts</button>
+                        <div>
+                            <h3>Arts & Crafts</h3>
+                            <p>Supplies and tools for creative projects</p>
+                        </div>
+                        <button class="category-btn" onclick="location.href='browse.html?category=Arts'">Browse Arts</button>
                     </div>
-                </div> 
+                </div>
             </div>
-        </section>
+        </div>
+    </main>
 
-        
-        <footer>
-            <div class="footer-content">
-              <div class="footer-col">
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
                 <h3>Virtual Trade Shop</h3>
                 <p>A community platform for sustainable trading, sharing, and reducing waste through conscious consumption.</p>
-              </div>
-              
-              <div class="footer-col">
+            </div>
+            
+            <div class="footer-col">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="browse.html">Browse Items</a></li>
                     <li><a href="about.html">About Us</a></li>
-                    
                 </ul>
             </div>
+
             <div class="footer-col">
-              <h3>Categories</h3>
-              <ul>
-                <li><a class="cat-links" >Electronics</a></li>
-                <li><a class="cat-links" >Clothing</a></li>
-                <li><a class="cat-links" >Books</a></li>
-                <li><a class="cat-links" >Furniture</a></li>
-              </ul>
-          </div>   
-           
+                <h3>Categories</h3>
+                <ul>
+                    <li><a class="cat-links">Electronics</a></li>
+                    <li><a class="cat-links">Clothing</a></li>
+                    <li><a class="cat-links">Books</a></li>
+                    <li><a class="cat-links">Furniture</a></li>
+                </ul>
+            </div>
             
             <div class="footer-bottom">
-              <p>&copy; 2025 Virtual Trade Shop. All rights reserved.</p>
+                <p>&copy; 2025 Virtual Trade Shop. All rights reserved.</p>
             </div>
-          </footer>
-        </main>
-    <script>          
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        mobileMenuBtn.style.display = 'none'; // Hide the mobile menu button by default
+        </div>
+    </footer>
 
-        const links = document.querySelectorAll('.cat-links');
-        links.forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent default anchor click behavior
-                const value = this.textContent.trim(); // Get the text content of the clicked link
-                const url = `browse.html?category=${value}`; // Construct the URL with the category value
-                window.location.href = url; // Redirect to the new URL
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation for category cards on scroll
+            const cards = document.querySelectorAll('.category-card');
+            
+            function checkScroll() {
+                cards.forEach((card, index) => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (cardPosition < screenPosition) {
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, index * 100); // Staggered animation
+                    }
+                });
+            }
+            
+            // Initial styles for animation
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
             });
-        });
-    
-        if (window.localStorage.getItem('loggedIn') === 'true') {
-            // If the user is logged in, we update the buttons
-            const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-            const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
-    
-            // Updating the login button to act as a link to the user's profile
-            loginBtn.textContent = "";
-            loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-            loginBtn.style.backgroundSize = "cover";
-            loginBtn.style.width = "40px";
-            loginBtn.style.height = "40px";
-            loginBtn.style.borderRadius = "50%";
-            loginBtn.style.border = "none";
-            loginBtn.style.cursor = "pointer";
-            loginBtn.style.marginRight = "10px";
-            loginBtn.style.padding = "0px";
-            loginBtn.style.backgroundColor = "transparent";
-            loginBtn.href = "#";
-            loginBtn.addEventListener('click', function() {
-                window.location.href = "profile.html";
-            })
-    
-            // Updating the signup button to act as a logout button
-            signupBtn.textContent = "Logout";
-            signupBtn.href = "#";
-            signupBtn.addEventListener('click', async function() {
-                const response = await fetch('http://127.0.0.1:8808/logout', {
-                    method: "POST",
-                    credentials: 'include'
+            
+            // Check positions on load and scroll
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // Initial check
+            
+            // Category filtering functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Filter cards
+                    cards.forEach(card => {
+                        const categories = card.getAttribute('data-category');
+                        
+                        // Reset styles first
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(30px)';
+                        
+                        // Show/hide based on filter
+                        if (filter === 'all' || categories.includes(filter)) {
+                            card.style.display = 'flex';
+                            // Re-trigger animation with delay
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 100);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Category search functionality
+            const searchInput = document.getElementById('categorySearch');
+            
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Category sorting functionality
+            const sortSelect = document.getElementById('categorySorting');
+            
+            sortSelect.addEventListener('change', function() {
+                const sortValue = this.value;
+                const cardsArray = Array.from(cards);
+                
+                cardsArray.sort((a, b) => {
+                    if (sortValue === 'name-asc') {
+                        return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+                    } else if (sortValue === 'name-desc') {
+                        return b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent);
+                    } else if (sortValue === 'items-desc') {
+                        const itemsA = parseInt(a.querySelector('.category-badge').textContent);
+                        const itemsB = parseInt(b.querySelector('.category-badge').textContent);
+                        return itemsB - itemsA;
+                    } else if (sortValue === 'items-asc') {
+                        const itemsA = parseInt(a.querySelector('.category-badge').textContent);
+                        const itemsB = parseInt(b.querySelector('.category-badge').textContent);
+                        return itemsA - itemsB;
+                    }
+                });
+                
+                // Re-append sorted cards
+                const grid = document.querySelector('.categories-grid');
+                cardsArray.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    grid.appendChild(card);
+                });
+                
+                // Re-trigger animations
+                setTimeout(() => {
+                    checkScroll();
+                }, 100);
+            });
+            
+            // Category links functionality
+            const links = document.querySelectorAll('.cat-links');
+            links.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const value = this.textContent.trim();
+                    const url = `browse.html?category=${value}`;
+                    window.location.href = url;
+                });
+            });
+
+            if (window.localStorage.getItem('loggedIn') === 'true') {
+                // If the user is logged in, we update the buttons
+                const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
+                const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+        
+                // Updating the login button to act as a link to the user's profile
+                loginBtn.textContent = "";
+                loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+                loginBtn.style.backgroundSize = "cover";
+                loginBtn.style.width = "40px";
+                loginBtn.style.height = "40px";
+                loginBtn.style.borderRadius = "50%";
+                loginBtn.style.border = "none";
+                loginBtn.style.cursor = "pointer";
+                loginBtn.style.marginRight = "10px";
+                loginBtn.style.padding = "0px";
+                loginBtn.style.backgroundColor = "transparent";
+                loginBtn.href = "#";
+                loginBtn.addEventListener('click', function() {
+                    window.location.href = "profile.html";
                 })
-                if(response.status === 200) {
-                    // If user successfully logged out, redirect to index.html
-                    // To undo the changes made to the login button, we set it back to its original state by redirection
-                    window.location.href = "index.html";
-                    window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
-                }
-                else {
-                    alert("Error logging out. Please try again.");
-                }
-            })
-        }
+        
+                // Updating the signup button to act as a logout button
+                signupBtn.textContent = "Logout";
+                signupBtn.href = "#";
+                signupBtn.addEventListener('click', async function() {
+                    const response = await fetch('http://127.0.0.1:8808/logout', {
+                        method: "POST",
+                        credentials: 'include'
+                    })
+                    if(response.status === 200) {
+                        // If user successfully logged out, redirect to index.html
+                        // To undo the changes made to the login button, we set it back to its original state by redirection
+                        window.location.href = "index.html";
+                        window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
+                    }
+                    else {
+                        alert("Error logging out. Please try again.");
+                    }
+                })
+            }
+            
+            
+        });
     </script>
+      <!-- Particle.js for cool background effects -->
+      <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              particlesJS('particles-js', {
+                  "particles": {
+                      "number": {
+                          "value": 80,
+                          "density": {
+                              "enable": true,
+                              "value_area": 800
+                          }
+                      },
+                      "color": {
+                          "value": "#ffffff"
+                      },
+                      "shape": {
+                          "type": "circle",
+                          "stroke": {
+                              "width": 0,
+                              "color": "#000000"
+                          },
+                      },
+                      "opacity": {
+                          "value": 0.5,
+                          "random": false,
+                      },
+                      "size": {
+                          "value": 3,
+                          "random": true,
+                      },
+                      "line_linked": {
+                          "enable": true,
+                          "distance": 150,
+                          "color": "#ffffff",
+                          "opacity": 0.4,
+                          "width": 1
+                      },
+                      "move": {
+                          "enable": true,
+                          "speed": 2,
+                          "direction": "none",
+                          "random": false,
+                          "straight": false,
+                          "out_mode": "out",
+                          "bounce": false,
+                      }
+                  },
+                  "interactivity": {
+                      "detect_on": "canvas",
+                      "events": {
+                          "onhover": {
+                              "enable": true,
+                              "mode": "grab"
+                          },
+                          "onclick": {
+                              "enable": true,
+                              "mode": "push"
+                          },
+                          "resize": true
+                      },
+                      "modes": {
+                          "grab": {
+                              "distance": 140,
+                              "line_linked": {
+                                  "opacity": 1
+                              }
+                          },
+                          "push": {
+                              "particles_nb": 4
+                          },
+                      }
+                  },
+                  "retina_detect": true
+              });
+          });
+      </script>
 </body>
 </html>

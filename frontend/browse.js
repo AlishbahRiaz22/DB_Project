@@ -1,46 +1,271 @@
-if (window.localStorage.getItem('loggedIn') === 'true') {
-    // If the user is logged in, we update the buttons
-    const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-    const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
+// Add these variables at the top of your script
+let currentPage = 1;
+const itemsPerPage = 12; // Adjust as needed
+let totalPages = 1;
 
-    // Updating the login button to act as a link to the user's profile
-    loginBtn.textContent = "";
-    loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-    loginBtn.style.backgroundSize = "cover";
-    loginBtn.style.width = "40px";
-    loginBtn.style.height = "40px";
-    loginBtn.style.borderRadius = "50%";
-    loginBtn.style.border = "none";
-    loginBtn.style.cursor = "pointer";
-    loginBtn.style.marginRight = "10px";
-    loginBtn.style.padding = "0px";
-    loginBtn.style.backgroundColor = "transparent";
-    loginBtn.href = "#";
-    loginBtn.addEventListener('click', function() {
-        window.location.href = "profile.html";
-    })
-
-    // Updating the signup button to act as a logout button
-    signupBtn.textContent = "Logout";
-    signupBtn.href = "#";
-    signupBtn.addEventListener('click', async function() {
-        const response = await fetch('http://127.0.0.1:8808/logout', {
-            method: "POST",
-            credentials: 'include'
-        })
-        if(response.status === 200) {
-            // If user successfully logged out, redirect to index.html
-            // To undo the changes made to the login button, we set it back to its original state by redirection
-            window.location.href = "index.html";
-            window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
-        }
-        else {
-            alert("Error logging out. Please try again.");
-        }
-    })
+// Add this function to your JavaScript file
+function setupPagination(items) {
+  // Calculate total pages
+  totalPages = Math.ceil(items.length / itemsPerPage);
+  
+  // Create pagination controls
+  const paginationContainer = document.querySelector('.pagination-container');
+  if (!paginationContainer) return;
+  
+  paginationContainer.innerHTML = '';
+  
+  // Only show pagination if there's more than one page
+  if (totalPages <= 1) {
+    paginationContainer.style.display = 'none';
+    return;
+  }
+  
+  paginationContainer.style.display = 'flex';
+  
+  // Previous button
+  const prevButton = document.createElement('button');
+  prevButton.className = 'pagination-btn prev';
+  prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevButton.disabled = currentPage === 1;
+  prevButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      goToPage(currentPage, items);
+    }
+  });
+  
+  // Next button
+  const nextButton = document.createElement('button');
+  nextButton.className = 'pagination-btn next';
+  nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextButton.disabled = currentPage === totalPages;
+  nextButton.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      goToPage(currentPage, items);
+    }
+  });
+  
+  // Page numbers
+  const pageNumbers = document.createElement('div');
+  pageNumbers.className = 'page-numbers';
+  
+  // Determine range of page numbers to show
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, startPage + 4);
+  
+  // Adjust if we're near the end
+  if (endPage - startPage < 4) {
+    startPage = Math.max(1, endPage - 4);
+  }
+  
+  // First page button (always visible)
+  if (startPage > 1) {
+    const firstPageBtn = document.createElement('button');
+    firstPageBtn.className = 'page-number';
+    firstPageBtn.textContent = '1';
+    firstPageBtn.addEventListener('click', () => {
+      currentPage = 1;
+      goToPage(currentPage, items);
+    });
+    pageNumbers.appendChild(firstPageBtn);
+    
+    if (startPage > 2) {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'ellipsis';
+      ellipsis.textContent = '...';
+      pageNumbers.appendChild(ellipsis);
+    }
+  }
+  
+  // Page number buttons
+  for (let i = startPage; i <= endPage; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.className = 'page-number';
+    if (i === currentPage) {
+      pageBtn.classList.add('active');
+    }
+    pageBtn.textContent = i;
+    pageBtn.addEventListener('click', () => {
+      currentPage = i;
+      goToPage(currentPage, items);
+    });
+    pageNumbers.appendChild(pageBtn);
+  }
+  
+  // Last page button (always visible)
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'ellipsis';
+      ellipsis.textContent = '...';
+      pageNumbers.appendChild(ellipsis);
+    }
+    
+    const lastPageBtn = document.createElement('button');
+    lastPageBtn.className = 'page-number';
+    lastPageBtn.textContent = totalPages;
+    lastPageBtn.addEventListener('click', () => {
+      currentPage = totalPages;
+      goToPage(currentPage, items);
+    });
+    pageNumbers.appendChild(lastPageBtn);
+  }
+  
+  // Add page info
+  const pageInfo = document.createElement('div');
+  pageInfo.className = 'page-info';
+  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+  
+  // Assemble pagination
+  paginationContainer.appendChild(prevButton);
+  paginationContainer.appendChild(pageNumbers);
+  paginationContainer.appendChild(nextButton);
 }
-// This script fetches borrowable and tradeable items from the server and displays them on the page
-// It also handles filtering of items based on their status and type (borrowable or tradable) and category
+
+function goToPage(page, items) {
+  currentPage = page;
+  
+  // Calculate start and end indexes
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, items.length);
+  
+  // Get current page items
+  const currentItems = items.slice(startIndex, endIndex);
+  
+  // Display only items for this page
+  const itemGrid = document.querySelector('.items-grid');
+  itemGrid.innerHTML = '';
+  
+  if (currentItems.length === 0) {
+    console.log('No items found for this page');
+    itemGrid.innerHTML = `
+      <div class="no-items-message">
+        <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+        <p>No items match your filters</p>
+        <button class="clear-btn c1">Clear Filters</button>
+      </div>
+    `;
+    const clearBtn = document.querySelector('.c1');
+    clearBtn.addEventListener('click', () => {
+        // Reset all filters 
+        document.getElementById('status-filter').value = 'Available';
+        document.getElementById('category').value = 'All-Categories';
+        document.getElementById('item-type-filter').value = '';
+        document.getElementById('sort-filter').value = 'a-z';
+        console.log(items);
+        // Rerun filter with reset values
+        window.location.href = 'browse.html'; // Reload the page to clear filters
+    });
+  } else {
+    displayItems(currentItems);
+  }
+  
+  // Update pagination controls
+  setupPagination(items);
+  
+  // Scroll to top of items grid
+  itemGrid.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Modify the displayItems function to show only current page
+function displayItems(itemsToDisplay) {
+  const itemGrid = document.querySelector('.items-grid');
+  
+  itemsToDisplay.forEach(item => {
+    const itemElement = document.createElement('div');
+    itemElement.className = 'item-card animate-on-scroll';
+    
+    itemElement.innerHTML = `<div class="item-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'});">
+      <div class="item-labels">
+        <div class="item-owner">By ${item.username}</div>
+        <div class="item-type">${item.type === 'borrowable' ? 'Borrowable' : 'Tradable'}</div>
+      </div>
+    </div>
+    <div class="item-details">
+      <h3>${item.item_name}</h3>
+      <div class="item-meta">
+        <span>${item.category_name ? item.category_name : 'General'}</span>
+        <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
+      </div>
+      <button class="item-btn" onclick="location.href='item-details.html?item_id=${item.type === 'borrowable' ? item.item_id + 'b' : item.item_id + "t"}'">View Details</button>`;
+
+    itemGrid.appendChild(itemElement);
+  });
+}
+
+// Modify the filterAndSortItems function to include pagination
+function filterAndSortItems(items) {
+  // Get filter values
+  const statusFilter = document.getElementById('status-filter').value;
+  const categoryFilter = document.getElementById('category').value;
+  const itemTypeFilter = document.getElementById('item-type-filter').value;
+  const sortOrder = document.getElementById('sort-filter').value;
+  
+  // Start with all items
+  let filteredItems = [...items];
+  
+  // Filter by item type
+  if (itemTypeFilter === 'Borrowable') {
+    filteredItems = filteredItems.filter(item => item.type === 'borrowable');
+  } else if (itemTypeFilter === 'Tradable') {
+    filteredItems = filteredItems.filter(item => item.type === 'tradable');
+  }
+  
+  // Filter by status
+  if (statusFilter === 'Available') {
+    filteredItems = filteredItems.filter(item => item.status);
+  } else {
+    filteredItems = filteredItems.filter(item => !item.status);
+  }
+  
+  // Filter by category
+  if (categoryFilter !== 'All-Categories') {
+    filteredItems = filteredItems.filter(item => {
+      return item.category_name && 
+        item.category_name.toLowerCase().includes(categoryFilter.toLowerCase());
+    });
+  }
+  
+  // Sort items
+  if (sortOrder === 'a-z') {
+    filteredItems.sort((a, b) => a.item_name.localeCompare(b.item_name));
+  } else if (sortOrder === 'z-a') {
+    filteredItems.sort((a, b) => b.item_name.localeCompare(a.item_name));
+  }
+  
+  // Reset to page 1 whenever filters change
+  currentPage = 1;
+  
+  // Go to first page with filtered items
+  goToPage(currentPage, filteredItems);
+  
+  // Update item count
+  const countElement = document.querySelector('.items-count');
+  if (countElement) {
+    countElement.innerHTML = `<span>${filteredItems.length}</span> items found`;
+  }
+}
+
+// Add this function to handle search separately from filters
+function searchItems(items, searchQuery) {
+  if (!searchQuery.trim()) {
+    return items; // Return all items if search query is empty
+  }
+  
+  searchQuery = searchQuery.toLowerCase().trim();
+  
+  // Filter items by search query
+  return items.filter(item => {
+    return (
+      (item.item_name && item.item_name.toLowerCase().includes(searchQuery)) ||
+      (item.item_description && item.item_description.toLowerCase().includes(searchQuery)) ||
+      (item.username && item.username.toLowerCase().includes(searchQuery)) ||
+      (item.category_name && item.category_name.toLowerCase().includes(searchQuery))
+    );
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const links = document.querySelectorAll('.cat-links');
         links.forEach(link => {
@@ -66,12 +291,168 @@ document.addEventListener('DOMContentLoaded', async () => {
     const borrowableItems = data.borrowable_items;
     const tradableItems = data.tradable_items;
     // Container elements to display the items
-    const borrowableItemsContainer = document.getElementsByClassName('borrowable-items')[0];
-    const tradableItemsContainer = document.getElementsByClassName('tradable-items')[0];
-    // Headings for the sections
-    const tradeHeading = document.getElementById('trade-h1');
-    const borrowHeading = document.getElementById('borrow-h1');
+    const itemGrid = document.querySelector('.items-grid'); // Selecting the item grid container
 
+    borrowableItems.forEach(item => {
+        item.type = 'borrowable'; // Setting the type of the item to borrowable
+    });
+    tradableItems.forEach(item => {
+        item.type = 'tradable'; // Setting the type of the item to tradable
+    });
+
+    const items = [...borrowableItems, ...tradableItems]; // Merging the borrowable and tradable items into a single array
+
+    const itemCount = document.querySelector('.items-count'); // Selecting the item count element
+    itemCount.innerHTML = `<span>${items.length}</span> items found`; 
+
+    // Initialize with page 1
+    goToPage(1, items);
+  
+    // Fixed event listeners for filters
+    const filterControls = document.querySelectorAll('.filter-select, #sort-filter');
+    filterControls.forEach(control => {
+      control.addEventListener('change', () => {
+        filterAndSortItems(items);
+      });
+    });
+    
+    // Fixed clear filters button
+    const clearBtn = document.querySelector('.clear-btn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        // Reset all filters (using correct IDs)
+        document.getElementById('status-filter').value = 'Available';
+        document.getElementById('category').value = 'All-Categories';
+        document.getElementById('item-type-filter').value = '';
+        document.getElementById('sort-filter').value = 'a-z';
+
+        if (searchInput) {
+          searchInput.value = ''; // Clear search input
+        }
+        // Reset pagination to page 1
+        goToPage(1, items);
+
+        // Update item count
+        const itemCount = document.querySelector('.items-count');
+        if (itemCount) {
+          itemCount.innerHTML = `<span>${items.length}</span> items found`;
+        }
+       
+        // Rerun filter with reset values
+        filterAndSortItems(items);
+      });
+    }
+  
+    
+    // Fixed apply button
+    const applyBtn = document.querySelector('.apply-btn');
+    if (applyBtn) {
+      applyBtn.addEventListener('click', () => {
+        filterAndSortItems(items);
+      });
+    }
+      
+    // Handle URL parameters for category filtering
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+      
+    if (category) {
+       // Set the category filter
+        const categoryFilter = document.getElementById('category');
+        
+        // Find matching option (case-insensitive)
+        const matchingOption = Array.from(categoryFilter.options).find(option => 
+          option.value.toLowerCase() === category.toLowerCase()
+        );
+        
+        if (matchingOption) {
+          categoryFilter.value = matchingOption.value;
+          // Apply filters with the selected category
+          filterAndSortItems(items);
+        }
+    }
+    
+    // Add sorting functionality
+    const sortDropdown = document.getElementById('sort-filter');
+    if (sortDropdown) {
+      sortDropdown.addEventListener('change', function() {
+        sortAndDisplayItems(this.value);
+      });
+    }
+    
+    // Function to sort and redisplay items
+    function sortAndDisplayItems(sortOrder) {
+      // Clear the grid first
+      const itemGrid = document.querySelector('.items-grid');
+      itemGrid.innerHTML = '';
+      
+      // Create a copy of the items array to sort
+      let sortedItems = [...items];
+      
+      // Sort based on selected order
+      if (sortOrder === 'a-z') {
+        sortedItems.sort((a, b) => a.item_name.localeCompare(b.item_name));
+      } else if (sortOrder === 'z-a') {
+        sortedItems.sort((a, b) => b.item_name.localeCompare(a.item_name));
+      }
+      
+      // Display sorted items
+      displayItems(sortedItems);
+    }
+
+    // Add search functionality
+  const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+  
+  if (searchButton && searchInput) {
+    searchButton.addEventListener('click', () => {
+      const searchQuery = searchInput.value;
+      
+      // Get the original items array
+      const searchResults = searchItems(items, searchQuery);
+      
+      // Update items count
+      const itemCount = document.querySelector('.items-count');
+      if (itemCount) {
+        itemCount.innerHTML = `<span>${searchResults.length}</span> items found`;
+      }
+      
+      // Show search results with pagination
+      currentPage = 1; // Reset to first page for search results
+      goToPage(1, searchResults);
+
+      // Update filter count if it exists
+      const countElement = document.querySelector('.filter-count');
+      if (countElement) {
+        countElement.textContent = `${searchResults.length} items found`;
+      }
+      
+      // Scroll to top of items grid
+      const itemGrid = document.querySelector('.items-grid');
+      if (itemGrid) {
+        itemGrid.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+    
+    // Also add enter key functionality for convenience
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchButton.click();
+      }
+    });
+  }
+  
+  // Make sure other clear buttons also reset search
+  const clearFiltersBtns = document.querySelectorAll('.c1');
+  clearFiltersBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      });
+    });
+});
+    /*
     // If both borrowable and tradable items are available, display them in their respective sections
     if (borrowableItems.length !== 0 && tradableItems.length !== 0) {
         // Looping through the borrowable items and creating HTML elements for each item
@@ -152,7 +533,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         tradableItems.forEach(item => {
             const itemElement = document.createElement('div');
-            itemElement.className = 'item-card';
+            itemElement.className = 'item-card animate-on-scroll'; // Adding animation class for scroll effect
             itemElement.innerHTML = `
               <div class="item-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'});">
                 <div class="item-owner">By ${item.username}</div>
@@ -160,7 +541,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="item-details">
                 <h3>${item.item_name}</h3>
                 <div class="item-meta">
-                   <span>${item.category_name ? item.category_name : 'General'}</span>
                    <span>Status: ${item.status ? 'Available' : "Not Available"}</span>
                 </div>
                 <button class="item-btn t-btn">View Details</button>
@@ -207,7 +587,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Adding an event listener to the clear button to reload the page when clicked
     clearBtn.addEventListener('click', () => {
-        window.location.href = 'browse.html'; // Reload the page to clear filters
+        window.location.href = 'browse.html'; // Reloading the page to clear the filters
     });  
 
     // Getting the filter elements for status, category, and item type
@@ -217,7 +597,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Adding an event listener to the apply button to filter items based on selected criteria
     applyBtn.addEventListener('click', () => {
-        
         // Getting the selected values from the filter elements
         const selectedStatus = statusFilter.value;
         const selectedCategory = categoryFilter.value;
@@ -285,7 +664,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     }
                 }
-            } 
+            }    
             const visibleItems = false; 
             const items = borrowableItemsContainer.querySelectorAll('.item-card');
             for (let i = 0; i < items.length; i++) {
@@ -364,23 +743,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         } 
-            const visibleItems = false; 
-            const items = tradableItemsContainer.querySelectorAll('.item-card');
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].style.display === 'block') {
-                    visibleItems = true; // Set flag to true if any item is visible
-                    break; // Exit loop if at least one item is visible
-                }
-            }
-            if (!visibleItems) {
-                tradableItemsContainer.style.display = 'flex';
-                tradableItemsContainer.style.justifyContent = 'center';
-                tradableItemsContainer.style.marginTop = '-20px';
-                tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+        const visibleItems = false; 
+        const items = tradableItemsContainer.querySelectorAll('.item-card');
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].style.display === 'block') {
+                visibleItems = true; // Set flag to true if any item is visible
+                break; // Exit loop if at least one item is visible
             }
         }
+        if (!visibleItems) {
+            tradableItemsContainer.style.display = 'flex';
+            tradableItemsContainer.style.justifyContent = 'center';
+            tradableItemsContainer.style.marginTop = '-20px';
+            tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
+        } 
+        }
     })
-
+    
     const params = new URLSearchParams(window.location.search); // Getting the query parameters from the URL
     const category = params.get('category'); // Getting the category from the query parameters
 
@@ -441,5 +820,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             tradableItemsContainer.style.marginTop = '-20px';
             tradableItemsContainer.innerHTML = `<p style="text-align: center; font-style: italic;">No items available</p>`;
         }
-    }
-})
+    }*/

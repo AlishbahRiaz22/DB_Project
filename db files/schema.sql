@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS `tradeable_items` (
   `image_url` varchar(255) UNIQUE, 
   `status` bool NOT NULL, # true for available and false for traded
   `item_description` varchar(255) NOT NULL,
-  `creation_date` timestamp NOT NULL default NOW()
+  `creation_date` timestamp NOT NULL default NOW(),
+  `item_condition` varchar(255) NOT NULL # Condition of the item (new, used, etc.)
 );
 
 # Creating the table that stores the diff categories that items may belong to
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `borrowable_items` (
   `status` bool NOT NULL, # true for available and false for can be borrowed
   `item_description` varchar(255) NOT NULL,
   `creation_date` timestamp NOT NULL default NOW() # Date for when the item was added to the database
+  `item_condition` varchar(255) NOT NULL # Condition of the item (new, used, etc.)
 );
 
 # Creating the table that stores the trade requests
