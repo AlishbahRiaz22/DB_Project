@@ -46,6 +46,8 @@ async function fetchCategories() {
 }
 
 function handleImageUpload() {
+    const imageInput = document.getElementById('itemImage');
+    const imagePreview = document.querySelector('.image-preview');
     const file = imageInput.files[0];
     if (file) {
         // Validate file type
@@ -69,49 +71,108 @@ function handleImageUpload() {
     }
 }
 
-if (window.localStorage.getItem('loggedIn') === 'true') {
-    // If the user is logged in, we update the buttons
-    const signupBtn = document.querySelector('.signup-btn'); // Selecting the signup button
-    const loginBtn = document.querySelector('.login-btn'); // Selecting the login button
-
-    // Updating the login button to act as a link to the user's profile
-    loginBtn.textContent = "";
-    loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-    loginBtn.style.backgroundSize = "cover";
-    loginBtn.style.width = "40px";
-    loginBtn.style.height = "40px";
-    loginBtn.style.borderRadius = "50%";
-    loginBtn.style.border = "none";
-    loginBtn.style.cursor = "pointer";
-    loginBtn.style.marginRight = "10px";
-    loginBtn.style.padding = "0px";
-    loginBtn.style.backgroundColor = "transparent";
-    loginBtn.href = "#";
-    loginBtn.addEventListener('click', function() {
-        window.location.href = "profile.html";
-    })
-
-    // Updating the signup button to act as a logout button
-    signupBtn.textContent = "Logout";
-    signupBtn.href = "#";
-    signupBtn.addEventListener('click', async function() {
-        const response = await fetch('http://127.0.0.1:8808/logout', {
-            method: "POST",
-            credentials: 'include'
-        })
-        if(response.status === 200) {
-            // If user successfully logged out, redirect to index.html
-            // To undo the changes made to the login button, we set it back to its original state by redirection
-            window.location.href = "index.html";
-            window.localStorage.setItem('loggedIn', 'false'); // Setting the loggedIn status to false
+async function checkLoginStatus() {
+    const response = await fetch('http://127.0.0.1:8808/login', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
         }
-        else {
-            showToast("Logout failed", "error"); // Show error message if logout fails
+    }).then(res => {
+        if (res.status === 200) {
+            // If the user is logged in, we update the buttons
+            const signupBtn = document.querySelector('.signup-btn');
+            const loginBtn = document.querySelector('.login-btn');
+            
+            // Add animation class to both buttons
+            loginBtn.classList.add('button-transition');
+            signupBtn.classList.add('button-transition');
+            
+            // First step: fade out both buttons
+            loginBtn.style.opacity = '0';
+            loginBtn.style.transform = 'scale(0.8) rotate(20deg)';
+            
+            signupBtn.style.opacity = '0';
+            signupBtn.style.transform = 'scale(0.8) rotate(-20deg)';
+            
+            // After fade out completes, change button appearance
+            setTimeout(() => {
+                // Update login button appearance
+                loginBtn.textContent = "";
+                loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+                loginBtn.style.backgroundSize = "cover";
+                loginBtn.style.width = "40px";
+                loginBtn.style.height = "40px";
+                loginBtn.style.borderRadius = "50%";
+                loginBtn.style.border = "none";
+                loginBtn.style.cursor = "pointer";
+                loginBtn.style.marginRight = "10px";
+                loginBtn.style.padding = "0px";
+                loginBtn.style.backgroundColor = "transparent";
+                loginBtn.href = "#";
+                
+                // Update signup button to logout button
+
+                signupBtn.textContent = "Logout";
+                signupBtn.style.borderRadius = "15px";
+                signupBtn.style.cursor = "pointer";
+                signupBtn.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
+                signupBtn.style.transition = "all 0.2s ease";
+                
+                // Second step: fade in with transform for both buttons
+                setTimeout(() => {
+                    loginBtn.style.opacity = '1';
+                    loginBtn.style.transform = 'scale(1) rotate(0deg)';
+                    
+                    signupBtn.style.opacity = '1';
+                    signupBtn.style.transform = 'scale(1) rotate(0deg)';
+                }, 50);
+                
+                // Add click event listeners
+                loginBtn.addEventListener('click', function() {
+                    window.location.href = "profile.html";
+                });
+                
+                signupBtn.addEventListener('click', async function() {
+                    // Handle logout
+                    try {
+                        const response = await fetch('http://127.0.0.1:8808/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                        
+                        if (response.status === 200) {
+                            // Show success message
+                            const toast = document.createElement('div');
+                            toast.className = 'toast success';
+                            toast.textContent = 'Logged out successfully!';
+                            document.body.appendChild(toast);
+                            
+                            // Fade in toast
+                            setTimeout(() => toast.classList.add('show'), 10);
+                            
+                            // Fade out toast after 2 seconds
+                            setTimeout(() => {
+                                toast.classList.remove('show');
+                                setTimeout(() => toast.remove(), 300);
+                            }, 2000);
+                            
+                            // Redirect to home page after a short delay
+                            setTimeout(() => {
+                                window.location.href = "index.html";
+                            }, 1000);
+                        }
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                    }
+                });
+            }, 300);
         }
     })
-}
+} 
 
 document.addEventListener('DOMContentLoaded', () => {
+    checkLoginStatus(); // Check login status on page load
     // Initialize the form and fetch categories on page load
     fetchCategories();
 
@@ -123,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageInput = document.getElementById('itemImage');
     const imagePreview = document.querySelector('.image-preview');
             
-  
     // Type selector handling
     typeOptions.forEach(option => {
         option.addEventListener('click', () => {
@@ -141,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    console.log(imageInput);
 
     // Image upload handling
     imageInput.addEventListener('change', handleImageUpload);

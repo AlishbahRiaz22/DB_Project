@@ -961,6 +961,11 @@ footer::before {
   box-shadow: 0 0 0 2px rgba(215, 139, 48, 0.2);
 }
 
+.button-transition {
+  transition: opacity 0.3s ease, transform 0.3s ease, width 0.3s ease, 
+              height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+}
+
 .form-group input:focus + label,
 .form-group textarea:focus + label,
 .form-group select:focus + label,

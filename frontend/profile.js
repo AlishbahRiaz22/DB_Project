@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
       
+        document.getElementById('upload-item-btn').style.display = 'none';
         // Show update and cancel buttons, hide edit button
         updateButton.style.display = 'inline-block';
         cancelButton.style.display = 'inline-block';
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             input.disabled = true;
             input.value = input.getAttribute('data-original-value');
         });
+        document.getElementById('upload-item-btn').style.display = 'inline-block';
       
         // Hide update and cancel buttons, show edit button
         updateButton.style.display = 'none';
@@ -389,13 +391,14 @@ async function loadUserListings() {
             container.innerHTML = '';
         
             data.forEach(item => {
+                // console.log(item);
                 const statusClass = item.status ? 'status-available' : 'status-traded';
                 const statusText = item.status ? 'Available' : 'Traded/Borrowed';
                 console.log(item);
           
                 container.innerHTML += `
                     <div class="listing-item" style="width: 100%; height: 500px;">
-                        <div class="item-main-img zoom-img" style="background-image: url(${data.image_url ? data.image_url : './resources/images/placeholder.jpg'}); height: 50%;"></div>
+                        <div class="item-main-img zoom-img" style="background-image: url(${item.image_url ? item.image_url : './resources/images/placeholder.jpg'}); background-size: cover; background-position: center; background-color: ivory; height: 50%;"></div>
                         <div class="listing-content">
                         <h4>${item.item_name}</h4>
                         <p>${item.item_description}</p>
@@ -617,6 +620,7 @@ async function handleOutgoingRequest(requestId, isBorrowRequest) {
             container.innerHTML = '';
         
             data.forEach(request => {
+                console.log(request);
               container.innerHTML += `
                 <div class="request-card">
                   <div class="request-header">
@@ -858,67 +862,198 @@ function validatePassword(password) {
         return { valid: true };
 }
 
+async function checkLoginStatus() {
+    try {
+        const response = await fetch('http://127.0.0.1:8808/login', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.status === 200) {
+            // If the user is logged in, get the button elements
+            const signupBtn = document.querySelector('.signup-btn');
+            const loginBtn = document.querySelector('.login-btn');
+            
+            if (!loginBtn || !signupBtn) {
+                console.error('Login or signup buttons not found in the DOM');
+                return;
+            }
+            
+            // Add transition class for smooth animations
+            const style = document.createElement('style');
+            style.textContent = `
+                .notification-badge {
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    background-color: #ff5252;
+                    color: white;
+                    border-radius: 50%;
+                    width: 18px;
+                    height: 18px;
+                    font-size: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                }
+                .button-transition {
+                    transition: all 0.3s ease;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Create bell button with proper styling
+            const bellBtn = document.createElement('button');
+            bellBtn.className = 'notification-bell button-transition';
+            bellBtn.innerHTML = `
+                <img src="./resources/images/bell.png" 
+                     onerror="this.src='./resources/images/notification.png'; this.onerror=null;" 
+                     alt="Notifications" 
+                     style="width: 20px; height: 20px;">
+                <span id="notification-count" class="notification-badge">0</span>
+            `;
+            
+            // Add animation classes
+            loginBtn.classList.add('button-transition');
+            signupBtn.classList.add('button-transition');
+            
+            // First step: fade out existing buttons
+            loginBtn.style.opacity = '0';
+            signupBtn.style.opacity = '0';
+            loginBtn.style.transform = 'scale(0.8) rotate(20deg)';
+            signupBtn.style.transform = 'scale(0.8) rotate(-20deg)';
+            
+            // After fade out completes, change button appearance
+            setTimeout(() => {
+                // Pre-style the bell button before inserting it
+                bellBtn.style.width = "40px";
+                bellBtn.style.height = "40px";
+                bellBtn.style.borderRadius = "50%";
+                bellBtn.style.border = "none";
+                bellBtn.style.cursor = "pointer";
+                bellBtn.style.marginRight = "10px";
+                bellBtn.style.padding = "0px";
+                bellBtn.style.backgroundColor = "#f0f0f0";
+                bellBtn.style.display = "flex";
+                bellBtn.style.alignItems = "center";
+                bellBtn.style.justifyContent = "center";
+                bellBtn.style.position = "relative";
+                
+                // Insert bell button before login button
+                if (loginBtn.parentNode) {
+                    loginBtn.parentNode.insertBefore(bellBtn, loginBtn);
+                    console.log('Bell button inserted');
+                } else {
+                    console.error('Login button has no parent node');
+                }
+                
+                // Update login button appearance
+                loginBtn.textContent = "";
+                loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
+                loginBtn.style.backgroundSize = "cover";
+                loginBtn.style.width = "40px";
+                loginBtn.style.height = "40px";
+                loginBtn.style.borderRadius = "50%";
+                loginBtn.style.border = "none";
+                loginBtn.style.cursor = "pointer";
+                loginBtn.style.marginRight = "10px";
+                loginBtn.style.padding = "0px";
+                loginBtn.style.backgroundColor = "transparent";
+                loginBtn.href = "#";
+                
+                // Update signup button to logout button
+                signupBtn.textContent = "Logout";
+                signupBtn.style.borderRadius = "15px";
+                signupBtn.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
+                signupBtn.style.cursor = "pointer";
+                
+                // Set initial transform for bell button animation
+                bellBtn.style.opacity = '0';
+                bellBtn.style.transform = 'scale(0.8) rotate(0deg)';
+                
+                // Second step: fade in with transform for all buttons
+                setTimeout(() => {
+                    bellBtn.style.opacity = '1';
+                    bellBtn.style.transform = 'scale(1) rotate(0deg)';
+                    
+                    loginBtn.style.opacity = '1';
+                    loginBtn.style.transform = 'scale(1) rotate(0deg)';
+                    
+                    signupBtn.style.opacity = '1';
+                    signupBtn.style.transform = 'scale(1) rotate(0deg)';
+                }, 50);
+                
+                // Add click event listeners
+                bellBtn.addEventListener('click', function() {
+                    window.location.href = "notification.html";
+                });
+                
+                loginBtn.addEventListener('click', function() {
+                    window.location.href = "profile.html";
+                });
+                
+                // Update notification count from server
+                loadNotificationCount();
+                
+                signupBtn.addEventListener('click', async function() {
+                    // Handle logout
+                    try {
+                        const logoutResponse = await fetch('http://127.0.0.1:8808/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+                        
+                        if (logoutResponse.status === 200) {
+                            // Show success message
+                            const toast = document.createElement('div');
+                            toast.className = 'toast success';
+                            toast.textContent = 'Logged out successfully!';
+                            document.body.appendChild(toast);
+                            
+                            // Fade in toast
+                            setTimeout(() => toast.classList.add('show'), 10);
+                            
+                            // Fade out toast after 2 seconds
+                            setTimeout(() => {
+                                toast.classList.remove('show');
+                                setTimeout(() => toast.remove(), 300);
+                            }, 2000);
+                            
+                            // Redirect to home page after a short delay
+                            setTimeout(() => {
+                                window.location.href = "index.html";
+                            }, 1000);
+                        }
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                    }
+                });
+            }, 300);
+        }
+    } catch (error) {
+        console.error('Error checking login status:', error);
+    }
+}
+
 // Update the navigation function with corrected bell icon placement
 function updateNavigation(isLoggedIn) {
     const loginBtn = document.querySelector('.login-btn');
     const signupBtn = document.querySelector('.signup-btn');
     const authButtons = document.querySelector('.auth-buttons');
     
-    if (isLoggedIn) {
-        // Add bell icon for notifications FIRST - before modifying login button
-        // Check if notification bell already exists
-        if (!document.querySelector('.notification-bell')) {
-            const bellIcon = document.createElement('div');
-            bellIcon.className = 'notification-bell';
-            bellIcon.innerHTML = '<i class="fas fa-bell"></i><span class="notification-badge" id="notification-count">0</span>';
-            bellIcon.onclick = function() {
-                window.location.href = "notification.html";
-            };
-        
-            // Insert bell icon BEFORE the login button (left side)
-            authButtons.insertBefore(bellIcon, loginBtn);
-        }
-      
-        // Now modify login button to profile icon
-        loginBtn.textContent = "";
-        loginBtn.style.backgroundImage = "url('./resources/images/user.png')";
-        loginBtn.style.backgroundSize = "cover";
-        loginBtn.style.width = "40px";
-        loginBtn.style.height = "40px";
-        loginBtn.style.borderRadius = "50%";
-        loginBtn.style.border = "none";
-        loginBtn.style.cursor = "pointer";
-        loginBtn.style.marginRight = "10px";
-        loginBtn.style.padding = "0px";
-        loginBtn.style.backgroundColor = "transparent";
-        loginBtn.onclick = function() {
-            window.location.href = "profile.html";
-        };
+    checkLoginStatus();
           
-        // Change signup button to logout
-        signupBtn.textContent = "Logout";
-        signupBtn.onclick = async function() {
-            const response = await fetch('http://127.0.1:8808/logout/', {
-                method: 'POST',
-                credentials: 'include'
-            });
-            if (response.status === 200) {
-                showToast('Logout successful!');
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 1000); // Redirect after 2 seconds
-            } else {
-                showToast('Logout failed. Please try again.');
-            }
-        };
-          
-        // Temporarily set a notification count for testing
-        const countElement = document.getElementById('notification-count');
-        if (countElement) {
-            countElement.textContent = '3';
-            countElement.style.display = 'flex';
-        }
+    // Temporarily set a notification count for testing
+    const countElement = document.getElementById('notification-count');
+    if (countElement) {
+        countElement.textContent = '3';
+        countElement.style.display = 'flex';
     }
+    
 }
 
 // Function to show validation errors

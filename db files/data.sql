@@ -9,30 +9,30 @@ INSERT INTO `category` (`category_name`, `description`) VALUES
 ('Art Supplies', 'Materials for painting, drawing, and other creative activities');
 
 -- Add more tradeable items
-INSERT INTO `tradeable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`) VALUES
-('Fender Stratocaster Guitar', 123456, 'https://example.com/stratocaster.jpg', TRUE, 'American-made Stratocaster in sunburst finish. Includes hard case and extra strings. Great condition with minimal playing wear.'),
-('Samsung Galaxy S24 Ultra', 234567, 'https://example.com/galaxy-s24.jpg', TRUE, 'Latest Samsung flagship phone with 512GB storage. Includes original box, charger, and two cases. Under warranty until 2026.'),
-('Dyson V15 Vacuum', 345678, 'https://example.com/dyson-v15.jpg', TRUE, 'Cordless vacuum with powerful suction and all attachments. Barely used as it was a duplicate gift.'),
-('Lego Star Wars Millennium Falcon', 456789, 'https://example.com/lego-falcon.jpg', TRUE, 'Ultimate Collector Series set #75192. Brand new in sealed box. Limited edition item that\'s now hard to find.'),
-('Trek Mountain Bike', 567890, 'https://example.com/trek-bike.jpg', TRUE, 'Full suspension mountain bike with carbon frame. Size medium. Recently serviced with new tires and brakes.'),
-('Gaming PC Build', 123456, 'https://example.com/gaming-pc.jpg', TRUE, 'Custom PC with RTX 4080, i9 processor, 32GB RAM, and 2TB SSD. RGB lighting and liquid cooling. Perfect for gaming or content creation.'),
-('Patek Philippe Watch', 234567, 'https://example.com/patek-watch.jpg', TRUE, 'Genuine luxury timepiece in excellent condition. Includes box, papers, and extra links. Recently serviced by authorized dealer.'),
-('Limited Edition Sneakers', 345678, 'https://example.com/limited-sneakers.jpg', TRUE, 'Rare collaboration sneakers, size 9. Never worn, deadstock condition with original box and tags.'),
-('Espresso Machine', 456789, 'https://example.com/espresso.jpg', TRUE, 'Commercial-grade espresso machine with built-in grinder. Makes perfect coffee and has been well maintained.'),
-('Drone with 8K Camera', 567890, 'https://example.com/drone-8k.jpg', TRUE, 'Professional-grade drone with stabilized 8K camera. Includes multiple batteries and controller with screen. Perfect for aerial photography.');
+INSERT INTO `tradeable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`, `item_condition`) VALUES
+('Fender Stratocaster Guitar', 123456, 'https://example.com/stratocaster.jpg', TRUE, 'American-made Stratocaster in sunburst finish. Includes hard case and extra strings. Great condition with minimal playing wear.', 'new'),
+('Samsung Galaxy S24 Ultra', 234567, 'https://example.com/galaxy-s24.jpg', TRUE, 'Latest Samsung flagship phone with 512GB storage. Includes original box, charger, and two cases. Under warranty until 2026.', 'good'),
+('Dyson V15 Vacuum', 345678, 'https://example.com/dyson-v15.jpg', TRUE, 'Cordless vacuum with powerful suction and all attachments. Barely used as it was a duplicate gift.', 'fair'),
+('Lego Star Wars Millennium Falcon', 456789, 'https://example.com/lego-falcon.jpg', TRUE, 'Ultimate Collector Series set #75192. Brand new in sealed box. Limited edition item that\'s now hard to find.', 'worn),
+('Trek Mountain Bike', 567890, 'https://example.com/trek-bike.jpg', TRUE, 'Full suspension mountain bike with carbon frame. Size medium. Recently serviced with new tires and brakes.', 'like-new'),
+('Gaming PC Build', 123456, 'https://example.com/gaming-pc.jpg', TRUE, 'Custom PC with RTX 4080, i9 processor, 32GB RAM, and 2TB SSD. RGB lighting and liquid cooling. Perfect for gaming or content creation.', 'new'),
+('Patek Philippe Watch', 234567, 'https://example.com/patek-watch.jpg', TRUE, 'Genuine luxury timepiece in excellent condition. Includes box, papers, and extra links. Recently serviced by authorized dealer.', 'good'),
+('Limited Edition Sneakers', 345678, 'https://example.com/limited-sneakers.jpg', TRUE, 'Rare collaboration sneakers, size 9. Never worn, deadstock condition with original box and tags.', 'new'),
+('Espresso Machine', 456789, 'https://example.com/espresso.jpg', TRUE, 'Commercial-grade espresso machine with built-in grinder. Makes perfect coffee and has been well maintained.', 'good'),
+('Drone with 8K Camera', 567890, 'https://example.com/drone-8k.jpg', TRUE, 'Professional-grade drone with stabilized 8K camera. Includes multiple batteries and controller with screen. Perfect for aerial photography.', 'like-new');
 
 -- Add more borrowable items
-INSERT INTO `borrowable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`) VALUES
-('DSLR Camera with Lenses', 123456, 'https://example.com/dslr-set.jpg', TRUE, 'Nikon D850 with 24-70mm and 70-200mm lenses. Includes camera bag, tripod, and memory cards. Great for professional photography.'),
-('Electric Drill Set', 234567, 'https://example.com/drill-set.jpg', TRUE, 'DeWalt 20V drill with multiple bits and attachments. Recently purchased and barely used. Perfect for home projects.'),
-('Projector', 345678, 'https://example.com/projector.jpg', TRUE, '4K projector with 120" screen. Great for movie nights or presentations. Easy to set up and use.'),
-('Beach Umbrella and Chairs', 456789, 'https://example.com/beach-set.jpg', TRUE, 'Large beach umbrella with 4 folding chairs and cooler. Perfect for beach days or outdoor events.'),
-('Stand Mixer', 567890, 'https://example.com/stand-mixer.jpg', TRUE, 'KitchenAid Professional 600 mixer with all attachments. Great for baking projects or making pasta.'),
-('Telescope', 123456, 'https://example.com/telescope.jpg', TRUE, 'Celestron computerized telescope with tripod. Perfect for stargazing and astrophotography. Includes instructional guide.'),
-('Sewing Machine', 234567, 'https://example.com/sewing-machine.jpg', TRUE, 'Brother computerized sewing machine with multiple stitch options. Great for clothing repairs or crafting projects.'),
-('Snowboard and Boots', 345678, 'https://example.com/snowboard.jpg', TRUE, 'Burton snowboard (155cm) with bindings and size 10 boots. Perfect for beginners or intermediate riders.'),
-('Pressure Washer', 456789, 'https://example.com/pressure-washer.jpg', TRUE, '3000 PSI electric pressure washer with multiple nozzles. Great for cleaning driveways, decks, and vehicles.'),
-('Air Fryer', 567890, 'https://example.com/air-fryer.jpg', TRUE, 'Large capacity air fryer with digital controls. Perfect for healthier cooking with less oil. Includes recipe book.');
+INSERT INTO `borrowable_items` (`item_name`, `owner_id`, `image_url`, `status`, `item_description`, `item_conditon`) VALUES
+('DSLR Camera with Lenses', 123456, 'https://example.com/dslr-set.jpg', TRUE, 'Nikon D850 with 24-70mm and 70-200mm lenses. Includes camera bag, tripod, and memory cards. Great for professional photography.', 'like-new'),
+('Electric Drill Set', 234567, 'https://example.com/drill-set.jpg', TRUE, 'DeWalt 20V drill with multiple bits and attachments. Recently purchased and barely used. Perfect for home projects.', 'new'),
+('Projector', 345678, 'https://example.com/projector.jpg', TRUE, '4K projector with 120" screen. Great for movie nights or presentations. Easy to set up and use.', 'good'),
+('Beach Umbrella and Chairs', 456789, 'https://example.com/beach-set.jpg', TRUE, 'Large beach umbrella with 4 folding chairs and cooler. Perfect for beach days or outdoor events.', 'fair'),
+('Stand Mixer', 567890, 'https://example.com/stand-mixer.jpg', TRUE, 'KitchenAid Professional 600 mixer with all attachments. Great for baking projects or making pasta.', 'like-new'),
+('Telescope', 123456, 'https://example.com/telescope.jpg', TRUE, 'Celestron computerized telescope with tripod. Perfect for stargazing and astrophotography. Includes instructional guide.', 'new'),
+('Sewing Machine', 234567, 'https://example.com/sewing-machine.jpg', TRUE, 'Brother computerized sewing machine with multiple stitch options. Great for clothing repairs or crafting projects.', 'good'),
+('Snowboard and Boots', 345678, 'https://example.com/snowboard.jpg', TRUE, 'Burton snowboard (155cm) with bindings and size 10 boots. Perfect for beginners or intermediate riders.', 'like-new'),
+('Pressure Washer', 456789, 'https://example.com/pressure-washer.jpg', TRUE, '3000 PSI electric pressure washer with multiple nozzles. Great for cleaning driveways, decks, and vehicles.', 'worn'),
+('Air Fryer', 567890, 'https://example.com/air-fryer.jpg', TRUE, 'Large capacity air fryer with digital controls. Perfect for healthier cooking with less oil. Includes recipe book.', 'new');
 
 -- Add durations for borrowable items
 INSERT INTO `borrowable_item_durations` (`item_id`, `duration_days`) VALUES

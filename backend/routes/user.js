@@ -11,12 +11,13 @@ function indexOf (arr, item) {
 }
 
 routerUser.get('/' , (req, res, next) => {
-    const userId = req.session.user.cms_id; // Retrieving the user ID from the session
+    const user = req.session.user; // Retrieving the user object from the session
 
-    if (!userId) {
+    if (!user) {
         return res.status(401).json({ error: 'Unauthorized' }); // Sending a 401 response if user ID is not found in the session
     }
-    
+    const userId = req.session.user.cms_id; // Retrieving the user ID from the session
+
     // Query to fetch user data from the database
     pool.query('SELECT * FROM users WHERE cms_id = ?', [userId], (error, results) => { // Querying the database for user information
         if (error) {
