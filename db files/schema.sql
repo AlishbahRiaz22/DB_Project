@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `borrowable_items` (
   `image_url` varchar(500) UNIQUE,
   `status` bool NOT NULL, # true for available and false for can be borrowed
   `item_description` varchar(255) NOT NULL,
-  `creation_date` timestamp NOT NULL default NOW() # Date for when the item was added to the database
+  `creation_date` timestamp NOT NULL default NOW(), # Date for when the item was added to the database
   `item_condition` varchar(255) NOT NULL # Condition of the item (new, used, etc.)
 );
 
