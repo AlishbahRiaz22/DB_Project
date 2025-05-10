@@ -122,13 +122,12 @@ routerUpload.post('/', upload.single('image'), (req, res) => {
                     }
                 );
             });
-    });
-    } else if (type === 'trade') {
+    });    } else if (type === 'trade') {
         
         // Insert into tradeable_items table
         pool.query(
             'INSERT INTO tradeable_items (item_name, owner_id, image_url, status, item_description, item_condition) VALUES (?, ?, ?, ?, ?, ?)',
-            [name, user.cms_id, imageUrl, status === 'available', description, condition],
+            [name, user.cms_id, imageUrl, status, description, condition],
             (err, result) => {
                 if (err) {
                     console.error("Database error:", err);
