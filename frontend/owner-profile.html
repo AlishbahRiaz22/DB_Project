@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Trade Shop - User Profile</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .profile-hero {
+      height: 40vh;
+      background-image: linear-gradient(rgba(63, 66, 46, 0.8), rgba(63, 66, 46, 0.6)), url('/api/placeholder/1200/400');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, var(--ivory), var(--apricot));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      z-index: 5;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-hero p {
+      font-size: 1.2rem;
+      color: var(--ivory);
+      position: relative;
+      z-index: 5;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .profile-container {
+      max-width: 1000px;
+      margin: -60px auto 0;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .profile-info {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      margin-bottom: 2rem;
+    }
+
+    .profile-info:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-info label {
+      display: block;
+      font-weight: bold;
+      color: var(--organic);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .profile-info input {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(63, 66, 46, 0.2);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--natural);
+      background-color: rgba(255, 255, 255, 0.8);
+      transition: all 0.3s;
+    }
+
+    .profile-info input:focus {
+      border-color: var(--apricot);
+      outline: none;
+      box-shadow: 0 0 15px rgba(215, 139, 48, 0.3);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-picture {
+      text-align: center;
+      flex: 0 0 200px;
+    }
+
+    .profile-picture img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid var(--ivory);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+
+    .profile-picture img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      border-color: var(--apricot);
+    }
+    
+    .profile-data {
+      flex: 1;
+    }
+
+    .profile-actions {
+      text-align: right;
+      margin-top: 2rem;
+    }
+
+    .profile-actions button {
+      background: linear-gradient(135deg, var(--organic) 0%, var(--apricot) 100%);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-right: 1rem;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      letter-spacing: 0.5px;
+    }
+
+    .profile-actions button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(215, 139, 48, 0.3);
+    }
+    
+    .profile-actions button:active {
+      transform: translateY(-1px);
+    }
+
+    .profile-listings {
+      margin-top: 3rem;
+    }
+
+    .profile-listings h2 {
+      font-size: 2rem;
+      color: var(--organic);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      position: relative;
+      font-weight: 700;
+    }
+
+    .profile-listings h2:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(to right, var(--organic), var(--apricot));
+      border-radius: 4px;
+    }
+    
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .listing-item {
+      border: none;
+      border-radius: 12px;
+      padding: 0;
+      margin-bottom: 0;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+
+    .listing-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .listing-item img {
+      width: 100%;
+      height: 200px;
+      border-radius: 12px 12px 0 0;
+      object-fit: cover;
+    }
+    
+    .listing-content {
+      padding: 1.5rem;
+    }
+
+    .listing-item h4 {
+      color: var(--organic);
+      margin-bottom: 0.8rem;
+      font-size: 1.3rem;
+    }
+
+    .listing-item p {
+      color: var(--natural);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .listing-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .listing-status {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .status-available {
+      background-color: rgba(83, 194, 83, 0.15);
+      color: #2d8a2d;
+    }
+    
+    .status-traded {
+      background-color: rgba(255, 149, 0, 0.15);
+      color: #d37800;
+    }
+
+    @media (max-width: 768px) {
+      .profile-hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .profile-picture {
+        margin-right: 0;
+      }
+      
+      .listings-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+      
+      .profile-actions {
+        text-align: center;
+      }
+    }
+
+    .request-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .request-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .request-title {
+      font-size: 1.2rem;
+      color: var(--organic);
+      font-weight: 600;
+    }
+
+    .request-details {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .request-item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-right: 1.5rem;
+    }
+
+    .request-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .request-info {
+      flex: 1;
+    }
+
+    .request-info p {
+      margin-bottom: 0.5rem;
+      color: var(--natural);
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .request-actions button {
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .accept-btn {
+      background-color: var(--organic);
+      color: white;
+    }
+
+    .decline-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .cancel-btn {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #777;
+    }
+
+    .empty-state img {
+      width: 120px;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--natural);
+    }
+    .item-actions {
+      margin-top: 12px;
+    }
+    
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    
+    .delete-btn:hover {
+      background-color: #d32f2f;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .notification-bell {
+  position: relative;
+  margin: 0 15px;
+  cursor: pointer;
+  color: white;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: all 0.3s;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #f44336;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Feedback Section Styles */
+  .feedback-section {
+    margin-top: 2rem;
+  }
+  
+  .feedback-section h3 {
+    font-size: 1.5rem;
+    color: var(--organic);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--apricot);
+  }
+
+  .feedback-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    min-height: 100px;
+  }
+  
+  .empty-feedback {
+    text-align: center;
+    color: #777;
+    padding: 2rem;
+  }
+
+  .feedback-item {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 1rem 0;
+  }
+  
+  .feedback-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
+  .feedback-author {
+    font-weight: bold;
+    color: var(--organic);
+  }
+
+  .feedback-rating {
+    color: #ffc107;
+  }
+  
+  .feedback-text {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  
+  .feedback-date {
+    font-size: 0.8rem;
+    color: #777;
+    display: block;
+    text-align: right;
+  }
+
+  .add-feedback-btn {
+    background: linear-gradient(135deg, var(--organic) 0%, var(--apricot) 100%);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .add-feedback-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(215, 139, 48, 0.3);
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s;
+  }
+
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+    color: var(--organic);
+    border-bottom: none;
+  }
+
+  .close-modal {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #777;
+  }
+  
+  .close-modal:hover {
+    color: #333;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+    position: static;
+  }
+
+   .form-group label {
+    display: block;
+    position: relative;
+    font-weight: 600;
+    color: #555;
+    left: 0.5px;
+  }
+
+   #forreview {
+    top: -0.5px;
+   }
+  
+  .star-rating {
+    display: flex;
+    font-size: 28px;
+    color: #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .rating-star {
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-right: 5px;
+  }
+  
+  .rating-star.selected {
+    color: #ffc107;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .cancel-btn {
+    height: 40px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    top: 33px;
+  }
+
+  .cancel-btn span {
+    position: relative;
+    left: -5px;
+  }
+
+  .submit-btn {
+    padding: 8px 15px;
+    background: linear-gradient(135deg, var(--organic) 0%, var(--apricot) 100%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submit-btn:hover {
+    opacity: 0.9;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+        <div class="logo"><a href="index.html">VirtualTrade</a></div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="category.html">Categories</a>
+            <a href="how-it-works.html">How it Works</a>
+            <a href="browse.html">Browse</a>"
+        </div>
+        <div class="auth-buttons">
+            <button class="login-btn" onclick="location.href='login.html'">Login</button>
+            <button class="signup-btn" onclick="location.href='signup.html'">Sign Up</button>
+        </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="profile-hero">
+      <div id="particles-js"></div>
+      <div>
+        <h1>Owner Profile</h1>
+        <p>Manage your account and view your listings</p>
+      </div>
+    </section>
+
+    <section class="profile-container">
+      <div class="profile-info">
+        <div class="profile-header">
+          <div class="profile-picture">
+            <img src="resources/images/profile_pic.jpg" alt="Profile Picture">
+          </div>
+          <div class="profile-data">
+            <label for="cms-id">CMS ID:</label>
+            <input type="text" id="cms-id" value="CMS12345" data-original-value="CMS12345" disabled>
+
+            <label for="full-name">Full Name:</label>
+            <input type="text" id="full-name" value="John Doe" data-original-value="John Doe" disabled>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" value="123-456-7890" data-original-value="123-456-7890" disabled>
+   
+          </div>
+        </div>
+        
+        <!-- Feedback Section -->
+        <div class="feedback-section">
+          <h3>User Feedback</h3>
+          <div class="feedback-container">
+            <!-- Feedback items will be displayed here -->
+            <div class="empty-feedback">
+              <p>No feedback yet. Be the first to leave feedback!</p>
+            </div>
+             <!-- Existing feedback would appear here -->
+            <!-- Example feedback item:
+            <div class="feedback-item">
+              <div class="feedback-header">
+                <span class="feedback-author">Jane Doe</span>
+                <div class="feedback-rating">★★★★☆</div>
+              </div>
+              <p class="feedback-text">Great seller! Very responsive and item was exactly as described.</p>
+              <span class="feedback-date">May 5, 2025</span>
+            </div>
+            -->
+          </div>
+
+
+          
+          <button class="add-feedback-btn">
+            <i class="fas fa-comment-alt"></i> Add Feedback
+          </button>
+        </div>
+
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Leave Feedback</h3>
+                <span class="close-modal">&times;</span>
+              </div>
+              <div class="modal-body">
+                <form id="feedback-form">
+                  <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <div class="star-rating">
+                      <span class="rating-star" data-rating="1">★</span>
+                      <span class="rating-star" data-rating="2">★</span>
+                      <span class="rating-star" data-rating="3">★</span>
+                      <span class="rating-star" data-rating="4">★</span>
+                      <span class="rating-star" data-rating="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" value="0" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="review" id="forreview">Your Review:</label>
+                    <textarea id="review" name="review" rows="4" placeholder="Share your experience with this user..." required></textarea>
+                  </div>
+                  <div class="form-actions">
+                    <button type="button" class="cancel-btn"><span>Cancel</span></button>
+                    <button type="submit" class="submit-btn">Submit Feedback</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+        
+      
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3>Virtual Trade Shop</h3>
+        <p>A community platform for sustainable trading, sharing, and reducing waste through conscious consumption.</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="browse.html">Browse Items</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>Categories</h3>
+        <ul>
+            <li><a href="category-electronics.html">Electronics</a></li>
+            <li><a href="category-clothing.html">Clothing</a></li>
+            <li><a href="category-books.html">Books</a></li>
+            <li><a href="category-furniture.html">Furniture</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Virtual Trade Shop. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="ownerProfile.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Particles.js configuration
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#ffffff"
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 2,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+  function setupDarkMode() {
+    const darkModeToggle = document.createElement('button');
+    darkModeToggle.classList.add('dark-mode-toggle');
+    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    document.body.appendChild(darkModeToggle);
+    
+    // Check for saved user preference
+    const darkMode = localStorage.getItem('darkMode') === 'enabled';
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    darkModeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+            this.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+            this.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    });
+  }
+  setupDarkMode();
+});
+</script>
+</body>
+</html>

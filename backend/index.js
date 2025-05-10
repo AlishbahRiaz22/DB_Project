@@ -41,6 +41,7 @@ app.use('/upload', require('./routes/upload').routerUpload); // Config upload ro
 app.use('/user', require('./routes/user').routerUser); // Config user route
 app.use('/requests', require('./routes/request').routerRequest); // Config request route
 app.use('/notifications', require('./routes/notifications').routerNot); // Config notifications route
+app.use('/userfeedback', require('./routes/user_feedback').routerUserFeedback); // Config user feedback route
 
 // Starting the server
 app.listen(port, () => {

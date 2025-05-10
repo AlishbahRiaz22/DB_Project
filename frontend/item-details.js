@@ -853,6 +853,11 @@ async function fetchUserItems(item_type, item_id) {
         `;
         setupModals();
 
+        const contactBtn = document.querySelector('.contact-btn');
+        contactBtn.addEventListener('click', function() {
+            const url = './owner-profile.html?cms_id=' + data.itemDetails[0].cms_id;
+            window.location.href = url;
+        });
 
         if (data.type === 'borrow') {
             const tradeBtn = document.querySelector('.trade-btn');
