@@ -465,7 +465,7 @@
             <div class="particles-container" id="particles-js"></div>
             <div class="hero-content"></div>
                 
-                <h1>Browse by Categories</h1>
+                <h1 class="gradient-text">Browse by Categories</h1>
                 <p>Find exactly what you're looking for by exploring our curated collection of categories. Each category contains unique items waiting to be discovered.</p>
             </div>
         </section>
@@ -485,7 +485,7 @@
                 <div class="category-filters">
                     <button class="filter-btn active" data-filter="all">All</button>
                     <button class="filter-btn" data-filter="popular"><i class="fas fa-fire"></i> Popular</button>
-                    <button class="filter-btn" data-filter="new"><i class="fas fa-star"></i> New</button>
+                    <button class="filter-btn" data-filter="new"><i class="filter-icon-new"></i> New</button>
                     <button class="filter-btn" data-filter="sustainable"><i class="fas fa-leaf"></i> Sustainable</button>
                 </div>
                 
@@ -911,7 +911,34 @@
         }
     })
 } 
+                  // Setup dark mode functionality
+        function setupDarkMode() {
+            const darkModeToggle = document.createElement('button');
+            darkModeToggle.classList.add('dark-mode-toggle');
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            document.body.appendChild(darkModeToggle);
             
+            // Check for saved user preference
+            const darkMode = localStorage.getItem('darkMode') === 'enabled';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                    this.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                    this.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            });
+        }
+
+        setupDarkMode();
     });
     </script>
       <!-- Particle.js for cool background effects -->

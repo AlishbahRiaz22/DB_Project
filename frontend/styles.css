@@ -730,13 +730,13 @@ footer::before {
 
 /* Dark mode styles */
 .dark-mode {
-  --ivory: #18201b; /* Main background: deep greenish dark */
-  --organic: #e6f5e6; /* Main text: light greenish */
-  --apricot: #ff9800;
-  --natural: #8fa18c; /* Muted green for secondary text */
-  --dark-organic: #233127; /* Card/secondary bg: greenish dark */
-  --light-ivory: #233127; /* Inputs/cards: greenish dark */
-  --light-apricot: #ffb366;
+  --ivory: #2E3B30; /* Main background: Dark Muted Green */
+  --organic: #E8E4D8; /* Main text: Beige/Off-white */
+  --apricot: #C8A876; /* Accent: Muted Gold */
+  --natural: #556B5A; /* Secondary text: Lighter Muted Green */
+  --dark-organic: #252F27; /* Card/secondary bg: Darker Muted Green */
+  --light-ivory: #252F27; /* Inputs/cards: Darker Muted Green */
+  --light-apricot: #AE8F63; /* Accent Hover: Darker Muted Gold */
   color-scheme: dark;
 }
 
@@ -745,54 +745,388 @@ footer::before {
   color: var(--organic) !important;
 }
 
-.dark-mode header, .dark-mode nav, .dark-mode .header-scrolled {
-  background-color: #233127 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+.dark-mode header {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+
+.dark-mode .header-scrolled {
+  background-color: rgba(46, 59, 48, 0.85) !important; /* New --ivory: #2E3B30 */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(85, 107, 90, 0.2); /* New --natural: #556B5A */
+  border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+  margin: 0 4px; /* Creates a floating effect */
+  width: calc(100% - 8px);
+  transition: all 0.4s ease;
+}
+
+.dark-mode nav {
+  padding: 0.8rem 1.5rem;
+  transition: all 0.4s ease-in-out;
+}
+
+.dark-mode .header-scrolled nav {
+  padding: 0.7rem 1.5rem;
+}
+
+/* Give nav links a subtle glow effect in dark mode */
+.dark-mode .nav-links a {
+  position: relative;
+}
+
+.dark-mode .nav-links a.active::after {
+  box-shadow: 0 0 8px 1px var(--apricot);
+  opacity: 0.7;
+}
+
+/* Add subtle animation to header when scrolling in dark mode */
+@keyframes subtleFadeIn {
+  from { opacity: 0.7; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dark-mode .header-scrolled {
+  animation: subtleFadeIn 0.3s forwards;
 }
 
 .dark-mode .item-card, .dark-mode .login-container, .dark-mode .category-card, .dark-mode .testimonial {
-  background: #233127 !important;
+  background: var(--dark-organic) !important;
   color: var(--organic) !important;
-  border: 1px solid #2e3d31 !important;
+  border: 1px solid var(--natural) !important; /* Use --natural for a muted border */
 }
 
 .dark-mode input, .dark-mode textarea, .dark-mode select {
-  background: #233127 !important;
+  background: var(--dark-organic) !important;
   color: var(--organic) !important;
-  border: 1px solid #3a4d3b !important;
+  border: 1px solid var(--natural) !important; /* Use --natural for a muted border */
 }
 
 .dark-mode .nav-links a, .dark-mode .logo a {
   color: var(--organic) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.dark-mode .nav-links a:hover, .dark-mode .logo a:hover {
+.dark-mode .nav-links a:hover, .dark-mode .logo a:hover, 
+.dark-mode .nav-links a.active {
   color: var(--apricot) !important;
+}
+
+.dark-mode .nav-links a::after {
+  background-color: var(--apricot) !important;
+  height: 2px;
+  box-shadow: 0 0 4px var(--apricot);
 }
 
 .dark-mode .dark-mode-toggle {
   background: var(--apricot) !important;
-  color: #181a1b !important;
+  color: var(--organic) !important; /* Updated from #F1F1E5 */
 }
 
-.dark-mode .item-btn, .dark-mode .login-btn, .dark-mode .signup-btn, .dark-mode button {
+.dark-mode .item-btn, .dark-mode button {
   background: var(--apricot) !important;
-  color: #181a1b !important;
+  color: var(--organic) !important; /* Updated from #F1F1E5 */
   border: none !important;
 }
 
-.dark-mode .item-btn:hover, .dark-mode .login-btn:hover, .dark-mode .signup-btn:hover, .dark-mode button:hover {
+/* Custom header button styles for dark mode */
+.dark-mode header .login-btn {
+  background: transparent !important;
+  color: var(--organic) !important;
+  border: 2px solid var(--apricot) !important;
+  box-shadow: 0 2px 8px rgba(200, 168, 118, 0.2); /* New --apricot: #C8A876 */
+}
+
+.dark-mode header .signup-btn {
+  background: var(--apricot) !important;
+  color: var(--ivory) !important; /* New --ivory: #2E3B30 for contrast */
+  box-shadow: 0 2px 8px rgba(200, 168, 118, 0.3); /* New --apricot: #C8A876 */
+}
+
+.dark-mode header .login-btn:hover {
+  background: rgba(200, 168, 118, 0.2) !important; /* New --apricot: #C8A876 */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(200, 168, 118, 0.3); /* New --apricot: #C8A876 */
+}
+
+.dark-mode header .signup-btn:hover {
   background: var(--light-apricot) !important;
-  color: #181a1b !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(200, 168, 118, 0.4); /* New --apricot: #C8A876 */
 }
 
 .dark-mode .section-title h2, .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
-  color: #fff !important;
+  color: var(--organic) !important;
 }
 
 .dark-mode .footer-col, .dark-mode .footer-bottom {
   background: none !important;
-  color: #ffe066 !important; /* Soft yellow */
+  color: var(--organic) !important;
+}
+
+/* Additional dark mode styles for categories */
+.dark-mode .category-info {
+  background: var(--dark-organic) !important;
+  color: var(--organic) !important;
+}
+
+.dark-mode .category-info h3 {
+  color: var(--organic) !important;
+}
+
+.dark-mode .category-info p {
+  color: #A0B0A4 !important; /* Adjusted for readability with new greens, derived from new --natural */
+}
+
+.dark-mode .category-btn {
+  background: linear-gradient(135deg, var(--apricot), var(--light-apricot)) !important;
+  color: var(--organic) !important; /* Updated from #F1F1E5 */
+}
+
+.dark-mode .category-btn:hover {
+  background: linear-gradient(135deg, var(--light-apricot), var(--apricot)) !important;
+  box-shadow: 0 10px 25px rgba(200, 168, 118, 0.35) !important; /* New --apricot: #C8A876 */
+}
+
+.dark-mode .category-search input {
+  background-color: var(--dark-organic) !important;
+  border: 1px solid var(--natural) !important; /* Use --natural */
+  color: var(--organic) !important;
+}
+
+.dark-mode .filter-btn {
+  background-color: var(--natural) !important; /* Use --natural */
+  color: var(--organic) !important;
+}
+
+.dark-mode .filter-btn.active {
+  background-color: var(--apricot) !important;
+}
+
+.dark-mode .category-img {
+  background-color: var(--natural) !important; /* Use --natural */
+}
+
+.dark-mode .category-img i {
+  color: var(--organic) !important;
+}
+
+/* Logo enhancement for dark mode */
+.dark-mode .logo a {
+  color: var(--organic) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .logo a:hover {
+  background: rgba(200, 168, 118, 0.1); /* New --apricot: #C8A876 */
+  transform: translateY(-2px);
+}
+
+/* Neon effects for featured items */
+.dark-mode .item-card {
+  box-shadow: 0 0 15px rgba(200, 168, 118, 0.2); /* New --apricot: #C8A876 */
+}
+
+.dark-mode .item-card:hover {
+  box-shadow: 0 0 25px rgba(200, 168, 118, 0.4); /* New --apricot: #C8A876 */
+}
+
+/* Dark mode card and informational content adjustments for how-it-works.html and similar pages */
+.dark-mode .accordion-item,
+.dark-mode .step-item,
+.dark-mode .testimonial-card,
+.dark-mode .step-content {
+  background: var(--dark-organic) !important; /* Dark background for cards */
+  border: 1px solid var(--natural) !important; /* Consistent muted border */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25) !important; /* Adjusted shadow for dark mode */
+}
+
+/* Override any white/light backgrounds in specific page elements */
+.dark-mode .testimonial-card,
+.dark-mode .step-item,
+.dark-mode .step-content,
+.dark-mode .accordion-item {
+  background-color: var(--dark-organic) !important;
+  background: var(--dark-organic) !important;
+}
+
+/* Override gradient backgrounds if present */
+.dark-mode .step-content,
+.dark-mode .category-info,
+.dark-mode .testimonial-card {
+  background: var(--dark-organic) !important;
+  background-image: none !important;
+}
+
+/* Accordion styles */
+.dark-mode .accordion-header h3 {
+  color: var(--organic) !important;
+}
+
+.dark-mode .accordion-header:hover h3,
+.dark-mode .accordion-item.active .accordion-header h3 {
+  color: var(--apricot) !important;
+}
+
+.dark-mode .accordion-icon {
+  color: var(--organic) !important;
+}
+
+.dark-mode .accordion-item.active .accordion-icon {
+  color: var(--apricot) !important;
+}
+
+.dark-mode .accordion-content,
+.dark-mode .accordion-content p { /* Ensure p inside also gets the color */
+  color: var(--organic) !important;
+}
+
+/* Step item (how-it-works page) styles */
+.dark-mode .step-item .step-content h2 { /* Title of the step */
+  color: var(--organic) !important;
+}
+
+.dark-mode .step-item .step-content p { /* Paragraphs in step */
+  color: var(--organic) !important;
+}
+
+.dark-mode .step-item .step-tips {
+  background-color: rgba(200, 168, 118, 0.1) !important;
+  border: 1px solid rgba(200, 168, 118, 0.2) !important;
+}
+
+.dark-mode .step-item .step-tips h4 { /* "Tips for Success" heading */
+  color: var(--organic) !important;
+}
+
+.dark-mode .step-item .step-tips i { /* Icon in Tips heading */
+  color: var(--apricot) !important;
+}
+
+.dark-mode .step-item .step-tips ul li { /* Tip list items */
+  color: var(--organic) !important;
+}
+
+.dark-mode .step-item .step-tips ul li::before { /* List item markers if any */
+  color: var(--apricot) !important;
+}
+
+/* Testimonial card styles */
+.dark-mode .testimonial-card .testimonial-text { /* Main quote */
+  color: var(--organic) !important;
+}
+
+.dark-mode .testimonial-card .testimonial-info h4 { /* Author name */
+  color: var(--organic) !important;
+}
+
+.dark-mode .testimonial-card .testimonial-info p { /* "Member since" text */
+  color: var(--organic) !important;
+}
+
+.dark-mode .testimonial-card .testimonial-quote { /* Large quote character */
+  color: rgba(200, 168, 118, 0.3) !important; /* Muted gold (from --apricot), adjusted opacity */
+}
+
+/* Ensure general text in headers of these sections are also correctly colored if not covered by global rules */
+.dark-mode .faq-header p,
+.dark-mode .testimonials-header p,
+.dark-mode .how-it-works-header p,
+.dark-mode .video-header p,
+.dark-mode .cta-header p {
+  color: var(--organic) !important;
+}
+
+/* Additional dark mode overrides for how-it-works.html and about.html */
+.dark-mode .step-item {
+  background-color: var(--dark-organic) !important;
+}
+
+.dark-mode .step-content {
+  background-color: var(--dark-organic) !important;
+  background: var(--dark-organic) !important;
+  background-image: none !important;
+}
+
+.dark-mode .testimonial-card {
+  background-color: var(--dark-organic) !important;
+  background: var(--dark-organic) !important;
+  background-image: none !important;
+  border: 1px solid var(--natural) !important;
+}
+
+.dark-mode .accordion-item {
+  background-color: var(--dark-organic) !important;
+  background: var(--dark-organic) !important;
+  border: 1px solid var(--natural) !important;
+}
+
+/* Override specificity issues */
+.dark-mode .testimonial-card[style*="background"],
+.dark-mode .step-item[style*="background"],
+.dark-mode .accordion-item[style*="background"] {
+  background: var(--dark-organic) !important;
+  background-color: var(--dark-organic) !important;
+}
+
+/* Ensure all text in these elements is visible */
+.dark-mode .testimonial-card *,
+.dark-mode .step-content *,
+.dark-mode .accordion-item * {
+  color: var(--organic) !important;
+}
+
+/* Preserve accent colors for interactive elements */
+.dark-mode .testimonial-card .testimonial-rating i,
+.dark-mode .step-content a,
+.dark-mode .accordion-header:hover h3,
+.dark-mode .accordion-item.active .accordion-icon {
+  color: var(--apricot) !important;
+}
+
+/* Fix any inline styles on how-it-works.html */
+.dark-mode style + .testimonial-card,
+.dark-mode style + .step-item,
+.dark-mode style + .accordion-item {
+  background: var(--dark-organic) !important;
+}
+
+/* Dark mode styles for category.html */
+.dark-mode .category-card {
+  background-color: var(--dark-organic) !important;
+  border-color: var(--natural) !important;
+}
+
+.dark-mode .category-info {
+  background: var(--dark-organic) !important;
+  background-image: none !important;
+}
+
+.dark-mode .category-info h3 {
+  color: var(--organic) !important;
+}
+
+.dark-mode .category-info p {
+  color: var(--organic) !important;
+}
+
+.dark-mode .category-card:hover .category-info h3 {
+  color: var(--apricot) !important;
+}
+
+/* Force dark backgrounds for any other card-like elements */
+.dark-mode [class*="card"],
+.dark-mode [class*="-item"],
+.dark-mode [class*="-step"] {
+  background-color: var(--dark-organic) !important;
+  background: var(--dark-organic) !important;
+  color: var(--organic) !important;
 }
 
 /* Page transition effects */
@@ -916,15 +1250,6 @@ footer::before {
   background-color: var(--organic);
 }
 
-/* Neon effects for featured items */
-.dark-mode .item-card {
-  box-shadow: 0 0 15px rgba(255, 159, 67, 0.2);
-}
-
-.dark-mode .item-card:hover {
-  box-shadow: 0 0 25px rgba(255, 159, 67, 0.4);
-}
-
 /* Improved form inputs with floating labels */
 .form-group {
   position: relative;
@@ -999,6 +1324,47 @@ footer::before {
   top: 20px;
   right: 20px;
   background-color: var(--dark-organic);
+}
+
+/* Custom rating star styles to replace Font Awesome */
+.rating-star-full, .rating-star-half, .rating-star-empty {
+  display: inline-block;
+  position: relative;
+  font-size: 0.9rem;
+  margin-right: 3px;
+  color: gold;
+}
+
+.rating-star-full::before {
+  content: '★';
+}
+
+.rating-star-half::before {
+  content: '★';
+}
+
+.rating-star-half::after {
+  content: '☆';
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.rating-star-empty::before {
+  content: '☆';
+}
+
+.rating-star-full.selected, .rating-star-half.selected {
+  transform: scale(1.2);
+}
+
+/* Filter icon styles */
+.filter-icon-new::before {
+  content: '★';
+  display: inline-block;
+  margin-right: 4px;
+  color: gold;
   color: var(--ivory);
   padding: 12px 25px;
   border-radius: 8px;
@@ -1067,6 +1433,37 @@ footer::before {
 
   .section-title h2 {
     font-size: 2rem;
+  }
+}
+
+/* Mobile menu improvements for dark mode */
+@media (max-width: 768px) {
+  .dark-mode .nav-links {
+    background-color: rgba(45, 47, 20, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(105, 124, 36, 0.2);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    padding: 1.2rem;
+  }
+  
+  .dark-mode .nav-links a {
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  
+  .dark-mode .nav-links a:hover, 
+  .dark-mode .nav-links a.active {
+    background-color: rgba(212, 142, 49, 0.15);
+  }
+  
+  .dark-mode .mobile-menu-btn {
+    color: var(--organic) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 1.5rem;
   }
 }
 

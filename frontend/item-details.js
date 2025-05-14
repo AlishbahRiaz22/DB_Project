@@ -544,21 +544,19 @@ function generateStars(rating) {
     if (!rating) rating = 0;
     
     let starsHtml = '';
-    
-    // Add full stars
+      // Add full stars
     for (let i = 0; i < Math.floor(rating); i++) {
-        starsHtml += '<i class="fas fa-star"></i>';
+        starsHtml += '<i class="rating-star-full"></i>';
     }
     
     // Add half star if applicable (when rating has .5 decimal)
     if (rating % 1 >= 0.5) {
-        starsHtml += '<i class="fas fa-star-half-alt"></i>';
+        starsHtml += '<i class="rating-star-half"></i>';
     }
-    
-    // Add empty stars to make up a total of 5 stars
+      // Add empty stars to make up a total of 5 stars
     const emptyStars = 5 - Math.ceil(rating);
     for (let i = 0; i < emptyStars; i++) {
-        starsHtml += '<i class="far fa-star"></i>';
+        starsHtml += '<i class="rating-star-empty"></i>';
     }
     
     return starsHtml;
@@ -808,13 +806,12 @@ async function fetchUserItems(item_type, item_id) {
                 <div class="owner-avatar" style="background-image: url('./resources/images/profile_pic.jpg');"></div>
                 <div class="owner-details">
                     <h4>${data.itemDetails[0].username}</h4>
-                    <p>${data.itemDetails[0].cms_id}</p>
-                    <div class="rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+                    <p>${data.itemDetails[0].cms_id}</p>                    <div class="rating">
+                        <i class="rating-star-full"></i>
+                        <i class="rating-star-full"></i>
+                        <i class="rating-star-full"></i>
+                        <i class="rating-star-full"></i>
+                        <i class="rating-star-half"></i>
                     </div>
                 </div>
                 <div class="contact-owner">
@@ -921,11 +918,10 @@ function setupFeedbackModal() {
             
             // Update stars on hover
             stars.forEach(s => {
-                const sRating = s.getAttribute('data-rating');
-                if (sRating <= rating) {
-                    s.className = 'fas fa-star';
+                const sRating = s.getAttribute('data-rating');                if (sRating <= rating) {
+                    s.className = 'rating-star-full';
                 } else {
-                    s.className = 'far fa-star';
+                    s.className = 'rating-star-empty';
                 }
             });
         });
@@ -947,11 +943,10 @@ function setupFeedbackModal() {
     function updateStarsFromRating() {
         const rating = ratingInput.value;
         stars.forEach(s => {
-            const sRating = s.getAttribute('data-rating');
-            if (sRating <= rating) {
-                s.className = 'fas fa-star selected';
+            const sRating = s.getAttribute('data-rating');            if (sRating <= rating) {
+                s.className = 'rating-star-full selected';
             } else {
-                s.className = 'far fa-star';
+                s.className = 'rating-star-empty';
             }
         });
     }
