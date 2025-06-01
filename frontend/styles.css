@@ -937,6 +937,240 @@ footer::before {
   box-shadow: 0 0 25px rgba(200, 168, 118, 0.4); /* New --apricot: #C8A876 */
 }
 
+/* Dark mode styles for profile page (owner-profile.html) */
+.dark-mode .profile-hero {
+  background-image: linear-gradient(rgba(37, 47, 39, 0.8), rgba(37, 47, 39, 0.6)), url('/api/placeholder/1200/400'); /* Darker gradient using --dark-organic */
+}
+
+.dark-mode .profile-hero h1 {
+  background: linear-gradient(to right, var(--organic), var(--apricot)); /* Text color: Beige/Off-white to Muted Gold */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark-mode .profile-hero p {
+  color: var(--organic); /* Text color: Beige/Off-white */
+}
+
+.dark-mode .profile-info {
+  background: var(--dark-organic); /* Card/secondary bg: Darker Muted Green */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--natural); /* Border: Lighter Muted Green */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Adjusted shadow */
+}
+
+.dark-mode .profile-info:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .profile-info label {
+  color: var(--organic); /* Text color: Beige/Off-white */
+}
+
+.dark-mode .profile-info input {
+  background-color: var(--ivory); /* Input background: Dark Muted Green */
+  color: var(--organic); /* Input text: Beige/Off-white */
+  border: 1px solid var(--natural); /* Input border: Lighter Muted Green */
+}
+
+.dark-mode .profile-info input:focus {
+  border-color: var(--apricot); /* Accent: Muted Gold */
+  box-shadow: 0 0 15px rgba(200, 168, 118, 0.4); /* Muted Gold shadow */
+}
+
+.dark-mode .profile-picture img {
+  border-color: var(--dark-organic); /* Border: Darker Muted Green */
+}
+
+.dark-mode .profile-picture img:hover {
+  border-color: var(--apricot); /* Accent: Muted Gold */
+}
+
+.dark-mode .profile-actions button {
+  background: linear-gradient(135deg, var(--apricot) 0%, var(--light-apricot) 100%); /* Accent gradient */
+  color: var(--dark-organic); /* Button text: Darker Muted Green for contrast */
+}
+
+.dark-mode .profile-actions button:hover {
+  box-shadow: 0 10px 20px rgba(200, 168, 118, 0.4); /* Muted Gold shadow */
+}
+
+.dark-mode .profile-listings h2 {
+  color: var(--organic); /* Text color: Beige/Off-white */
+}
+
+.dark-mode .profile-listings h2:after {
+  background: linear-gradient(to right, var(--apricot), var(--light-apricot)); /* Accent gradient */
+}
+
+.dark-mode .listing-item {
+  background: var(--dark-organic); /* Card/secondary bg: Darker Muted Green */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .listing-item:hover {
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+.dark-mode .listing-item h4 {
+  color: var(--organic); /* Text color: Beige/Off-white */
+}
+
+.dark-mode .listing-item p {
+  color: #A0B0A4; /* Adjusted for readability */
+}
+
+.dark-mode .listing-status {
+  border-top-color: var(--natural);
+}
+
+.dark-mode .status-available {
+  background-color: rgba(174, 143, 99, 0.15); /* --light-apricot with opacity */
+  color: var(--apricot); /* Accent: Muted Gold */
+}
+
+.dark-mode .status-traded {
+  background-color: rgba(85, 107, 90, 0.2); /* --natural with opacity */
+  color: var(--natural); /* Secondary text: Lighter Muted Green */
+}
+
+.dark-mode .request-card {
+  background-color: var(--dark-organic);
+  border: 1px solid var(--natural);
+}
+
+.dark-mode .request-title {
+  color: var(--organic);
+}
+
+.dark-mode .request-info p {
+  color: #A0B0A4;
+}
+
+.dark-mode .accept-btn {
+  background-color: var(--apricot);
+  color: var(--dark-organic);
+}
+
+.dark-mode .decline-btn {
+  background-color: #A94442; /* A darker red for dark mode */
+  color: var(--organic);
+}
+
+.dark-mode .cancel-btn {
+  background-color: var(--natural);
+  color: var(--organic);
+}
+
+.dark-mode .empty-state {
+  color: #A0B0A4;
+}
+
+.dark-mode .empty-state h3 {
+  color: var(--organic);
+}
+
+.dark-mode .delete-btn {
+  background-color: #A94442;
+  color: var(--organic);
+}
+
+.dark-mode .delete-btn:hover {
+  background-color: #8C3330; /* Even darker red for hover */
+}
+
+/* Feedback Section Dark Mode */
+.dark-mode .feedback-section h3 {
+  color: var(--organic);
+  border-bottom-color: var(--apricot);
+}
+
+.dark-mode .feedback-container {
+  background-color: var(--ivory); /* Dark Muted Green */
+}
+
+.dark-mode .empty-feedback p {
+  color: #A0B0A4;
+}
+
+.dark-mode .feedback-item {
+  border-bottom-color: var(--natural);
+}
+
+.dark-mode .feedback-author {
+  color: var(--apricot);
+}
+
+.dark-mode .feedback-text {
+  color: var(--organic);
+}
+
+.dark-mode .feedback-date {
+  color: #A0B0A4;
+}
+
+.dark-mode .add-feedback-btn {
+  background: linear-gradient(135deg, var(--apricot) 0%, var(--light-apricot) 100%);
+  color: var(--dark-organic);
+}
+
+.dark-mode .add-feedback-btn:hover {
+  box-shadow: 0 5px 15px rgba(200, 168, 118, 0.4);
+}
+
+/* Modal Dark Mode */
+.dark-mode .modal-content {
+  background: var(--dark-organic);
+  border: 1px solid var(--natural);
+}
+
+.dark-mode .modal-header {
+  border-bottom-color: var(--natural);
+}
+
+.dark-mode .modal-header h3 {
+  color: var(--organic);
+}
+
+.dark-mode .close-modal {
+  color: #A0B0A4;
+}
+
+.dark-mode .close-modal:hover {
+  color: var(--organic);
+}
+
+.dark-mode .form-group label {
+  color: var(--organic);
+}
+
+.dark-mode .star-rating {
+  color: var(--natural);
+}
+
+.dark-mode .rating-star.selected {
+  color: var(--apricot); /* Muted Gold */
+}
+
+.dark-mode textarea {
+  background-color: var(--ivory);
+  border-color: var(--natural);
+  color: var(--organic);
+}
+
+.dark-mode .form-actions .cancel-btn {
+  background-color: var(--natural);
+  border-color: var(--ivory);
+  color: var(--organic);
+}
+
+.dark-mode .form-actions .submit-btn {
+  background: linear-gradient(135deg, var(--apricot) 0%, var(--light-apricot) 100%);
+  color: var(--dark-organic);
+}
+
 /* Dark mode card and informational content adjustments for how-it-works.html and similar pages */
 .dark-mode .accordion-item,
 .dark-mode .step-item,
