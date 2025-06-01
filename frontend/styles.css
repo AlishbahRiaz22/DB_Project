@@ -1321,9 +1321,18 @@ footer::before {
 /* Toast notifications */
 .toast {
   position: fixed;
-  top: 20px;
+  top: 80px; /* Increased from 20px to position below the navbar */
   right: 20px;
   background-color: var(--dark-organic);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Added z-index higher than navbar's z-index (100) */
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s;
+  max-width: 300px;
 }
 
 /* Custom rating star styles to replace Font Awesome */

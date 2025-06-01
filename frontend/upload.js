@@ -130,13 +130,20 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('condition', selectedCondition);
             formData.append('description', description);
             formData.append('type', selectedType);
-            formData.append('status', status);
+            console.log('Selected Type:', status);
+            if (status === true) {
+                formData.append('status', 1);
+            }
+            else {
+                formData.append('status', 0);
+            }
             formData.append('image', selectedImage);
               // Add durations if borrowable
             if (selectedType === 'borrow') {
                 formData.append('durations', JSON.stringify(selectedDurations));
             }
 
+            console.log('FormData:', formData);
             // Call the API to upload the item
             const response = await fetch('http://127.0.0.1:8808/upload', {
                 method: 'POST',
@@ -171,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Populate category dropdown
                 categories.forEach(category => {
                     const option = document.createElement('option');
-                    option.value = category.id;
+                    option.value = category.category_id;
                     option.textContent = category.category_name;
                     itemCategorySelect.appendChild(option);
                 });

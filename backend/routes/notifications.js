@@ -8,7 +8,7 @@ routerNot.get('/', (req, res, next) => {
     }
 
     // Query to get notifications for the logged-in user
-    pool.query('SELECT * FROM notification WHERE user_id = ? AND is_read = 0 ORDER BY creation_date DESC', [user.cms_id], (err, result) => {
+    pool.query('SELECT * FROM notification WHERE user_id = ? ORDER BY creation_date DESC', [user.cms_id], (err, result) => {
         if (err) {
             console.error("Database error:", err); // Logging the error for debugging
             return res.status(500).json({ error: 'Database error' }); // Send a 500 Internal Server Error response
